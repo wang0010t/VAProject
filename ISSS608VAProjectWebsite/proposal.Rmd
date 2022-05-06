@@ -1,0 +1,47 @@
+---
+title: "Project Proposal"
+description: |
+  Project Proposal for ISSS608 Visual Analytics and Applications - Group 9
+author:
+  - name: Group9:<br> HUANG ANNI <br> NI JUNQIU <br> WANG TIANQI <br>
+    #url: 
+date: 2022-05-07
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# 1. Overview
+
+The purpose of the project is to provide students first hand experience on building web-enabled visual analytics application by using R Shiny. It aims to democratize data and analytics. Hence, the application focuses and emphasises on interactivity and effective integration of techniques from data analytics and data visualization.
+
+# 2. Project Topic
+
+The topic of Visual Analytics Project will be based on VAST Challenge 2022. The are three challenges provided. Teams are required to choose one of the Challenge and build a Shiny Application to answer the questions of the Challenge.
+
+# 3. Motivation 
+
+XXXX
+
+
+# 4. Problems and Issues
+
+XXXX
+
+
+# 5. Related Work and Approach
+
+XXXX
+
+
+# 6. Storyboards and Prototypes
+
+XXXX
+
+

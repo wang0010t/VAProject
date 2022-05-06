@@ -1,0 +1,19 @@
+name: "ISSS608VAProjectWebsite"
+title: "ISSS608VA Project Website"
+description: |
+  ISSS608VA Project Website
+output_dir: "_site"
+navbar:
+  right:
+    - text: "Home"
+      href: index.html
+    - text: "Project Proposal"
+      href: proposal.html
+    - text: "ShinyApp"
+      href: app.html
+    - text: "User Guide"
+      href: guide.html
+    - text: "Poster"
+      href: poster.html
+
+output: distill::distill_article
