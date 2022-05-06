@@ -4,7 +4,7 @@ library(tidyverse)
 
 
 ui <- fluidPage(
-  titlePanel("Dashboard"),
+  titlePanel("city of Engagement, Ohio USA "),
   sidebarLayout(
     sidebarPanel(
       
