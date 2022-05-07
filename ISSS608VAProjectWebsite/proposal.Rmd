@@ -27,7 +27,7 @@ The topic of Visual Analytics Project will be based on VAST Challenge 2022. The 
 
 # 3. Motivation 
 
-The motivation of the project 
+The motivation of the project.
 
 
 # 4. Problems and Issues

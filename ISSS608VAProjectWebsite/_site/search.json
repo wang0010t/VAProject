@@ -6,7 +6,7 @@
       "description": "Some additional details about the website",
       "author": [],
       "contents": "\n\n\n\n",
-      "last_modified": "2022-05-07T17:30:00+08:00"
+      "last_modified": "2022-05-07T17:30:13+08:00"
     },
     {
       "path": "index.html",
@@ -14,7 +14,7 @@
       "description": "This is the project website for ISSS608 Visual Analytics and Applications 2021-2022 April Term, Group 9.\n",
       "author": [],
       "contents": "\nBelow is the summary of the project:\nProject Members:\nHUANG ANNI\nNI JUNQIU\nWANG\nTIANQI\nProject Title:\nXXX\nProject Description:\nmotivation\nobjectives\nmain features of the application\nXXXXXXXX\n\n\n\n",
-      "last_modified": "2022-05-07T17:31:18+08:00"
+      "last_modified": "2022-05-07T17:32:51+08:00"
     },
     {
       "path": "proposal.html",
@@ -27,8 +27,8 @@
         }
       ],
       "date": "2022-05-07",
-      "contents": "\n\nContents\n1. Overview\n2. Project Topic\n3. Motivation\n4. Problems and Issues\n5. Related Work and\nApproach\n6. Storyboards and\nPrototypes\n\n1. Overview\nThe purpose of the project is to provide students first hand\nexperience on building web-enabled visual analytics application by using\nR Shiny. It aims to democratize data and analytics. Hence, the\napplication focuses and emphasises on interactivity and effective\nintegration of techniques from data analytics and data\nvisualization.\n2. Project Topic\nThe topic of Visual Analytics Project will be based on VAST Challenge\n2022. The are three challenges provided. Teams are required to choose\none of the Challenge and build a Shiny Application to answer the\nquestions of the Challenge.\n3. Motivation\nThe motivation of the project\n4. Problems and Issues\nXXXX\n5. Related Work and Approach\nXXXX\n6. Storyboards and Prototypes\nXXXX\n\n\n\n",
-      "last_modified": "2022-05-07T17:31:09+08:00"
+      "contents": "\n\nContents\n1. Overview\n2. Project Topic\n3. Motivation\n4. Problems and Issues\n5. Related Work and\nApproach\n6. Storyboards and\nPrototypes\n\n1. Overview\nThe purpose of the project is to provide students first hand\nexperience on building web-enabled visual analytics application by using\nR Shiny. It aims to democratize data and analytics. Hence, the\napplication focuses and emphasises on interactivity and effective\nintegration of techniques from data analytics and data\nvisualization.\n2. Project Topic\nThe topic of Visual Analytics Project will be based on VAST Challenge\n2022. The are three challenges provided. Teams are required to choose\none of the Challenge and build a Shiny Application to answer the\nquestions of the Challenge.\n3. Motivation\nThe motivation of the project.\n4. Problems and Issues\nXXXX\n5. Related Work and Approach\nXXXX\n6. Storyboards and Prototypes\nXXXX\n\n\n\n",
+      "last_modified": "2022-05-07T17:33:08+08:00"
     }
   ],
   "collections": []
