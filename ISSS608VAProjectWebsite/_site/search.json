@@ -6,7 +6,7 @@
       "description": "Some additional details about the website",
       "author": [],
       "contents": "\n\n\n\n",
-      "last_modified": "2022-05-07T17:30:13+08:00"
+      "last_modified": "2022-05-07T17:30:00+08:00"
     },
     {
       "path": "index.html",
@@ -14,7 +14,7 @@
       "description": "This is the project website for ISSS608 Visual Analytics and Applications 2021-2022 April Term, Group 9.\n",
       "author": [],
       "contents": "\nBelow is the summary of the project:\nProject Members:\nHUANG ANNI\nNI JUNQIU\nWANG\nTIANQI\nProject Title:\nXXX\nProject Description:\nmotivation\nobjectives\nmain features of the application\nXXXXXXXX\n\n\n\n",
-      "last_modified": "2022-05-07T17:32:51+08:00"
+      "last_modified": "2022-05-12T15:48:34+08:00"
     },
     {
       "path": "proposal.html",
@@ -27,8 +27,8 @@
         }
       ],
       "date": "2022-05-07",
-      "contents": "\n\nContents\n1. Overview\n2. Project Topic\n3. Motivation\n4. Problems and Issues\n5. Related Work and\nApproach\n6. Storyboards and\nPrototypes\n\n1. Overview\nThe purpose of the project is to provide students first hand\nexperience on building web-enabled visual analytics application by using\nR Shiny. It aims to democratize data and analytics. Hence, the\napplication focuses and emphasises on interactivity and effective\nintegration of techniques from data analytics and data\nvisualization.\n2. Project Topic\nThe topic of Visual Analytics Project will be based on VAST Challenge\n2022. The are three challenges provided. Teams are required to choose\none of the Challenge and build a Shiny Application to answer the\nquestions of the Challenge.\n3. Motivation\nThe motivation of the project.\n4. Problems and Issues\nProblems-Huang Anni\n5. Related Work and Approach\nXXXX\n6. Storyboards and Prototypes\nXXXX\n\n\n\n",
-      "last_modified": "2022-05-07T17:36:11+08:00"
+      "contents": "\n\nContents\n1. Overview\n2. Project Topic\n3. Motivation\n4. Problems and Issues\n5. Related Work and\nApproach\n6. Storyboards and\nPrototypes\n\n1. Overview\nIn this project, our team will try on building web-enabled visual\nanalytics application by using R Shiny. The project aims to democratize\ndata and analytics. The application will focus and emphasize on\ninteractivity and effective integration of techniques from data\nanalytics and data visualization.\n2. Project Topic\nThe topic of Visual Analytics Project will be based on VAST Challenge 2022.\nOur team will choose Challenge 1 and build a Shiny Application to answer\nthe questions of the Challenge. Challenge 1 is to understand the city’s\ndemographics and relationships. We will analyse the available data about\nthe social networks and other information of the city to learn about the\ncity’s demographics, its neighborhoods, and its business base.\n3. Motivation\nThe purpose of the project is to help the city planning team of\nEngagement, Ohio USA to understand the current state of the city and\nidentify opportunities for future growth. The visual analytics exercise\ncan use related visual analytic techniques to analyse the data collected\nfrom the representative residents using the city’s urban planning\napp.\n4. Problems and Issues\nIn this project, we will solve three main problems of Challenge 1.\nFirst, Assuming the volunteers are representative of the city’s\npopulation, we will characterize the demographics of the town. Also,\nconsidering the social activities in the community, we will describe the\npatterns in the social networks in the town. Lastly, we will identify\nthe predominant business base of the town, and describe patterns we\nobserve.\n5. Related Work and Approach\nXXXX\n6. Storyboards and Prototypes\nXXXX\n\n\n\n",
+      "last_modified": "2022-05-12T15:48:24+08:00"
     }
   ],
   "collections": []
