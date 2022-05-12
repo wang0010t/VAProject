@@ -32,7 +32,7 @@ The purpose of the project is to help the city planning team of Engagement, Ohio
 
 # 4. Problems and Issues
 
-In this project, we will solve three main problems of Challenge 1. First, Assuming the volunteers are representative of the city’s population, we will characterize the demographics of the town. Also, considering  the social activities in the community, we will describe the patterns in the social networks in the town. Lastly, we will identify the predominant business base of the town, and describe patterns we observe. 
+In this project, we will solve three main problems of Challenge 1. First, assuming the volunteers are representative of the city’s population, we will characterize the demographics of the town. Also, considering  the social activities in the community, we will describe the patterns in the social networks in the town. Lastly, we will identify the predominant business base of the town, and describe patterns we observe. 
 
 
 # 5. Related Work and Approach
