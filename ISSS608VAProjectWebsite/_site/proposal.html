@@ -2109,9 +2109,18 @@ Group 9</p></p>
 <li><a href="#motivation">3. Motivation</a></li>
 <li><a href="#problems-and-issues">4. Problems and Issues</a></li>
 <li><a href="#related-work-and-approach">5. Related Work and
-Approach</a></li>
+Approach</a>
+<ul>
+<li><a href="#demographics">5.1 Demographics</a></li>
+<li><a href="#social-activities">5.2 Social activities</a></li>
+<li><a href="#data-journalists-and-other-dataviz-professionals">5.3 Data
+journalists and other dataviz professionals</a></li>
+</ul></li>
 <li><a href="#storyboards-and-prototypes">6. Storyboards and
-Prototypes</a></li>
+Prototypes</a>
+<ul>
+<li><a href="#demograhics">6.1 Demograhics</a></li>
+</ul></li>
 </ul>
 </nav>
 </div>
@@ -2145,9 +2154,83 @@ patterns in the social networks in the town. Lastly, we will identify
 the predominant business base of the town, and describe patterns we
 observe.</p>
 <h1 id="related-work-and-approach">5. Related Work and Approach</h1>
-<p>XXXX</p>
+<h2 id="demographics">5.1 Demographics</h2>
+<p>Population can be visualized through a variety of chars such as pie
+charts, maps, line charts, bar charts and more can all help you
+visualize population.</p>
+<p>For age, we can use a stacked bar plot(<a
+href="https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(20)30977-6/fulltext">Global
+age-sex-specific fertility, mortality, healthy life expectancy (HALE),
+and population estimates in 204 countries and territories, 1950–2019: a
+comprehensive demographic analysis for the Global Burden of Disease
+Study 2019</a>), pie or donut chart to reveal how people’s ages are
+split in a single population group.</p>
+<p>For education level, there’re study about <a
+href="https://www.nature.com/articles/s41586-019-1872-1">Mapping
+disparities in education across low- and middle-income countries</a>
+published on Nature in 2019. They studied the relationship of the change
+in average educational attainment rate and income. They use terminal
+mapping to visualize it.</p>
+<h2 id="social-activities">5.2 Social activities</h2>
+<p>For this analysis, we will be using the following library
+packages:</p>
+<ul>
+<li>visNetwork</li>
+<li>geomnet</li>
+<li><a href="https://igraph.org/r/">igraph</a></li>
+</ul>
+<p>We can visualize people’s social activity by turning participants
+into nodes and their financial activity into edges.</p>
+<p>References:</p>
+<ul>
+<li><a
+href="https://www.r-bloggers.com/2019/09/social-network-visualization-with-r/">Social
+Network Visualization with R</a></li>
+<li><a
+href="http://www.designandanalytics.com/visual-social-network-analysis-in-R-and-gephi-part-II">Visual
+Social Network Analysis in R and Gephi Part II</a></li>
+</ul>
+<h2 id="data-journalists-and-other-dataviz-professionals">5.3 Data
+journalists and other dataviz professionals</h2>
+<ul>
+<li>Alberto Cairo - University of Miami, Data Visualization <a
+href="http://albertocairo.com/">Studio</a> and <a
+href="http://www.thefunctionalart.com/">weblog</a> on visualization,
+infographics and data journalism</li>
+<li><a href="https://informationisbeautiful.net/">David Candless
+(Information is Beautiful)</a></li>
+<li><a href="https://www.theguardian.com/data">Guardian
+datablog</a></li>
+<li><a href="http://johngrimwade.com/">John Grimade, Ohio University,
+School of Visual Communication.</a></li>
+<li><a href="https://www.ted.com/speakers/hans_rosling">Hans Rosling TED
+talks</a></li>
+<li><a href="http://well-formed-data.net/">Moritz Stefaner - freelance
+information visualiser</a></li>
+<li><a href="https://www.edwardtufte.com/tufte/">Edward Tufte (books -
+The Visual Display of Quantitative Information)</a></li>
+<li><a href="https://flowingdata.com/">Nathan Yau - flowing
+data</a></li>
+<li><a href="https://hi.stamen.com/">Stamen Design</a></li>
+<li><a
+href="https://www.forbes.com/sites/naomirobbins/#28c0b6702a6a">Naomi
+Robbins - Forbes</a></li>
+</ul>
 <h1 id="storyboards-and-prototypes">6. Storyboards and Prototypes</h1>
-<p>XXXX</p>
+<h2 id="demograhics">6.1 Demograhics</h2>
+<p>For age, we can use a stacked bar plot(<a
+href="https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(20)30977-6/fulltext">Global
+age-sex-specific fertility, mortality, healthy life expectancy (HALE),
+and population estimates in 204 countries and territories, 1950–2019: a
+comprehensive demographic analysis for the Global Burden of Disease
+Study 2019</a>), pie or donut chart to reveal how people’s ages are
+split in a single population group.</p>
+<p>For education level, there’re study about <a
+href="https://www.nature.com/articles/s41586-019-1872-1">Mapping
+disparities in education across low- and middle-income countries</a>
+published on Nature in 2019. They studied the relationship of the change
+in average educational attainment rate and income. They use terminal
+mapping to visualize it.</p>
 <div class="sourceCode" id="cb1"><pre
 class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->

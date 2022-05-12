@@ -37,11 +37,49 @@ In this project, we will solve three main problems of Challenge 1. First, assumi
 
 # 5. Related Work and Approach
 
-XXXX
+## 5.1 Demographics
 
+Population can be visualized through a variety of chars such as pie charts, maps, line charts, bar charts and more can all help you visualize population. 
+
+For age, we can use a stacked bar plot([Global age-sex-specific fertility, mortality, healthy life expectancy (HALE), and population estimates in 204 countries and territories, 1950–2019: a comprehensive demographic analysis for the Global Burden of Disease Study 2019](https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(20)30977-6/fulltext)), pie or donut chart to reveal how people’s ages are split in a single population group. 
+
+For education level, there're study about [Mapping disparities in education across low- and middle-income countries](https://www.nature.com/articles/s41586-019-1872-1) published on Nature in 2019. They studied the relationship of the change in average educational attainment rate and income. They use terminal mapping to visualize it.
+
+## 5.2 Social activities
+
+For this analysis, we will be using the following library packages:
+
+- visNetwork
+- geomnet
+- [igraph](https://igraph.org/r/)
+
+We can visualize people's social activity by turning participants into nodes and their financial activity into edges.
+
+References:
+
+- [Social Network Visualization with R](https://www.r-bloggers.com/2019/09/social-network-visualization-with-r/)
+- [Visual Social Network Analysis in R and Gephi Part II](http://www.designandanalytics.com/visual-social-network-analysis-in-R-and-gephi-part-II)
+
+## 5.3 Data journalists and other dataviz professionals
+
+- Alberto Cairo - University of Miami, Data Visualization [Studio](http://albertocairo.com/) and [weblog](http://www.thefunctionalart.com/) on visualization, infographics and data journalism
+- [David Candless (Information is Beautiful)](https://informationisbeautiful.net/)
+- [Guardian datablog](https://www.theguardian.com/data)
+- [John Grimade, Ohio University, School of Visual Communication.](http://johngrimwade.com/)
+- [Hans Rosling TED talks](https://www.ted.com/speakers/hans_rosling)
+- [Moritz Stefaner - freelance information visualiser](http://well-formed-data.net/)
+- [Edward Tufte (books - The Visual Display of Quantitative Information)](https://www.edwardtufte.com/tufte/)
+- [Nathan Yau - flowing data](https://flowingdata.com/)
+- [Stamen Design](https://hi.stamen.com/)
+- [Naomi Robbins - Forbes](https://www.forbes.com/sites/naomirobbins/#28c0b6702a6a)
 
 # 6. Storyboards and Prototypes
 
-XXXX
+## 6.1 Demograhics
+
+For age, we can use a stacked bar plot([Global age-sex-specific fertility, mortality, healthy life expectancy (HALE), and population estimates in 204 countries and territories, 1950–2019: a comprehensive demographic analysis for the Global Burden of Disease Study 2019](https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(20)30977-6/fulltext)), pie or donut chart to reveal how people’s ages are split in a single population group. 
+
+For education level, there're study about [Mapping disparities in education across low- and middle-income countries](https://www.nature.com/articles/s41586-019-1872-1) published on Nature in 2019. They studied the relationship of the change in average educational attainment rate and income. They use terminal mapping to visualize it.
+
 
 
