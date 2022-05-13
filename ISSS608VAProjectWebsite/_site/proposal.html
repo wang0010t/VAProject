@@ -2041,7 +2041,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </script>
 
   <!--/radix_placeholder_distill-->
-  <script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+  <script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
   <script src="site_libs/popper-2.6.0/popper.min.js"></script>
   <link href="site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
   <link href="site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
@@ -2113,13 +2113,18 @@ Approach</a>
 <ul>
 <li><a href="#demographics">5.1 Demographics</a></li>
 <li><a href="#social-activities">5.2 Social activities</a></li>
-<li><a href="#data-journalists-and-other-dataviz-professionals">5.3 Data
+<li><a href="#predominant-business-base">5.3 Predominant business
+base</a></li>
+<li><a href="#data-journalists-and-other-dataviz-professionals">5.4 Data
 journalists and other dataviz professionals</a></li>
 </ul></li>
 <li><a href="#storyboards-and-prototypes">6. Storyboards and
 Prototypes</a>
 <ul>
 <li><a href="#demograhics">6.1 Demograhics</a></li>
+<li><a href="#social-activities-1">6.2 Social activities</a></li>
+<li><a href="#predominant-business-base-1">6.3 Predominant business
+base</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -2190,7 +2195,20 @@ Network Visualization with R</a></li>
 href="http://www.designandanalytics.com/visual-social-network-analysis-in-R-and-gephi-part-II">Visual
 Social Network Analysis in R and Gephi Part II</a></li>
 </ul>
-<h2 id="data-journalists-and-other-dataviz-professionals">5.3 Data
+<h2 id="predominant-business-base">5.3 Predominant business base</h2>
+<p>For this analysis, we will try visualizing the no. of check-ins or
+travels of different locations and venue types by interactive line
+charts. We will also try revealing and describing spatial patterns and
+relationships on maps using the following R packages:</p>
+<ul>
+<li>sf</li>
+<li>tmap</li>
+<li>raster</li>
+<li>stars</li>
+<li>micromap</li>
+<li>geofacet</li>
+</ul>
+<h2 id="data-journalists-and-other-dataviz-professionals">5.4 Data
 journalists and other dataviz professionals</h2>
 <ul>
 <li>Alberto Cairo - University of Miami, Data Visualization <a
@@ -2217,6 +2235,10 @@ href="https://www.forbes.com/sites/naomirobbins/#28c0b6702a6a">Naomi
 Robbins - Forbes</a></li>
 </ul>
 <h1 id="storyboards-and-prototypes">6. Storyboards and Prototypes</h1>
+<p>Below are some initial prototypes/graphs that our group generated
+using Tableau and R. Functions will be built on Shiny application for
+users to interactively generate similar graphs.
+<img src="image/proposal-shiny.png"></p>
 <h2 id="demograhics">6.1 Demograhics</h2>
 <p>For the discrete values such as age, we can use line plot and use
 color to denote the number.</p>
@@ -2224,6 +2246,19 @@ color to denote the number.</p>
 <p>For household size, education level, interest group and have kids, we
 can use donuts plot.</p>
 <p><img width="992" alt="image" src="https://user-images.githubusercontent.com/44923423/168091510-70ba5391-3e57-486f-a566-8ce44613a451.png"></p>
+<h2 id="social-activities-1">6.2 Social activities</h2>
+<p>To be filled in</p>
+<h2 id="predominant-business-base-1">6.3 Predominant business base</h2>
+<p>For the area distribution of various types of businesses in the town,
+we can explore below scatter plots or generate similar map plots.</p>
+<p><img src="image/proposalQ3-1.png"></p>
+<p>For the no. of check-ins at various locations, we can use line charts
+and interactively filter based on venue type.
+<img src="image/proposalQ3-2.png"> For example, we can see pub-1344
+seems to have highest customer volumes among all pubs.
+<img src="image/proposalQ3-3.png"> Restarurant-1801 seems to have the
+highest customer volumes throughout the year among all restaurants.
+<img src="image/proposalQ3-4.png"></p>
 <div class="sourceCode" id="cb1"><pre
 class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->

@@ -60,7 +60,21 @@ References:
 - [Social Network Visualization with R](https://www.r-bloggers.com/2019/09/social-network-visualization-with-r/)
 - [Visual Social Network Analysis in R and Gephi Part II](http://www.designandanalytics.com/visual-social-network-analysis-in-R-and-gephi-part-II)
 
-## 5.3 Data journalists and other dataviz professionals
+
+## 5.3 Predominant business base
+
+For this analysis, we will try visualizing the no. of check-ins or travels of different locations and venue types by interactive line charts. 
+We will also try revealing and describing spatial patterns and relationships on maps using the following R packages:
+
+- sf
+- tmap
+- raster 
+- stars
+- micromap 
+- geofacet 
+
+
+## 5.4 Data journalists and other dataviz professionals
 
 - Alberto Cairo - University of Miami, Data Visualization [Studio](http://albertocairo.com/) and [weblog](http://www.thefunctionalart.com/) on visualization, infographics and data journalism
 - [David Candless (Information is Beautiful)](https://informationisbeautiful.net/)
@@ -75,6 +89,10 @@ References:
 
 # 6. Storyboards and Prototypes
 
+Below are some initial prototypes/graphs that our group generated using Tableau and R. 
+Functions will be built on Shiny application for users to interactively generate similar graphs. 
+<img src="image/proposal-shiny.png">
+
 ## 6.1 Demograhics
 
 For the discrete values such as age, we can use line plot and use color to denote the number.
@@ -84,4 +102,25 @@ For the discrete values such as age, we can use line plot and use color to denot
  For household size, education level, interest group and have kids, we can use donuts plot.
  
  <img width="992" alt="image" src="https://user-images.githubusercontent.com/44923423/168091510-70ba5391-3e57-486f-a566-8ce44613a451.png">
+
+
+## 6.2 Social activities
+
+To be filled in 
+
+
+## 6.3 Predominant business base
+
+For the area distribution of various types of businesses in the town, we can explore below scatter plots or generate similar map plots. 
+
+<img src="image/proposalQ3-1.png">
+
+For the no. of check-ins at various locations, we can use line charts and interactively filter based on venue type.
+<img src="image/proposalQ3-2.png">
+For example, we can see pub-1344 seems to have highest customer volumes among all pubs. 
+<img src="image/proposalQ3-3.png">
+Restarurant-1801 seems to have the highest customer volumes throughout the year among all restaurants. 
+<img src="image/proposalQ3-4.png">
+
+
 
