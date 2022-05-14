@@ -47,13 +47,11 @@ For education level, there is a study about [Mapping disparities in education ac
 
 ## 5.2 Social activities
 
-For the social analysis, we can use the following library packages:
+For the social analysis, we can use the following library packages to visualize people 's social activities and patterns:
 
 - visNetwork
 - geomnet
 - [igraph](https://igraph.org/r/)
-
-We can visualize people's social activities by turning participants into nodes and their financial activity into edges.
 
 References:
 
@@ -73,6 +71,7 @@ We will also try revealing and describing spatial patterns and relationships on 
 - micromap 
 - geofacet 
 
+For the location data in the dataset, we can learn how to use [polygon](https://statisticsglobe.com/r-polygon-function-plot/) and apply to visualize the location of the business bases.
 
 ## 5.4 Data journalists and other dataviz professionals
 
@@ -106,9 +105,15 @@ For the discrete values such as age, we can use line plot and use color to denot
 
 ## 6.2 Social activities
 
-To observe the patterns of the social activities of the city, we use two different layouts with Gephi to visualize the social network of the city. We can explore more about the social communities with the social activities and participants attributes using R.
+To observe the patterns of the social activities of the city, we use two different layouts with Gephi to visualize the social network of the city. The edge weight could be used to indicate the no. of interactions between 2 parties, e.g. if the 2 residents have more interactions, the edge weight will be higher. 
 
-For example, we can detect the communities among the social network and see if participants in the same community share common properties. We can also try the social network dynamics with the timestamp variable in the social network dataset.
+Another possible technique is to use heatmap to show the no. of interactions for each resident across the year or total no. of interactions for all residents across the year. 
+
+We can explore more about the social communities with the social activities and participants attributes using R. For example, we can detect the communities among the social network and analyse the demographics of the clusters/groups to identify common characteristics. 
+
+We can also try identifying the dominant social influencer in the community who has the highest no. of interactions with others and the characteristics of these residents. On the other hand, the inactive residents with little social interaction could also be identified.
+
+In addition, we can try to visualize the social network dynamics with the timestamp variable in the social network dataset and see if any significant changes happen over the period.
 
 <img src="image/proposalQ2-1.png">
 
@@ -127,5 +132,7 @@ For example, we can see pub-1344 seems to have highest customer volumes among al
 Restarurant-1801 seems to have the highest customer volumes throughout the year among all restaurants. 
 <img src="image/proposalQ3-4.png">
 
+Besides check-ins, it is also possible to look at Travels data and use heatmaps to show the most popular locations. We can look at the mapping from each venue (pub, restaurant, school, employer, and apartment) to Buildings and identify which building is predominant, i.e. consists of various types of businesses or consists of more employers/pubs/restaurants than the other buildings.  
 
+ 
 
