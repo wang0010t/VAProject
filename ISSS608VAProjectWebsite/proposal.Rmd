@@ -39,21 +39,21 @@ In this project, we will solve three main problems of Challenge 1. First, assumi
 
 ## 5.1 Demographics
 
-Population can be visualized through a variety of chars such as pie charts, maps, line charts, bar charts and more can all help you visualize population. 
+Population can be visualized through a variety of charts such as pie charts, maps, line charts, bar charts and etc, which are all helpful to visualize population. 
 
-For age, we can use a stacked bar plot([Global age-sex-specific fertility, mortality, healthy life expectancy (HALE), and population estimates in 204 countries and territories, 1950–2019: a comprehensive demographic analysis for the Global Burden of Disease Study 2019](https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(20)30977-6/fulltext)), pie or donut chart to reveal how people’s ages are split in a single population group. 
+For age, we can use a stacked bar plot([Global age-sex-specific fertility, mortality, healthy life expectancy (HALE), and population estimates in 204 countries and territories, 1950–2019: a comprehensive demographic analysis for the Global Burden of Disease Study 2019](https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(20)30977-6/fulltext)), pie or donut chart to reveal how people’s ages are distributed in a single population group. 
 
-For education level, there're study about [Mapping disparities in education across low- and middle-income countries](https://www.nature.com/articles/s41586-019-1872-1) published on Nature in 2019. They studied the relationship of the change in average educational attainment rate and income. They use terminal mapping to visualize it.
+For education level, there is a study about [Mapping disparities in education across low- and middle-income countries](https://www.nature.com/articles/s41586-019-1872-1) published on Nature in 2019. They studied the relationship of the change in average educational attainment rate and income. They use terminal mapping to visualize it.
 
 ## 5.2 Social activities
 
-For this analysis, we will be using the following library packages:
+For the social analysis, we can use the following library packages:
 
 - visNetwork
 - geomnet
 - [igraph](https://igraph.org/r/)
 
-We can visualize people's social activity by turning participants into nodes and their financial activity into edges.
+We can visualize people's social activities by turning participants into nodes and their financial activity into edges.
 
 References:
 
@@ -106,8 +106,9 @@ For the discrete values such as age, we can use line plot and use color to denot
 
 ## 6.2 Social activities
 
-To observe the patterns of the social activities of the city, we use two different layouts with Gephi to visualize the social network of the city. We can explore more about the social communities with the social activities and participants attributes.
-For example, we can detect the communities among the social network and see if participants in the same community share common properties. We can also try the social network dynamics with the timestamp variable in the socialnetwork dataset.
+To observe the patterns of the social activities of the city, we use two different layouts with Gephi to visualize the social network of the city. We can explore more about the social communities with the social activities and participants attributes using R.
+
+For example, we can detect the communities among the social network and see if participants in the same community share common properties. We can also try the social network dynamics with the timestamp variable in the social network dataset.
 
 <img src="image/proposalQ2-1.png">
 
