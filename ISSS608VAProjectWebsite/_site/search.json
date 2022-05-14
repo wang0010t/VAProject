@@ -14,7 +14,7 @@
       "description": "This is the project website for ISSS608 Visual Analytics and Applications 2021-2022 April Term, Group 9.\n",
       "author": [],
       "contents": "\nBelow is the summary of the project:\nProject Members:\nHUANG ANNI\nNI JUNQIU\nWANG TIANQI\nProject Title:\nVAST Challenge\n2022 - Challenge 1: Demographics and Relationships\nProject Description:\nMotivation: The purpose of the project is to help the city\nplanning team of Engagement, Ohio USA to understand the current state of\nthe city and identify opportunities for future growth through visual\nanalytics of the data collected from the representative residents.\nObjectives: We aim to use visual analytic techniques to\naddress three main questions: to characterize demographics of the town,\ndescribe the patterns of social activities in the community, and\nidentify the predominant business base of the town.\nMain features of the application: The Shiny application will\nprovides interactivity and effective integration of techniques from data\nanalytics and data visualization. There will be 3 main sections in the\napplication where users can adjust inputs/outputs to make informed\nchoices and derive insights about the demographics, relationships and\nbusinesses of the town.\n\n\n\n",
-      "last_modified": "2022-05-14T15:49:58+08:00"
+      "last_modified": "2022-05-14T16:11:19+08:00"
     },
     {
       "path": "proposal.html",
