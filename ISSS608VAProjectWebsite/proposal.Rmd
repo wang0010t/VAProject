@@ -98,9 +98,11 @@ For the discrete values such as age, we can use line plot and use color to denot
 
 <img width="995" alt="image" src="https://user-images.githubusercontent.com/44923423/168091061-f2543328-b8e4-4751-9d21-bae9a4be7e65.png">
 
- For household size, education level, interest group and have kids, we can use donuts plot.
+For household size, education level, interest group and have kids, we can use donuts plot.
  
- <img width="992" alt="image" src="https://user-images.githubusercontent.com/44923423/168091510-70ba5391-3e57-486f-a566-8ce44613a451.png">
+<img width="992" alt="image" src="https://user-images.githubusercontent.com/44923423/168091510-70ba5391-3e57-486f-a566-8ce44613a451.png">
+ 
+The demographics can focus on the interactivity and provide more flexible choices of inputs variables in the Shiny application to give users better experience when visualizing demographics of the city.
 
 
 ## 6.2 Social activities
