@@ -106,8 +106,12 @@ For the discrete values such as age, we can use line plot and use color to denot
 
 ## 6.2 Social activities
 
-To be filled in 
+To observe the patterns of the social activities of the city, we use two different layouts with Gephi to visualize the social network of the city. We can explore more about the social communities with the social activities and participants attributes.
+For example, we can detect the communities among the social network and see if participants in the same community share common properties. We can also try the social network dynamics with the timestamp variable in the socialnetwork dataset.
 
+<img src="image/proposalQ2-1.png">
+
+<img src="image/proposalQ2-2.png">
 
 ## 6.3 Predominant business base
 
