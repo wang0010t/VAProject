@@ -26,12 +26,13 @@ header <-
 
 
 ## 2. siderbar ------------------------------
-siderbar <- 
-  dashboardSidebar(
+siderbar <- dashboardSidebar(
+  sidebarMenu(
     menuItem("Demographics analysis", tabName = "demographics_tab"),
     menuItem("Social activity", tabName = "social_activity_tab"),
     menuItem("Predominant Business", tabName = "predominant_business_tab")
   )
+)
 
 ## 3. body --------------------------------
 body <- dashboardBody(
