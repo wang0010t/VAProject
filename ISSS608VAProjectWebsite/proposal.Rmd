@@ -136,5 +136,12 @@ Restarurant-1801 seems to have the highest customer volumes throughout the year 
 
 Besides check-ins, it is also possible to look at Travels data and use heatmaps to show the most popular locations. We can look at the mapping from each venue (pub, restaurant, school, employer, and apartment) to Buildings and identify which building is predominant, i.e. consists of various types of businesses or consists of more employers/pubs/restaurants than the other buildings.  
 
- 
+<img src="image/proposalQ3-5.png">
+<img src="image/proposalQ3-6.png">
+<img src="image/proposalQ3-7.png">
+<img src="image/proposalQ3-8.png">
+<img src="image/proposalQ3-9.png">
+<img src="image/proposalQ3-10.png">
+<img src="image/proposalQ3-11.png">
+<img src="image/proposalQ3-12.png">
 
