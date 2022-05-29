@@ -96,11 +96,20 @@ Functions will be built on Shiny application for users to interactively generate
 
 For the discrete values such as age, we can use line plot and use color to denote the number.
 
-<img width="995" alt="image" src="https://user-images.githubusercontent.com/44923423/168091061-f2543328-b8e4-4751-9d21-bae9a4be7e65.png">
+For age group and have kids, we can use pyramid plot.
 
-For household size, education level, interest group and have kids, we can use donuts plot.
- 
-<img width="992" alt="image" src="https://user-images.githubusercontent.com/44923423/168091510-70ba5391-3e57-486f-a566-8ce44613a451.png">
+![image](https://user-images.githubusercontent.com/44923423/170869327-bb66e22d-3ec7-4d13-a8e7-0653d18ccbbc.png)
+
+For the relationship of education level and kids, we can use stacked histgram.
+
+![image](https://user-images.githubusercontent.com/44923423/170869553-666c8f0b-8b39-4f83-92d4-a0ac33306aa0.png)
+
+For joviality, we can use violin plot.
+
+![image](https://user-images.githubusercontent.com/44923423/170869382-41041f0b-f302-4ea8-a598-166c39ec5143.png)
+
+![image](https://user-images.githubusercontent.com/44923423/170869686-44a0e2ee-0528-42f0-9959-4ba971f3f4fc.png)
+
  
 The demographics can focus on the interactivity and provide more flexible choices of inputs variables in the Shiny application to give users better experience when visualizing demographics of the city.
 
