@@ -22,7 +22,7 @@ library(patchwork) #combine separate ggplots into the same graphic
 options(spinner.color="#006272")
 library(timevis)
 
-packages = c('tidyverse', 'sf', 'tmap', 'lubridate', 'clock', 'sftime', 'rmarkdown')
+packages = c('tidyverse', 'sf', 'tmap', 'lubridate', 'clock', 'sftime', 'rmarkdown', 'plotly')
 
 for (p in packages){
   if(!require(p, character.only = T)){
@@ -34,7 +34,7 @@ for (p in packages){
 ## build ui.R -----------------------------------
 ## 1. header -------------------------------
 header <- 
-  dashboardHeader( title = HTML("Ohio USA Demo"))
+  dashboardHeader( title = HTML("City of Engagament"))
 
 
 
@@ -88,14 +88,28 @@ body <- dashboardBody(
                                           "Restaurants" = "Restaurants",
                                           "Schools" = "Schools"),
                               multiple = FALSE),
-              
+                  selectInput(inputId = "checkinType", 
+                              label = "Check-in Location:",
+                              choices = c("Pubs" = "Pubs",
+                                          "Restaurants" = "Restaurants",
+                                          "Workplaces" = "Workplaces"),
+                              multiple = FALSE),
+                  sliderInput(inputId = "checkinDate",
+                              label = "Date Range",
+                              min = as.Date("2022-03-01","%Y-%m-%d"),
+                              max = as.Date("2023-05-25","%Y-%m-%d"),
+                              value=c(as.Date("2022-03-01"), as.Date("2023-05-25")),
+                              timeFormat="%Y-%m-%d"),
+                  
                   
                 ),
                 mainPanel(
                   h4("Map for all buildings and locations"),
-                  tmapOutput(outputId = "mapPlotAll"),
+                  tmapOutput(outputId = "mapPlotAll", width = 800, height = 250),
                   h4("Map for selected location type"),
-                  tmapOutput(outputId = "mapPlotbyType")
+                  tmapOutput(outputId = "mapPlotbyType", width = 800, height = 250),
+                  h4("Check-in trends for selected location type"),
+                  plotlyOutput("checkinPlot", width = 800, height = 400)
                 )
               )
             )
@@ -162,6 +176,9 @@ jobs <- jobs%>%
 
 jobs_employers <- merge(jobs, employers, by="employerId")
 jobs_employers <- st_as_sf(jobs_employers)
+
+checkin_journal <- read_csv("data/CheckinJournal.csv")
+checkin_journal$timestamp <- as.Date(checkin_journal$timestamp, "%Y-%m-%d")
 
 ## End of Data Import
 
@@ -277,6 +294,7 @@ server <- function(input, output){
       tm_dots(col = "red") +
       tm_shape(apartments) +
       tm_dots(col = "lightblue") +
+      tm_shape(pubs) +
       tm_dots(col = "green") +
       tm_shape(restaurants) +
       tm_dots(col = "blue") +
@@ -389,6 +407,54 @@ server <- function(input, output){
     
   })
   
+  output$checkinPlot <- renderPlotly({
+    if (input$checkinType == "Restaurants"){
+      checkin_journal_rest <- checkin_journal %>%
+        filter(`venueType` == "Restaurant" & `timestamp` >= input$checkinDate[1] & `timestamp` <= input$checkinDate[2])
+      #print(input$checkinDate[1])
+      #print(input$checkinDate[2])
+      checkin_rest <- checkin_journal_rest %>%
+        group_by(`venueId`, `timestamp`) %>%
+        summarise('checkins' = n()) %>%
+        ungroup()
+      checkin_rest$venueId <- as.character(checkin_rest$venueId)
+      p1 <- ggplot(data=checkin_rest, 
+                   aes(x = timestamp,
+                       y = checkins, 
+                       color=venueId
+                   )) +
+        labs(x ="Month-Year", y = "No. of Check-ins", 
+             title = "No. of check-ins for restaurants") +
+        geom_line()
+      
+      ggplotly(p1)
+    }
+    
+    else if (input$checkinType == "Pubs"){
+      checkin_journal_pub <- checkin_journal %>%
+        filter(`venueType` == "Pub" & `timestamp` >= input$checkinDate[1] & `timestamp` <= input$checkinDate[2])
+      print(input$checkinDate[1])
+      print(input$checkinDate[2])
+      checkin_pub <- checkin_journal_pub %>%
+        group_by(`venueId`, `timestamp`) %>%
+        summarise('checkins' = n()) %>%
+        ungroup()
+      checkin_pub$venueId <- as.character(checkin_pub$venueId)
+      p2 <- ggplot(data=checkin_pub, 
+                   aes(x = timestamp,
+                       y = checkins, 
+                       color=venueId
+                   )) +
+        labs(x ="Month-Year", y = "No. of Check-ins", 
+             title = "No. of check-ins for pubs") +
+        geom_line()
+      
+      ggplotly(p2)
+      
+    }
+    
+    
+  })
   ## End of Section 3
   
 }
