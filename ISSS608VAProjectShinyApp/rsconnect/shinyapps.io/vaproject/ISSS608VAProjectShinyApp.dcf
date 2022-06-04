@@ -1,0 +1,14 @@
+name: ISSS608VAProjectShinyApp
+title: ISSS608VAProjectShinyApp
+username:
+account: vaproject
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 6429785
+bundleId: 5977114
+url: https://vaproject.shinyapps.io/ISSS608VAProjectShinyApp/
+when: 1654332183.17031
+lastSyncTime: 1654332183.17031
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: app_Tianqi.R

@@ -19,16 +19,21 @@ library(geosphere)
 library(magrittr)
 library(shinycssloaders)
 library(patchwork) #combine separate ggplots into the same graphic
-options(spinner.color="#006272")
 library(timevis)
+library(sf)
+library(tmap)
+library(clock)
+library(sftime)
 
-packages = c('tidyverse', 'sf', 'tmap', 'lubridate', 'clock', 'sftime', 'rmarkdown', 'plotly')
 
-for (p in packages){
-  if(!require(p, character.only = T)){
-    install.packages(p)
-  }
-}
+
+# packages = c('tidyverse', 'sf', 'tmap', 'lubridate', 'clock', 'sftime', 'rmarkdown', 'plotly')
+# 
+# for (p in packages){
+#   if(!require(p, character.only = T)){
+#     install.packages(p)
+#   }
+# }
 
 
 ## build ui.R -----------------------------------
@@ -133,22 +138,22 @@ financeJ <- read_csv(file = "data/FinancialJournal.csv")
 schools <- read_sf("data/Schools.csv", 
                    options = "GEOM_POSSIBLE_NAMES=location")
 
-buildings <- read_sf("data/buildings.csv", 
+buildings <- read_sf("data/Buildings.csv", 
                      options = "GEOM_POSSIBLE_NAMES=location")
 
-pubs <- read_sf("data/pubs.csv", 
+pubs <- read_sf("data/Pubs.csv", 
                 options = "GEOM_POSSIBLE_NAMES=location")
 
-apartments <- read_sf("data/apartments.csv", 
+apartments <- read_sf("data/Apartments.csv", 
                       options = "GEOM_POSSIBLE_NAMES=location")
 
-employers <- read_sf("data/employers.csv", 
+employers <- read_sf("data/Employers.csv", 
                      options = "GEOM_POSSIBLE_NAMES=location")
 
-restaurants <- read_sf("data/restaurants.csv", 
+restaurants <- read_sf("data/Restaurants.csv", 
                        options = "GEOM_POSSIBLE_NAMES=location")
 
-jobs <- read_csv("data/jobs.csv")
+jobs <- read_csv("data/Jobs.csv")
 
 apartments <- apartments%>%
   mutate(rentalCost = as.numeric(rentalCost))%>%
