@@ -24,6 +24,12 @@ library(sf)
 library(tmap)
 library(clock)
 library(sftime)
+library(visNetwork)
+library(tidygraph)
+library(igraph)
+library(ggraph)
+library(graphlayouts)
+
 
 
 
@@ -80,7 +86,7 @@ body <- dashboardBody(
     tabItem(tabName = "social_activity_tab",
             fluidPage(
               h2("Social activity content"),
-              dataTableOutput("social_act_table")
+              visNetworkOutput("network")
             )
     ),
     
@@ -189,6 +195,10 @@ jobs_employers <- st_as_sf(jobs_employers)
 checkin_journal <- read_csv("data/CheckinJournal.csv")
 checkin_journal$timestamp <- as.Date(checkin_journal$timestamp, "%Y-%m-%d")
 
+
+network_nodes <- read_csv("data/Participants.csv")
+network_edges <- read_csv("data/SocialNetwork.csv")
+
 ## End of Data Import
 
 ## Start of data processing
@@ -212,6 +222,39 @@ participants_data_ag_noKids <-participants_data_ag %>%
 
 participants_data_ag_byKids <- rbind(participants_data_ag_haveKids, participants_data_ag_noKids)
 
+network_nodes <- network_nodes %>%
+  mutate(participantId = participantId +1)
+
+network_edges <- network_edges %>%
+  mutate(source = source +1) %>%
+  mutate(target =  target +1)
+
+network_edges <- network_edges %>%
+  mutate(Weekday = wday(timestamp,
+                        label = TRUE,
+                        abbr = FALSE))%>%
+  mutate(YearMonth = format(timestamp,'%Y-%m'))
+
+network_edges <- rename(network_edges,
+                     from = source,
+                     to = target)
+
+network_edges_aggregated <- network_edges %>%
+  filter(YearMonth == "2022-03") %>%
+  group_by(from, to) %>%
+    summarise(Weight = n()) %>%
+  filter(from!=to) %>%
+  filter(Weight > 20) %>%
+  ungroup()
+
+node_from <- pull(network_edges_aggregated, from)
+node_to <- pull(network_edges_aggregated, to)
+nodes_distinct <- unique(append(node_from, node_to))
+network_nodes <- filter(network_nodes, participantId %in% nodes_distinct)
+network_nodes <- network_nodes %>%
+  rename(id = participantId)
+
+  
 ## End of data processing
 
 server <- function(input, output){
@@ -284,8 +327,18 @@ server <- function(input, output){
   
   
   ## Start of Section 2
-  output$social_act_table <- renderDataTable(mtcars)
-  
+  #output$social_act_table <- renderDataTable(mtcars)
+  output$network <- renderVisNetwork({
+    visNetwork(network_nodes,
+               network_edges_aggregated) %>%
+      visIgraphLayout(layout = "layout_with_fr") %>%
+      visOptions(highlightNearest = TRUE,
+                 nodesIdSelection = TRUE,
+                 selectedBy = "joviality") %>%
+      visLegend() %>%
+      visLayout(randomSeed = 1234)
+  })
+
   
   ## End of Section 2
   
