@@ -58,18 +58,22 @@ body <- dashboardBody(
   tabItems(
     tabItem(tabName = "demographics_tab",
             h2("Demographics analysis content"),
-            box(
-              helpText("Create demographic maps with 
-               information from the 2010 US Census."),
+            fluidRow(
+              box(plotOutput("demographics_plot")),
               
-              selectInput(inputId = "demographicType", 
-                          label = "Choose a variable to display",
-                          choices = c("Education Level", 
-                                      "Joviality",
-                                      "Age", 
-                                      "Have Kids"),
-                          selected = "Percent White"),
-              plotOutput("demographics_plot")
+              box(
+                "Box content here", br(), "More box content",
+                sliderInput("slider", "Slider input:", 1, 100, 50),
+                textInput("text", "Text input:"),
+                selectInput(inputId = "demographicType", 
+                            label = "Choose a variable to display",
+                            choices = c("Education Level", 
+                                        "Joviality",
+                                        "Age", 
+                                        "Have Kids"),
+                            selected = "Percent White")
+          
+              )
             )
     ),
     
