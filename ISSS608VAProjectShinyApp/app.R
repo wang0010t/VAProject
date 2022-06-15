@@ -53,16 +53,16 @@ header <-
 siderbar <- 
   dashboardSidebar(
     sidebarMenu(id = 'sidebarmenu',
-      menuItem("Demographics analysis", 
-               tabName = "demographics_tab"
-               ),
-      menuItem("Social activity", tabName = "social_activity_tab"),
-      menuItem("Predominant business", tabName = "predominant_business_tab", startExpanded = FALSE,
-               menuSubItem("Overall Town Map", tabName = "townmap_tab"),
-               menuSubItem("Map by Venue Type", tabName = "venuetype_tab"),
-               menuSubItem("Check-in Analysis", tabName = "checkin_tab"),
-               menuSubItem("TBC", tabName = "xxx_tab")
-               )
+                menuItem("Demographics analysis", 
+                         tabName = "demographics_tab"
+                ),
+                menuItem("Social activity", tabName = "social_activity_tab"),
+                menuItem("Predominant business", tabName = "predominant_business_tab", startExpanded = FALSE,
+                         menuSubItem("Overall Town Map", tabName = "townmap_tab"),
+                         menuSubItem("Map by Venue Type", tabName = "venuetype_tab"),
+                         menuSubItem("Check-in Analysis", tabName = "checkin_tab"),
+                         menuSubItem("TBC", tabName = "xxx_tab")
+                )
     )
   )
 
@@ -71,17 +71,17 @@ body <- dashboardBody(
   tabItems(
     tabItem(
       tabName = "demographics_tab",
-            h2("Demographics analysis content"),
-            fluidRow(
-              valueBoxOutput('wage'),
-              valueBoxOutput('age'),
-              valueBoxOutput('education'),
-              box(plotlyOutput("kids_plot")),
-              box(plotlyOutput("wage_edu_plot")),
-              box(plotOutput('jov_education_plot')),
-              box(plotOutput('corplot'))
-              # box(plotlyOutput('statsTest_plot'))
-            )
+      h2("Demographics analysis content"),
+      fluidRow(
+        valueBoxOutput('wage'),
+        valueBoxOutput('age'),
+        valueBoxOutput('education'),
+        box(plotlyOutput("kids_plot")),
+        box(plotlyOutput("wage_edu_plot")),
+        box(plotOutput('jov_education_plot')),
+        box(plotOutput('corplot'))
+        # box(plotlyOutput('statsTest_plot'))
+      )
     ),
     
     tabItem(tabName = "social_activity_tab",
@@ -96,7 +96,7 @@ body <- dashboardBody(
               titlePanel("Overall Town Map"),
               sidebarLayout(
                 sidebarPanel(
-
+                  
                   
                 ),
                 mainPanel(
@@ -256,13 +256,13 @@ network_edges <- network_edges %>%
   mutate(YearMonth = format(timestamp,'%Y-%m'))
 
 network_edges <- rename(network_edges,
-                     from = source,
-                     to = target)
+                        from = source,
+                        to = target)
 
 network_edges_aggregated <- network_edges %>%
   filter(YearMonth == "2022-03") %>%
   group_by(from, to) %>%
-    summarise(Weight = n()) %>%
+  summarise(Weight = n()) %>%
   filter(from!=to) %>%
   filter(Weight > 20) %>%
   ungroup()
@@ -274,7 +274,7 @@ network_nodes <- filter(network_nodes, participantId %in% nodes_distinct)
 network_nodes <- network_nodes %>%
   rename(id = participantId)
 
-  
+
 ## End of data processing
 
 server <- function(input, output){
@@ -453,7 +453,7 @@ server <- function(input, output){
       visLegend() %>%
       visLayout(randomSeed = 1234)
   })
-
+  
   
   ## End of Section 2
   
