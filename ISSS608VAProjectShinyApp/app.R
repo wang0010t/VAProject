@@ -29,8 +29,8 @@ library(tidygraph)
 library(igraph)
 library(ggraph)
 library(graphlayouts)
-
-
+library(ggstatsplot)
+library(ggcorrplot)
 
 
 # packages = c('tidyverse', 'sf', 'tmap', 'lubridate', 'clock', 'sftime', 'rmarkdown', 'plotly')
@@ -52,8 +52,10 @@ header <-
 ## 2. siderbar ------------------------------
 siderbar <- 
   dashboardSidebar(
-    sidebarMenu(
-      menuItem("Demographics analysis", tabName = "demographics_tab"),
+    sidebarMenu(id = 'sidebarmenu',
+      menuItem("Demographics analysis", 
+               tabName = "demographics_tab"
+               ),
       menuItem("Social activity", tabName = "social_activity_tab"),
       menuItem("Predominant business", tabName = "predominant_business_tab", startExpanded = TRUE,
                menuSubItem("Overall Town Map", tabName = "townmap_tab"),
@@ -67,20 +69,18 @@ siderbar <-
 ## 3. body --------------------------------
 body <- dashboardBody(
   tabItems(
-    tabItem(tabName = "demographics_tab",
+    tabItem(
+      tabName = "demographics_tab",
             h2("Demographics analysis content"),
             fluidRow(
-              box(
-                selectInput(inputId = "demographicType", 
-                            label = "Choose a variable to display",
-                            choices = c("Education Level", 
-                                        "Joviality",
-                                        "Age", 
-                                        "Have Kids"),
-                            selected = "Percent White")
-                
-              ),
-              box(plotOutput("demographics_plot"))
+              valueBoxOutput('wage'),
+              valueBoxOutput('age'),
+              valueBoxOutput('education'),
+              box(plotlyOutput("kids_plot")),
+              box(plotlyOutput("age_plot")),
+              box(plotOutput('jov_education_plot')),
+              box(plotOutput('corplot'))
+              # box(plotlyOutput('statsTest_plot'))
             )
     ),
     
@@ -168,7 +168,7 @@ ui <- dashboardPage(skin = "blue",
                     body )
 
 ## Start of Data Import
-participants_data <- read_csv('data/Participants.csv')
+participants_data <- read_rds('data/participants.rds')
 
 financeJ <- read_csv(file = "data/FinancialJournal.csv")
 
@@ -232,22 +232,12 @@ buildings_shp <- read_sf("data/buildings.shp",
 ## End of Data Import
 
 ## Start of data processing
-participants_data_ag <- participants_data %>%
-  mutate(ageGroup = case_when(
-    age <=25 ~ "25 and below",
-    age > 25 & age <=35 ~ "26-35",
-    age > 35 & age <=45 ~ "36-45",
-    age > 45 & age <=55 ~ "46-55",
-    age > 55 ~ "56 and over")) %>% 
-  select(-age)
-  
-
-participants_data_ag_haveKids <- participants_data_ag %>%
+participants_data_ag_haveKids <- participants_data %>%
   filter(`haveKids` ==  TRUE) %>%
   mutate (householdSize = -householdSize)
 
 
-participants_data_ag_noKids <-participants_data_ag %>%
+participants_data_ag_noKids <-participants_data %>%
   filter(`haveKids` ==  FALSE)
 
 participants_data_ag_byKids <- rbind(participants_data_ag_haveKids, participants_data_ag_noKids)
@@ -289,69 +279,173 @@ network_nodes <- network_nodes %>%
 
 server <- function(input, output){
   ## Start of Section 1
-  education_level_plot <- ggplot(data=participants_data,
-         aes(x = educationLevel, y = joviality)) + geom_boxplot(notch=TRUE)+
-    stat_summary(geom = "point",
-                 fun="mean",
-                 colour="red",
-                 size=4) +
-    ggtitle("Distribution of Juviality for different interest group")
+  valueBoxSpark <- function(value, title, sparkobj = NULL, subtitle, info = NULL, 
+                            icon = NULL, color = "aqua", width = 4, href = NULL){
+    
+    shinydashboard:::validateColor(color)
+    
+    if (!is.null(icon))
+      shinydashboard:::tagAssert(icon, type = "i")
+    
+    info_icon <- tags$small(
+      tags$i(
+        class = "fa fa-info-circle fa-lg",
+        title = info,
+        `data-toggle` = "tooltip",
+        style = "color: rgba(255, 255, 255, 0.75);"
+      ),
+      # bs3 pull-right 
+      # bs4 float-right
+      class = "pull-right float-right"
+    )
+    
+    boxContent <- div(
+      class = paste0("small-box bg-", color),
+      div(
+        class = "inner",
+        tags$small(title),
+        if (!is.null(sparkobj)) info_icon,
+        h3(value),
+        if (!is.null(sparkobj)) sparkobj,
+        p(subtitle)
+      ),
+      # bs3 icon-large
+      # bs4 icon
+      if (!is.null(icon)) div(class = "icon-large icon", icon, style = "z-index; 0")
+    )
+    
+    if (!is.null(href)) 
+      boxContent <- a(href = href, boxContent)
+    
+    div(
+      class = if (!is.null(width)) paste0("col-sm-", width), 
+      boxContent
+    )
+  }
+  # joviality_plot <- ggplot(data=participants_data,
+  #              aes(x = educationLevel, y = joviality)) + geom_boxplot(notch=TRUE)+
+  #   stat_summary(geom = "point",
+  #                fun="mean",
+  #                colour="red",
+  #                size=4) +
+  #   ggtitle("Distribution of Juviality for different Education Level")
+  age_plot <- ggplot(data = participants_data, 
+                     aes(x = ageGroup)) +
+    geom_bar(fill="light blue") +
+    ylim(0, 300) +
+    geom_text(stat = 'count',
+              aes(label= paste0(stat(count), ' (', 
+                                round(stat(count)/sum(stat(count))*100, 
+                                      1), '%)')), vjust= -0.5, size= 2.5) +
+    labs(y= 'No. of\nResidents', x= 'Age Group',
+         title = "Distribution of Residents' Age",
+         subtitle = "Most of residents are in working age(20-60)") +
+    theme(axis.title.y= element_text(angle=90), axis.ticks.x= element_blank(),
+          panel.background= element_blank(), axis.line= element_line(color= 'grey'))
+  kids_plot <- ggplot(participants_data_ag_byKids, aes (x = ageGroup, y = householdSize , fill = haveKids)) +
+    geom_bar(stat = "identity") +
+    coord_flip()+
+    scale_y_continuous(breaks = seq(-250, 250, 50),
+                       labels = paste0(as.character(c(seq(250, 0, -50), seq(50, 250, 50)))),
+                       name = "Household Size")+
+    labs(x = "Age Group", title = "Household size by age groups and whether have kids")+
+    theme_bw()
+  set.seed(1234)
+  anova_education_plot <- ggbetweenstats(
+    data = participants_data,
+    outlier.tagging = TRUE, ## whether outliers should be flagged
+    outlier.label = participantId, ## label to attach to outlier values
+    outlier.label.args = list(color = "red"), ## outlier point label color
+    ## turn off messages
+    ggtheme = ggplot2::theme_gray(), ## a different theme
+    package = "yarrr", ## package from which color palette is to be take
+    palette = "info2", ## choosing a different color palette
+    title = "Jovality in different education level",
+    caption = "Source: VAST Challenge",
+    x = educationLevel,
+    y = joviality,
+    type = "robust", ## type of statistics
+    xlab = "Education Level", ## label for the x-axis
+    ylab = "Social Interactions", ## label for the y-axis
+    plot.type = "boxviolin", ## type of plot
+  )
+  jov_cor_plot <- ggcorrmat(
+    data     = participants_data[c("age",'joviality','wage')],
+    colors   = c("#B2182B", "white", "#4D4D4D"),
+    title    = "Correlalogram for participants' data",
+    subtitle = "Wage:-Joviality;"
+  )
+  wage_hc <- hchart(participants_data, "area", hcaes(participantId, round(wage,2)), name = "wage")  %>% 
+    hc_size(height = 100) %>% 
+    hc_credits(enabled = FALSE) %>% 
+    hc_add_theme(hc_theme_sparkline_vb()) 
+  wage_vb <- valueBoxSpark(
+    value = paste0('$',round(mean(participants_data$wage)/1000,2), "K/month"),
+    title = toupper("Monthly Wage of participants in Ohio City"),
+    sparkobj = wage_hc,
+    subtitle = tagList(HTML("&uarr;"), "25% Since last year"),
+    info = "This is the monthly wage of all participants in Ohio City",
+    icon = NULL,
+    width = 4,
+    color = "teal",
+    href = NULL
+  )
+  ageHist <- participants_data %>%
+    group_by(ageGroup) %>%
+    mutate(count = n()) %>%
+    arrange(ageGroup)
+  age_hc <- hchart(ageHist, "column", hcaes(ageGroup,count), name = "No. People")  %>% 
+    hc_size(height = 100) %>% 
+    hc_credits(enabled = FALSE) %>% 
+    hc_add_theme(hc_theme_sparkline_vb()) 
+  age_vb <- valueBoxSpark(
+    value = paste0(round(mean(participants_data$age),0), "yrs old"),
+    title = toupper("Age of participants in Ohio City"),
+    sparkobj = age_hc,
+    subtitle = tagList("Most people are in their 20-60"),
+    info = "Most people in Ohio city are in their working age",
+    icon = NULL,
+    width = 4,
+    color = "red",
+    href = NULL
+  )
+  educationHist <- participants_data %>%
+    group_by(educationLevel) %>%
+    mutate(count = n()) %>%
+    arrange(educationLevel)
+  education_hc <- hchart(educationHist, "column", hcaes(educationLevel,count), name = "No. People")  %>% 
+    hc_size(height = 100) %>% 
+    hc_credits(enabled = FALSE) %>% 
+    hc_add_theme(hc_theme_sparkline_vb()) 
+  education_vb <- valueBoxSpark(
+    value = "HighShool or College Degree",
+    title = toupper("Education Level of participants in Ohio City"),
+    sparkobj = education_hc,
+    subtitle = tagList("Most people have HighSchool or College degree"),
+    info = "Most people in Ohio city have HighSchool or College degree",
+    icon = NULL,
+    width = 4,
+    color = "blue",
+    href = NULL
+  )
   
-  output$demographics_plot <- renderPlot({
-    if (input$demographicType == 'Education Level')
-      {education_level_plot}
-    else if (input$demographicType == 'Have Kids')
-    {
-      ggplot(participants_data_ag_byKids, aes (x = ageGroup, y = householdSize , fill = haveKids)) +
-        geom_bar(stat = "identity") +
-        coord_flip()+
-        scale_y_continuous(breaks = seq(-250, 250, 50),
-                           labels = paste0(as.character(c(seq(250, 0, -50), seq(50, 250, 50)))),
-                           name = "Household Size")+
-        labs(x = "Age Group", title = "Household size by age groups and whether have kids")+
-        theme_bw()
-    }
-    else if (input$demographicType == 'Joviality'){
-      data <- participants_data
-      dpp <- data %>%
-        group_by(age) %>%
-        summarise(joviality = mean(joviality))
-      p1 <- ggplot(data=dpp, aes(x=age, y=joviality)) + geom_point() +
-        coord_cartesian(xlim=c(20, 60), ylim=c(0, 1)) + 
-        labs(y= 'Joviality', x= 'Age',
-             title = "Distribution of Residents' Joviality vs. Age",
-             subtitle = "People's Joviality doesn't affect by Age") +
-        geom_hline(yintercept=0.5, linetype="dashed", color="grey60", size=1) +  
-        geom_vline(xintercept=40, linetype="dashed", color="grey60", size=1)
-      p1
-    }
-    else if (input$demographicType == 'Age'){
-      # participants_data$rate_edu <- factor(participants_data$educationLevel,levels = c("Graduate", "Bachelors","HighSchoolOrCollege","Low"))
-      # ggplot(data=participants_data,aes(y = age, x= rate_edu)) + geom_boxplot(fill = "royalblue2",alpha= 0.5)+
-      #   labs(x="Education", y="Age", title = "Age vs.Education Level") +
-      #   theme_minimal()
-      brks <- c(17, 20, 30, 40, 50, 60, Inf)
-      grps <- c('<=20', '21-30', '31-40', '41-50', '51-60', '>60')
-      data <- participants_data
-      data$Age_Group <- cut(data$age, breaks=brks, labels = grps, right = FALSE)
-      p2 <- ggplot(data = data, 
-                   aes(x = Age_Group)) +
-        geom_bar(fill="light blue") +
-        ylim(0, 300) +
-        geom_text(stat = 'count',
-                  aes(label= paste0(stat(count), ' (', 
-                                    round(stat(count)/sum(stat(count))*100, 
-                                          1), '%)')), vjust= -0.5, size= 2.5) +
-        gghighlight(Age_Group != "<=20" & Age_Group != ">60")+
-        labs(y= 'No. of\nResidents', x= 'Age Group',
-             title = "Distribution of Residents' Age",
-             subtitle = "Most of residents are in working age(20-60)") +
-        theme(axis.title.y= element_text(angle=90), axis.ticks.x= element_blank(),
-              panel.background= element_blank(), axis.line= element_line(color= 'grey'))
-      p2
-    }
-
+  
+  output$age_plot <- renderPlotly({
+    age_plot
   })
+  output$kids_plot <- renderPlotly({
+    kids_plot
+  })
+  output$joviality_plot <- renderPlotly({
+    joviality_plot
+  })
+  output$jov_education_plot <- renderPlot({
+    anova_education_plot
+  })
+  output$corplot <- renderPlot(jov_cor_plot)
+  output$wage <- renderValueBox(wage_vb)
+  output$age <- renderValueBox(age_vb)
+  output$education <- renderValueBox(education_vb)
   
   ## End of Section 1
   
