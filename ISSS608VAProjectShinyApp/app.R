@@ -55,8 +55,8 @@ siderbar <-
     sidebarMenu(id = 'sidebarmenu',
                 menuItem("Demographics analysis", 
                          tabName = "demographics_tab", startExpanded = FALSE,
-                           menuSubItem("Overall DemoGraphic", tabName = "overall_demo_analysis"),
-                           menuSubItem("Wage analysis", tabName = "wage_analysis"), # TO-DO
+                         menuSubItem("Overall DemoGraphic", tabName = "overall_demo_analysis"),
+                         menuSubItem("Wage analysis", tabName = "wage_analysis"), # TO-DO
                          menuSubItem("Joviality analysis", tabName = "jov_analysis") # TO-DO
                 ),
                 menuItem("Social activity", tabName = "social_activity_tab"),
@@ -90,9 +90,9 @@ body <- dashboardBody(
       tabName = "wage_analysis",
       h2("Demographics analysis content"),
       fluidRow(
-        valueBoxOutput('wage'),
-        box(plotlyOutput("wage_edu_plot")),
-        box(plotOutput('corplot'))
+        #valueBoxOutput('wage'),
+        #box(plotlyOutput("wage_edu_plot")),
+        #box(plotOutput('corplot'))
         # box(plotlyOutput('statsTest_plot'))
       )
     ),
