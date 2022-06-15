@@ -72,7 +72,7 @@ body <- dashboardBody(
               valueBoxOutput('age'),
               valueBoxOutput('education'),
               box(plotlyOutput("kids_plot")),
-              box(plotlyOutput("age_plot")),
+              box(plotlyOutput("wage_edu_plot")),
               box(plotOutput('jov_education_plot')),
               box(plotOutput('corplot'))
               # box(plotlyOutput('statsTest_plot'))
@@ -295,26 +295,17 @@ server <- function(input, output){
   #                colour="red",
   #                size=4) +
   #   ggtitle("Distribution of Juviality for different Education Level")
-  age_plot <- ggplot(data = participants_data, 
-                     aes(x = ageGroup)) +
-    geom_bar(fill="light blue") +
-    ylim(0, 300) +
-    geom_text(stat = 'count',
-              aes(label= paste0(stat(count), ' (', 
-                                round(stat(count)/sum(stat(count))*100, 
-                                      1), '%)')), vjust= -0.5, size= 2.5) +
-    labs(y= 'No. of\nResidents', x= 'Age Group',
-         title = "Distribution of Residents' Age",
-         subtitle = "Most of residents are in working age(20-60)") +
-    theme(axis.title.y= element_text(angle=90), axis.ticks.x= element_blank(),
-          panel.background= element_blank(), axis.line= element_line(color= 'grey'))
-  kids_plot <- ggplot(participants_data_ag_byKids, aes (x = ageGroup, y = householdSize , fill = haveKids)) +
+  wage_edu_plot <- ggplot(participants_data, aes(x = wage, fill = educationLevel)) + 
+    geom_histogram(data=participants_data, alpha=.5) +
+    geom_histogram() +
+    labs(x = "Wage", title = "Participants'wage wih different Education Level")+
+    facet_wrap(~ educationLevel) + 
+    guides(fill = "none") + 
+    theme_bw()
+  kids_plot <- ggplot(participants_data_ag_byKids, aes (x = ageGroup, y = participantId , fill = haveKids)) +
     geom_bar(stat = "identity") +
-    coord_flip()+
-    scale_y_continuous(breaks = seq(-250, 250, 50),
-                       labels = paste0(as.character(c(seq(250, 0, -50), seq(50, 250, 50)))),
-                       name = "Household Size")+
-    labs(x = "Age Group", title = "Household size by age groups and whether have kids")+
+    scale_y_continuous(name = "Count")+
+    labs(x = "Age Group", title = "Participants'num by age groups and whether have kids")+
     theme_bw()
   set.seed(1234)
   anova_education_plot <- ggbetweenstats(
@@ -396,8 +387,8 @@ server <- function(input, output){
   )
   
   
-  output$age_plot <- renderPlotly({
-    age_plot
+  output$wage_edu_plot <- renderPlotly({
+    wage_edu_plot
   })
   output$kids_plot <- renderPlotly({
     kids_plot
