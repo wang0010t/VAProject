@@ -57,7 +57,7 @@ siderbar <-
                tabName = "demographics_tab"
                ),
       menuItem("Social activity", tabName = "social_activity_tab"),
-      menuItem("Predominant business", tabName = "predominant_business_tab", startExpanded = TRUE,
+      menuItem("Predominant business", tabName = "predominant_business_tab", startExpanded = FALSE,
                menuSubItem("Overall Town Map", tabName = "townmap_tab"),
                menuSubItem("Map by Venue Type", tabName = "venuetype_tab"),
                menuSubItem("Check-in Analysis", tabName = "checkin_tab"),
