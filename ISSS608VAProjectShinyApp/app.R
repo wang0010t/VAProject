@@ -94,17 +94,12 @@ body <- dashboardBody(
     tabItem(tabName = "townmap_tab",
             fluidPage(
               titlePanel("Overall Town Map"),
-              sidebarLayout(
-                sidebarPanel(
-                  
-                  
-                ),
-                mainPanel(
-                  h4("Map for all buildings and locations"),
-                  tmapOutput(outputId = "mapPlotAll", width = 800, height = 400),
-                  plotOutput(outputId = "mapPlotAreas", width = 800, height = 400)
-                )
+              mainPanel(
+                h4("Geographical region of the City of Engagement"),
+                tmapOutput(outputId = "mapPlotAll", width = 800, height = 400),
+                plotlyOutput(outputId = "mapPlotAreas", width = 800, height = 400)
               )
+              
             )
     ),
     
@@ -480,15 +475,15 @@ server <- function(input, output){
     
   })
   
-  output$mapPlotAreas <- renderPlot({
-    ggplot(buildings_shp)+
+  output$mapPlotAreas <- renderPlotly({
+    mapAreas <- ggplot(buildings_shp)+
       geom_sf(aes(fill = region),
               color = "black",
               size = 0.1,
               show.legend = TRUE) +
       coord_sf()+
-      theme_bw()+
-      labs(title = "Geographical region of the study area")
+      theme_bw()
+    ggplotly(mapAreas)
     
   })
   
