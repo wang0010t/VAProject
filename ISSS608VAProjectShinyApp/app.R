@@ -59,7 +59,11 @@ siderbar <-
                          menuSubItem("Wage analysis", tabName = "wage_analysis"), # TO-DO
                          menuSubItem("Joviality analysis", tabName = "jov_analysis") # TO-DO
                 ),
-                menuItem("Social activity", tabName = "social_activity_tab"),
+                menuItem("Social activity", tabName = "social_activity_tab", startExpanded = FALSE,
+                         menuSubItem("Overall Network Graph", tabName = "network_tab"),
+                         menuSubItem("Network Among Different Groups", tabName = "group_tab"),
+                         menuSubItem("visnetwork Graph", tabName = "vis_tab")
+                ),
                 menuItem("Predominant business", tabName = "predominant_business_tab", startExpanded = FALSE,
                          menuSubItem("Overall Town Map", tabName = "townmap_tab"),
                          menuSubItem("Map by Venue Type", tabName = "venuetype_tab"),
@@ -96,13 +100,24 @@ body <- dashboardBody(
         # box(plotlyOutput('statsTest_plot'))
       )
     ),
-    tabItem(tabName = "social_activity_tab",
+    tabItem(tabName = "network_tab",
             fluidPage(
-              h2("Social activity content"),
+              h2("Social network"),
+              plotOutput("network_plot")
+            )
+    ),
+    tabItem(tabName = "group_tab",
+            fluidPage(
+              h2("Social network of Different Groups"),
+              visNetworkOutput("network_education")
+            )
+    ),
+    tabItem(tabName = "vis_tab",
+            fluidPage(
+              h2("Social network"),
               visNetworkOutput("network")
             )
     ),
-    
     tabItem(tabName = "townmap_tab",
             fluidPage(
               titlePanel("Overall Town Map"),
@@ -250,6 +265,9 @@ participants_data_ag_noKids <-participants_data %>%
 participants_data_ag_byKids <- rbind(participants_data_ag_haveKids, participants_data_ag_noKids)
 
 network_nodes <- network_nodes %>%
+  mutate(participantId = participantId +1)
+
+network_nodes2 <- network_nodes %>%
   mutate(participantId = participantId +1)
 
 network_edges <- network_edges %>%
@@ -450,6 +468,32 @@ server <- function(input, output){
   
   ## Start of Section 2
   #output$social_act_table <- renderDataTable(mtcars)
+  network_graph <- tbl_graph(nodes = network_nodes2,
+                             edges = network_edges_aggregated, 
+                             directed = TRUE)
+  network_graph %>%
+    activate(edges) %>%
+    arrange(desc(Weight))
+  network_plot <- ggraph(network_graph) + 
+    geom_edge_link(aes()) +
+    geom_node_point(aes())+
+    labs(title = "Network of Engagemnet")
+  output$network_plot <- renderPlot({network_plot + theme_graph()})
+  
+  network_education <- ggraph(network_graph, 
+              layout = "nicely") + 
+    geom_edge_link(aes(width=Weight), 
+                   alpha=0.2) +
+    scale_edge_width(range = c(0.1, 5)) +
+    geom_node_point(aes(colour = educationLevel), 
+                    size = 2)+
+    labs(title = "Network of Engagemnet")
+  output$network_education <- renderPlot({
+    network_education + facet_nodes(~educationLevel)+
+      th_foreground(foreground = "grey80",  
+                    border = TRUE) +
+      theme(legend.position = 'bottom')})
+
   output$network <- renderVisNetwork({
     visNetwork(network_nodes,
                network_edges_aggregated) %>%
