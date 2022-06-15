@@ -55,7 +55,12 @@ siderbar <-
     sidebarMenu(
       menuItem("Demographics analysis", tabName = "demographics_tab"),
       menuItem("Social activity", tabName = "social_activity_tab"),
-      menuItem("Predominant Business", tabName = "predominant_business_tab")
+      menuItem("Predominant business", tabName = "predominant_business_tab", startExpanded = TRUE,
+               menuSubItem("Overall Town Map", tabName = "townmap_tab"),
+               menuSubItem("Map by Venue Type", tabName = "venuetype_tab"),
+               menuSubItem("Check-in Analysis", tabName = "checkin_tab"),
+               menuSubItem("TBC", tabName = "xxx_tab")
+               )
     )
   )
 
@@ -86,9 +91,26 @@ body <- dashboardBody(
             )
     ),
     
-    tabItem(tabName = "predominant_business_tab",
+    tabItem(tabName = "townmap_tab",
             fluidPage(
-              titlePanel("Predominant Business Areas"),
+              titlePanel("Overall Town Map"),
+              sidebarLayout(
+                sidebarPanel(
+
+                  
+                ),
+                mainPanel(
+                  h4("Map for all buildings and locations"),
+                  tmapOutput(outputId = "mapPlotAll", width = 800, height = 400),
+                  plotOutput(outputId = "mapPlotAreas", width = 800, height = 400)
+                )
+              )
+            )
+    ),
+    
+    tabItem(tabName = "venuetype_tab",
+            fluidPage(
+              titlePanel("Map and Attributes by Venue Type"),
               sidebarLayout(
                 sidebarPanel(
                   selectInput(inputId = "locationType", 
@@ -98,7 +120,22 @@ body <- dashboardBody(
                                           "Pubs" = "Pubs",
                                           "Restaurants" = "Restaurants",
                                           "Schools" = "Schools"),
-                              multiple = FALSE),
+                              multiple = FALSE)
+                  
+                ),
+                mainPanel(
+                  h4("Map for selected location type"),
+                  tmapOutput(outputId = "mapPlotbyType", width = 800, height = 800)
+                )
+              )
+            )
+    ),
+    
+    tabItem(tabName = "checkin_tab",
+            fluidPage(
+              titlePanel("Check-in Analysis for Pubs and Restaurants"),
+              sidebarLayout(
+                sidebarPanel(
                   selectInput(inputId = "checkinType", 
                               label = "Check-in Location:",
                               choices = c("Pubs" = "Pubs",
@@ -110,17 +147,11 @@ body <- dashboardBody(
                               min = as.Date("2022-03-01","%Y-%m-%d"),
                               max = as.Date("2023-05-25","%Y-%m-%d"),
                               value=c(as.Date("2022-03-01"), as.Date("2023-05-25")),
-                              timeFormat="%Y-%m-%d"),
-                  
-                  
+                              timeFormat="%Y-%m-%d")
                 ),
                 mainPanel(
-                  h4("Map for all buildings and locations"),
-                  tmapOutput(outputId = "mapPlotAll", width = 800, height = 250),
-                  h4("Map for selected location type"),
-                  tmapOutput(outputId = "mapPlotbyType", width = 800, height = 250),
-                  h4("Check-in trends for selected location type"),
-                  plotlyOutput("checkinPlot", width = 800, height = 400)
+                  h4("Check-in trends for selected venue type"),
+                  plotlyOutput("checkinPlot", width = 800, height = 800)
                 )
               )
             )
@@ -194,6 +225,9 @@ checkin_journal$timestamp <- as.Date(checkin_journal$timestamp, "%Y-%m-%d")
 
 network_nodes <- read_csv("data/Participants.csv")
 network_edges <- read_csv("data/SocialNetwork.csv")
+
+buildings_shp <- read_sf("data/buildings.shp", 
+                         options = "GEOM_POSSIBLE_NAMES=location")
 
 ## End of Data Import
 
@@ -358,6 +392,18 @@ server <- function(input, output){
       tm_dots(col = "blue") +
       tm_shape(schools) +
       tm_dots(col = "yellow")
+    
+  })
+  
+  output$mapPlotAreas <- renderPlot({
+    ggplot(buildings_shp)+
+      geom_sf(aes(fill = region),
+              color = "black",
+              size = 0.1,
+              show.legend = TRUE) +
+      coord_sf()+
+      theme_bw()+
+      labs(title = "Geographical region of the study area")
     
   })
   
