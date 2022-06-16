@@ -78,7 +78,7 @@ body <- dashboardBody(
   tabItems(
     tabItem(
       tabName = "overall_demo_analysis",
-      h2("Demographics analysis content"),
+      h2("The overall view of demographics in Ohio City"),
       fluidRow(
         valueBoxOutput('wage'),
         valueBoxOutput('age'),
@@ -92,12 +92,54 @@ body <- dashboardBody(
     ),
     tabItem( # TO-DO
       tabName = "wage_analysis",
-      h2("Demographics analysis content"),
+      h2("Wage Analysis"),
+      h4('What is influencing people\'s wage'),
       fluidRow(
-        #valueBoxOutput('wage'),
-        #box(plotlyOutput("wage_edu_plot")),
-        #box(plotOutput('corplot'))
-        # box(plotlyOutput('statsTest_plot'))
+        box(
+          sliderInput(inputId = "Month", 
+                      label = "Timeline", 
+                      min = 3, 
+                      max = 11,
+                      value = 5, step = 1)
+          ),
+        box(
+          radioButtons(inputId = "edu_level", 
+                       label = "Education Level:",
+                             c("Low" = "low",
+                               "HighSchoolorCollege" = "hc",
+                               "Bachelor" = "bac",
+                               "Graduate" = 'grad'
+                               )
+                       ),
+          radioButtons(inputId = "interest_group", "Interest Group:",
+                       c("A" = "A",
+                         "B" = "B",
+                         "C" = "C",
+                         "D" = 'D',
+                         "E" = 'E',
+                         "F" = 'F',
+                         "G" = 'G',
+                         "H" = 'H',
+                         "I" = 'I',
+                         'J' = 'J'
+                       ),
+          ),
+          radioButtons("househould_size", "Household Size:",
+                       c("1" = 1,
+                         "2" = 2,
+                         "3" = 3
+                       )
+          ),
+          radioButtons("have_kids", "Have Kids:",
+                       c("Yes" = "True",
+                         "No" = "False"
+                       )
+          )
+        ),
+        box(
+          tableOutput("values")
+          # plotlyOutput("wage_ana_plot")
+          )
       )
     ),
     tabItem(tabName = "network_tab",
@@ -193,6 +235,7 @@ ui <- dashboardPage(skin = "blue",
 participants_data <- read_rds('data/participants.rds')
 
 financeJ <- read_csv(file = "data/FinancialJournal.csv")
+financeJ$timestamp <- as.POSIXct(financeJ$timestamp)
 
 schools <- read_sf("data/Schools.csv", 
                    options = "GEOM_POSSIBLE_NAMES=location")
@@ -304,6 +347,13 @@ network_nodes <- network_nodes %>%
 
 server <- function(input, output){
   ## Start of Section 1
+  wage_ana_plot <- ggplot(financeJ %>% 
+                            filter(lubridate::month(timestamp) == 9),
+                          aes (x = participantId, y = wage , fill = haveKids))+
+    geom_bar(stat = "identity") +
+    scale_y_continuous(name = "Count")+
+    labs(x = "Age Group", title = "Participants'num by age groups and whether have kids")+
+    theme_bw()
   valueBoxSpark <- function(value, title, sparkobj = NULL, subtitle, info = NULL, 
                             icon = NULL, color = "aqua", width = 4, href = NULL){
     
@@ -391,6 +441,7 @@ server <- function(input, output){
     title    = "Correlalogram for participants' data",
     subtitle = "Wage:-Joviality;"
   )
+
   wage_hc <- hchart(participants_data, "area", hcaes(participantId, round(wage,2)), name = "wage")  %>% 
     hc_size(height = 100) %>% 
     hc_credits(enabled = FALSE) %>% 
@@ -399,7 +450,7 @@ server <- function(input, output){
     value = paste0('$',round(mean(participants_data$wage)/1000,2), "K/month"),
     title = toupper("Monthly Wage of participants in Ohio City"),
     sparkobj = wage_hc,
-    subtitle = tagList(HTML("&uarr;"), "25% Since last year"),
+    subtitle = "The mean wage is 3.8K/monnth",
     info = "This is the monthly wage of all participants in Ohio City",
     icon = NULL,
     width = 4,
@@ -444,8 +495,22 @@ server <- function(input, output){
     color = "blue",
     href = NULL
   )
-  
-  
+  # Reactive expression to create data frame of all input values ----
+  sliderValues <- reactive({
+    
+    data.frame(
+      Name = c("Timeline"),
+      Value = as.character(c(input$Month),
+                           stringsAsFactors = FALSE)
+    )
+    
+  })
+  output$values <- renderTable({
+    sliderValues()
+  })
+  output$wage_ana_plot <- renderPlotly({
+    wage_ana_plot
+  })
   output$wage_edu_plot <- renderPlotly({
     wage_edu_plot
   })
