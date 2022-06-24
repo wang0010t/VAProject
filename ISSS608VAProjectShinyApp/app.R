@@ -66,9 +66,9 @@ siderbar <-
                 ),
                 menuItem("Predominant business", tabName = "predominant_business_tab", startExpanded = FALSE,
                          menuSubItem("Overall Town Map", tabName = "townmap_tab"),
-                         menuSubItem("Map by Venue Type", tabName = "venuetype_tab"),
+                         menuSubItem("Cost by Venue Type", tabName = "venuetype_tab"),
                          menuSubItem("Check-in Analysis", tabName = "checkin_tab"),
-                         menuSubItem("TBC", tabName = "xxx_tab")
+                         menuSubItem("Traffic Analysis", tabName = "traffic_tab")
                 )
     )
   )
@@ -101,16 +101,16 @@ body <- dashboardBody(
                       min = 3, 
                       max = 11,
                       value = 5, step = 1)
-          ),
+        ),
         box(
           radioButtons(inputId = "edu_level", 
                        label = "Education Level:",
-                             c("Low" = "low",
-                               "HighSchoolorCollege" = "hc",
-                               "Bachelor" = "bac",
-                               "Graduate" = 'grad'
-                               )
-                       ),
+                       c("Low" = "low",
+                         "HighSchoolorCollege" = "hc",
+                         "Bachelor" = "bac",
+                         "Graduate" = 'grad'
+                       )
+          ),
           radioButtons(inputId = "interest_group", "Interest Group:",
                        c("A" = "A",
                          "B" = "B",
@@ -139,7 +139,7 @@ body <- dashboardBody(
         box(
           tableOutput("values")
           # plotlyOutput("wage_ana_plot")
-          )
+        )
       )
     ),
     tabItem(tabName = "network_tab",
@@ -161,20 +161,40 @@ body <- dashboardBody(
             )
     ),
     tabItem(tabName = "townmap_tab",
-            fluidPage(
-              titlePanel("Overall Town Map"),
-              mainPanel(
-                h4("Geographical region of the City of Engagement"),
-                tmapOutput(outputId = "mapPlotAll", width = 800, height = 400),
-                plotlyOutput(outputId = "mapPlotAreas", width = 800, height = 400)
-              )
+            titlePanel("Overall Town Map"),
+            fluidRow(
+              valueBoxOutput('s3_buildings', width = 2),
+              valueBoxOutput('s3_apartments', width = 2),
+              valueBoxOutput('s3_employers', width = 2),
+              valueBoxOutput('s3_pubs', width = 2),
+              valueBoxOutput('s3_restaurants', width = 2),
+              valueBoxOutput('s3_schools', width = 2),
+              box( h4("Geographical region of the city"), plotlyOutput(outputId = "mapPlotAreas", height = 300)),
+              box(h4("Building type of the city"), tmapOutput(outputId = "mapPlotAll", height = 300)),
               
-            )
+            ),
+            fluidRow(
+              box(
+                selectInput(inputId = "venueTypeSelected", 
+                            label = "Please select venue type to be shown in the map:",
+                            choices = c("All" = "All",
+                                        "Apartments" = "Apartments",
+                                        "Employers" = "Employers",
+                                        "Pubs" = "Pubs",
+                                        "Restaurants" = "Restaurants",
+                                        "Schools" = "Schools"),
+                            multiple = FALSE)
+              ),
+              
+              box(h4("Selected venue type of the city"), tmapOutput(outputId = "mapPlotAllDetails", height = 300))
+              
+            ),
+            
     ),
     
     tabItem(tabName = "venuetype_tab",
             fluidPage(
-              titlePanel("Map and Attributes by Venue Type"),
+              titlePanel("Map and Cost by Venue Type"),
               sidebarLayout(
                 sidebarPanel(
                   selectInput(inputId = "locationType", 
@@ -188,7 +208,7 @@ body <- dashboardBody(
                   
                 ),
                 mainPanel(
-                  h4("Map for selected location type"),
+                  h4("Map for selected venue type"),
                   tmapOutput(outputId = "mapPlotbyType", width = 800, height = 800)
                 )
               )
@@ -226,7 +246,7 @@ body <- dashboardBody(
 
 
 ## put UI together --------------------
-ui <- dashboardPage(skin = "blue",
+ui <- dashboardPage(skin = "green",
                     header, 
                     siderbar, 
                     body )
@@ -441,7 +461,7 @@ server <- function(input, output){
     title    = "Correlalogram for participants' data",
     subtitle = "Wage:-Joviality;"
   )
-
+  
   wage_hc <- hchart(participants_data, "area", hcaes(participantId, round(wage,2)), name = "wage")  %>% 
     hc_size(height = 100) %>% 
     hc_credits(enabled = FALSE) %>% 
@@ -546,7 +566,7 @@ server <- function(input, output){
   output$network_plot <- renderPlot({network_plot + theme_graph()})
   
   network_education <- ggraph(network_graph, 
-              layout = "nicely") + 
+                              layout = "nicely") + 
     geom_edge_link(aes(width=Weight), 
                    alpha=0.2) +
     scale_edge_width(range = c(0.1, 5)) +
@@ -558,7 +578,7 @@ server <- function(input, output){
       th_foreground(foreground = "grey80",  
                     border = TRUE) +
       theme(legend.position = 'bottom')})
-
+  
   output$network <- renderVisNetwork({
     visNetwork(network_nodes,
                network_edges_aggregated) %>%
@@ -575,6 +595,147 @@ server <- function(input, output){
   
   
   ## Start of Section 3
+  buildings_summary <- valueBoxSpark(
+    value = paste0("", nrow(buildings)),
+    title = toupper("Total no. of buildings in the city"),
+    subtitle = "",
+    icon = NULL,
+    #width = 2,
+    color = "blue",
+    href = NULL
+  )
+  apartments_summary <- valueBoxSpark(
+    value = paste0("", nrow(apartments)),
+    title = toupper("Total no. of apartments in the city"),
+    subtitle = "",
+    icon = NULL,
+    color = "teal",
+    href = NULL
+  )
+  employers_summary <- valueBoxSpark(
+    value = paste0("", nrow(employers)),
+    title = toupper("Total no. of employers in the city"),
+    subtitle = "",
+    icon = NULL,
+    color = "teal",
+    href = NULL
+  )
+  restaurants_summary <- valueBoxSpark(
+    value = paste0("", nrow(restaurants)),
+    title = toupper("Total no. of restaurants in the city"),
+    subtitle = "",
+    icon = NULL,
+    color = "teal",
+    href = NULL
+  )
+  pubs_summary <- valueBoxSpark(
+    value = paste0("", nrow(pubs)),
+    title = toupper("Total no. of pubs in the city"),
+    subtitle = "",
+    icon = NULL,
+    color = "teal",
+    href = NULL
+  )
+  schools_summary <- valueBoxSpark(
+    value = paste0("", nrow(schools)),
+    title = toupper("Total no. of schools in the city"),
+    subtitle = "",
+    icon = NULL,
+    color = "teal",
+    href = NULL
+  )
+  output$s3_buildings <- renderValueBox(buildings_summary)
+  output$s3_apartments <- renderValueBox(apartments_summary)
+  output$s3_employers <- renderValueBox(employers_summary)
+  output$s3_restaurants <- renderValueBox(restaurants_summary)
+  output$s3_pubs <- renderValueBox(pubs_summary)
+  output$s3_schools <- renderValueBox(schools_summary)
+  
+  output$mapPlotAllDetails <- renderTmap({
+    tmap_mode("view")
+    mapAll <- tm_shape(buildings)+
+      tm_polygons(
+        palette="Accent",
+        border.col = "black",
+        border.alpha = .5,
+        border.lwd = 0.5)
+    if (input$venueTypeSelected == "All"){
+      mapAll <- tm_shape(buildings)+
+        tm_polygons(
+          palette="Accent",
+          border.col = "black",
+          border.alpha = .5,
+          border.lwd = 0.5) + 
+        tm_shape(restaurants) +
+        tm_dots(col = "blue") +
+        tm_shape(employers) +
+        tm_dots(col = "red") +
+        tm_shape(apartments) +
+        tm_dots(col = "lightblue") +
+        tm_shape(pubs) +
+        tm_dots(col = "green") +
+        tm_shape(schools) +
+        tm_dots(col = "yellow")
+    }
+    
+    if (input$venueTypeSelected == "Restaurants"){
+      mapAll <- tm_shape(buildings)+
+        tm_polygons(
+          palette="Accent",
+          border.col = "black",
+          border.alpha = .5,
+          border.lwd = 0.5) + 
+        tm_shape(restaurants) +
+        tm_dots(col = "blue")
+    }
+    
+    if (input$venueTypeSelected == "Employers"){
+      mapAll <- tm_shape(buildings)+
+        tm_polygons(
+          palette="Accent",
+          border.col = "black",
+          border.alpha = .5,
+          border.lwd = 0.5) + 
+        tm_shape(employers) +
+        tm_dots(col = "red")
+    }
+    
+    if (input$venueTypeSelected == "Apartments"){
+      mapAll <- tm_shape(buildings)+
+        tm_polygons(
+          palette="Accent",
+          border.col = "black",
+          border.alpha = .5,
+          border.lwd = 0.5) + 
+        tm_shape(apartments) +
+        tm_dots(col = "lightblue")
+    }
+    
+    if (input$venueTypeSelected == "Pubs"){
+      mapAll <- tm_shape(buildings)+
+        tm_polygons(
+          palette="Accent",
+          border.col = "black",
+          border.alpha = .5,
+          border.lwd = 0.5) + 
+        tm_shape(pubs) +
+        tm_dots(col = "green")
+    }
+    
+    if (input$venueTypeSelected == "Schools"){
+      mapAll <- tm_shape(buildings)+
+        tm_polygons(
+          palette="Accent",
+          border.col = "black",
+          border.alpha = .5,
+          border.lwd = 0.5) + 
+        tm_shape(schools) +
+        tm_dots(col = "yellow")
+    }
+    mapAll
+    
+  })
+  
   output$mapPlotAll <- renderTmap({
     tmap_mode("view")
     tm_shape(buildings)+
@@ -582,18 +743,7 @@ server <- function(input, output){
                   palette="Accent",
                   border.col = "black",
                   border.alpha = .5,
-                  border.lwd = 0.5)+
-      tm_shape(employers) +
-      tm_dots(col = "red") +
-      tm_shape(apartments) +
-      tm_dots(col = "lightblue") +
-      tm_shape(pubs) +
-      tm_dots(col = "green") +
-      tm_shape(restaurants) +
-      tm_dots(col = "blue") +
-      tm_shape(schools) +
-      tm_dots(col = "yellow")
-    
+                  border.lwd = 0.5)
   })
   
   output$mapPlotAreas <- renderPlotly({

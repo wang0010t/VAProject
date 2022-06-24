@@ -5,10 +5,10 @@ account: vaproject
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 6429785
-bundleId: 5977114
+bundleId: 6024718
 url: https://vaproject.shinyapps.io/ISSS608VAProjectShinyApp/
-when: 1654332183.17031
-lastSyncTime: 1654332183.17031
+when: 1655743116.95956
+lastSyncTime: 1655743116.95956
 asMultiple: FALSE
 asStatic: FALSE
 ignoredFiles: app_Tianqi.R
