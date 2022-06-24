@@ -102,16 +102,46 @@ body <- dashboardBody(
     ),
     tabItem(tabName = "network_tab",
             fluidPage(
-              h2("Social network"),
-              plotOutput("network_plot")
+              titlePanel("social network"),
+              sidebarLayout(
+                sidebarPanel(
+                  selectInput(inputId = "yearMonth", 
+                              label = "yearMonth",
+                              choices = c("2022-03" = "2022-03",
+                                          "2023-03" = "2023-03"),
+                                          multiple = FALSE)
+                  ),
+                mainPanel(
+                  h2("Social network"),
+                  plotOutput(outputId = "network_plot",width = 800, height = 400)
+                )
+              )
             )
     ),
     tabItem(tabName = "group_tab",
             fluidPage(
-              h2("Social network of Different Groups"),
-              visNetworkOutput("network_education")
+              titlePanel("social network of groups"),
+              sidebarLayout(
+                sidebarPanel(
+                  selectInput(inputId = "yearMonth", 
+                              label = "yearMonth",
+                              choices = c("2022-03" = "2022-03",
+                                          "2023-03" = "2023-03"),
+                              multiple = FALSE),
+                  selectInput(inputId = "groups", 
+                              label = "group",
+                              choices = c("educationLevel" = "educationLevel",
+                                          "interestGroup" = "interestGroup",
+                                          "joviality" = "joviality"),
+                              multiple = FALSE)
+                ),
+                mainPanel(
+                  h2("Social network of Different Groups"),
+                  plotOutput("network_group")
             )
-    ),
+          )
+        )
+      ),
     tabItem(tabName = "vis_tab",
             fluidPage(
               h2("Social network"),
@@ -246,7 +276,9 @@ checkin_journal$timestamp <- as.Date(checkin_journal$timestamp, "%Y-%m-%d")
 
 
 network_nodes <- read_csv("data/Participants.csv")
-network_edges <- read_csv("data/SocialNetwork.csv")
+
+network_edges_aggregated_2022 <- read_rds("data/network_edges_aggregated_2022.rds")
+network_edges_aggregated_2023 <- read_rds("data/network_edges_aggregated_2023.rds")
 
 buildings_shp <- read_sf("data/buildings.shp", 
                          options = "GEOM_POSSIBLE_NAMES=location")
@@ -267,37 +299,42 @@ participants_data_ag_byKids <- rbind(participants_data_ag_haveKids, participants
 network_nodes <- network_nodes %>%
   mutate(participantId = participantId +1)
 
-network_nodes2 <- network_nodes %>%
-  mutate(participantId = participantId +1)
+#node_from <- pull(network_edges_aggregated, from)
+#node_to <- pull(network_edges_aggregated, to)
+#nodes_distinct <- unique(append(node_from, node_to))
+#network_nodes <- filter(network_nodes, participantId %in% nodes_distinct)
+#network_nodes <- network_nodes %>%
+#  rename(id = participantId)
 
-network_edges <- network_edges %>%
-  mutate(source = source +1) %>%
-  mutate(target =  target +1)
+network_nodes_2022<- data.frame(participantId = 
+                                  c(network_edges_aggregated_2022$from, 
+                                    network_edges_aggregated_2022$to)) %>% 
+  unique()
+network_nodes_2022<- merge(x = network_nodes_2022, y = network_nodes, by = "participantId", all.x = TRUE)
 
-network_edges <- network_edges %>%
-  mutate(Weekday = wday(timestamp,
-                        label = TRUE,
-                        abbr = FALSE))%>%
-  mutate(YearMonth = format(timestamp,'%Y-%m'))
+network_nodes_2023<- data.frame(participantId = 
+                                  c(network_edges_aggregated_2023$from, 
+                                    network_edges_aggregated_2023$to)) %>% 
+  unique()
+network_nodes_2023<- merge(x = network_nodes_2023, y = network_nodes, by = "participantId", all.x = TRUE)
 
-network_edges <- rename(network_edges,
-                        from = source,
-                        to = target)
 
-network_edges_aggregated <- network_edges %>%
-  filter(YearMonth == "2022-03") %>%
-  group_by(from, to) %>%
-  summarise(Weight = n()) %>%
-  filter(from!=to) %>%
-  filter(Weight > 20) %>%
-  ungroup()
+network_graph_2022 <- graph_from_data_frame(network_edges_aggregated_2022, 
+                                            vertices = network_nodes_2022,
+                                            directed = TRUE) %>%
+  as_tbl_graph()
 
-node_from <- pull(network_edges_aggregated, from)
-node_to <- pull(network_edges_aggregated, to)
-nodes_distinct <- unique(append(node_from, node_to))
-network_nodes <- filter(network_nodes, participantId %in% nodes_distinct)
-network_nodes <- network_nodes %>%
-  rename(id = participantId)
+network_graph_2023 <- graph_from_data_frame(network_edges_aggregated_2023, 
+                                            vertices = network_nodes_2023,
+                                            directed = TRUE) %>%
+  as_tbl_graph()
+
+network_graph_2022 %>%
+  activate(edges) %>%
+  arrange(desc(Weight))
+network_graph_2023 %>%
+  activate(edges) %>%
+  arrange(desc(Weight))
 
 
 ## End of data processing
@@ -468,32 +505,51 @@ server <- function(input, output){
   
   ## Start of Section 2
   #output$social_act_table <- renderDataTable(mtcars)
-  network_graph <- tbl_graph(nodes = network_nodes2,
-                             edges = network_edges_aggregated, 
-                             directed = TRUE)
-  network_graph %>%
-    activate(edges) %>%
-    arrange(desc(Weight))
-  network_plot <- ggraph(network_graph) + 
-    geom_edge_link(aes()) +
-    geom_node_point(aes())+
-    labs(title = "Network of Engagemnet")
-  output$network_plot <- renderPlot({network_plot + theme_graph()})
+
+  output$network_plot <- renderPlot({
+    if (input$yearMonth == "2022-03"){
+      set.seed(1234)
+      network_plot<- ggraph(network_graph_2022,layout = "nicely") + 
+        geom_edge_link(aes(width=Weight), alpha=0.25) +
+        scale_edge_width(range = c(0.1, 1)) +
+        geom_node_point()
+      network_plot + theme_graph()
+    }
+   else if (input$yearMonth == "2023-03"){
+      network_plot<- ggraph(network_graph_2023,layout = "nicely") + 
+        geom_edge_link(aes(width=Weight), alpha=0.25) +
+        scale_edge_width(range = c(0.1, 1)) +
+        geom_node_point() 
+      network_plot + theme_graph()
+   }
+  })
   
-  network_education <- ggraph(network_graph, 
-              layout = "nicely") + 
-    geom_edge_link(aes(width=Weight), 
-                   alpha=0.2) +
+  network_education <- ggraph(network_graph_2022, layout = "nicely") + 
+    geom_edge_link(aes(width=Weight), alpha=0.2) +
     scale_edge_width(range = c(0.1, 5)) +
-    geom_node_point(aes(colour = educationLevel), 
-                    size = 2)+
+    geom_node_point(aes(colour = educationLevel), size = 2)+
     labs(title = "Network of Engagemnet")
-  output$network_education <- renderPlot({
+  output$network_group <- renderPlot({
+    if (input$groups =="educationLevel"){
     network_education + facet_nodes(~educationLevel)+
       th_foreground(foreground = "grey80",  
                     border = TRUE) +
-      theme(legend.position = 'bottom')})
-
+      theme(legend.position = 'bottom')
+    }
+    else if (input$groups =="insterestGroup"){
+      network_education + facet_nodes(~educationLevel)+
+        th_foreground(foreground = "grey80",  
+                      border = TRUE) +
+        theme(legend.position = 'bottom')
+    }
+    else if (input$groups =="joviality"){
+      network_education + facet_nodes(~educationLevel)+
+        th_foreground(foreground = "grey80",  
+                      border = TRUE) +
+        theme(legend.position = 'bottom')
+    }
+    })
+  
   output$network <- renderVisNetwork({
     visNetwork(network_nodes,
                network_edges_aggregated) %>%
