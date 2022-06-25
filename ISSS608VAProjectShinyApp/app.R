@@ -75,7 +75,7 @@ siderbar <-
                          menuSubItem("Overall Town Map", tabName = "townmap_tab"),
                          menuSubItem("Cost Analysis", tabName = "venuetype_tab"),
                          menuSubItem("Check-in Analysis", tabName = "checkin_tab"),
-                         menuSubItem("Traffic Analysis", tabName = "traffic_tab")
+                         menuSubItem("Revenue Analysis", tabName = "revenue_tab")
                 )
     )
   )
@@ -214,7 +214,7 @@ body <- dashboardBody(
     
     tabItem(tabName = "venuetype_tab",
             fluidPage(
-              titlePanel("Map and Cost by Venue Type"),
+              titlePanel("Cost Analysis by Venue Type"),
               sidebarLayout(
                 sidebarPanel(
                   selectInput(inputId = "locationType", 
@@ -224,12 +224,40 @@ body <- dashboardBody(
                                           "Pubs" = "Pubs",
                                           "Restaurants" = "Restaurants",
                                           "Schools" = "Schools"),
-                              multiple = FALSE)
+                              multiple = FALSE),
+                  
+                  HTML('<hr style="color: black;">'),
+                  helpText("Please select below fields for a statistical test on selected variables."),
+                  selectInput(inputId = "s3_xvariable",
+                              label = "Select x-variable:",
+                              choices = c("Region" = "Region"),
+                              selected = "Region"),
+                  selectInput(inputId = "s3_yvariable",
+                              label = "Select y-variable:",
+                              choices = c("Apartment Rental Cost" = "rentalCost",
+                                          "Job Hourly Rate" = "jobRate",
+                                          "Pub Hourly Cost" = "pubCost",
+                                          "Restaurant Food Cost" = "foodCost",
+                                          "School Monthly Cost" = "schoolCost"),
+                              selected = "rentalCost"),
+                  selectInput(inputId = "s3_test",
+                              label = "Type of statistical test:",
+                              choices = c("nonparametric" = "np",
+                                          "parametric" = "p",
+                                          "robust" = "r",
+                                          "Bayes Factor" = "bf"),
+                              selected = "np"),
+                  selectInput(inputId = "s3_plotType",
+                              label = "Type of plot:",
+                              choices = c("boxviolin" = "boxviolin",
+                                          "box" = "box",
+                                          "violin" = "violin"),
+                              selected = "boxviolin"),
                   
                 ),
-                mainPanel(
-                  h4("Map for selected venue type"),
-                  tmapOutput(outputId = "mapPlotbyType", width = 800, height = 800)
+                fluidRow(
+                  box(h4("Map for selected venue type with cost details"), tmapOutput(outputId = "mapPlotbyType", width = 780, height = 360)),
+                  box(h4("Statistical test"), plotOutput(outputId = "costTestPlot",width = 780, height = 360)),
                 )
               )
             )
@@ -948,7 +976,7 @@ server <- function(input, output){
                     border.alpha = .5,
                     border.lwd = 0.5)+
         tm_shape(jobs_employers)+
-        tm_bubbles(col = "educationRequirement",
+        tm_bubbles(col = "hourlyRate",
                    alpha = 0.8,
                    n = 6,
                    style = "jenks",
@@ -957,8 +985,101 @@ server <- function(input, output){
                    scale = 1.2,
                    border.col = "black",
                    border.lwd = 0.5)
-    } 
+    }
     
+    
+  })
+  
+  output$costTestPlot <-renderPlot({
+    set.seed(1234)
+    buildings_shp <- buildings_shp %>%
+      rename(buildingId = bldngId)
+    buildings_df <- buildings_shp%>% as.data.frame()
+    
+    if (input$s3_yvariable == "rentalCost"){
+      apartments_df <- apartments%>% as.data.frame()
+      joined_data <- left_join(apartments_df, buildings_df, by = "buildingId")
+      ggbetweenstats(
+        data = joined_data,
+        x = "region",
+        y = "rentalCost",
+        title = "Statistical test on apartment rental cost and region",
+        type = input$s3_test,
+        plot.type = input$s3_plotType,
+        mean.ci = TRUE, 
+        pairwise.comparisons = TRUE, 
+        pairwise.display = "s",
+        p.adjust.method = "fdr",
+        messages = FALSE)
+    }
+    
+    else if (input$s3_yvariable == "pubCost"){
+      pubs_df <- pubs%>% as.data.frame()
+      joined_data <-  left_join(pubs_df, buildings_df, by = "buildingId")
+      ggbetweenstats(
+        data = joined_data,
+        x = "region",
+        y = "hourlyCost",
+        title = "Statistical test on pub cost and region",
+        type = input$s3_test,
+        plot.type = input$s3_plotType,
+        mean.ci = TRUE, 
+        pairwise.comparisons = TRUE, 
+        pairwise.display = "s",
+        p.adjust.method = "fdr",
+        messages = FALSE)
+    }
+    
+    else if (input$s3_yvariable == "foodCost"){
+      restaurants_df <- restaurants%>% as.data.frame()
+      joined_data <-  left_join(restaurants_df, buildings_df, by = "buildingId")
+      ggbetweenstats(
+        data = joined_data,
+        x = "region",
+        y = "foodCost",
+        title = "Statistical test on restaurant food cost and region",
+        type = input$s3_test,
+        plot.type = input$s3_plotType,
+        mean.ci = TRUE, 
+        pairwise.comparisons = TRUE, 
+        pairwise.display = "s",
+        p.adjust.method = "fdr",
+        messages = FALSE)
+    }
+    
+    else if (input$s3_yvariable == "schoolCost"){
+      schools_df <- schools%>% as.data.frame()
+      joined_data <-  left_join(schools_df, buildings_df, by = "buildingId")
+      ggbetweenstats(
+        data = joined_data,
+        x = "region",
+        y = "monthlyCost",
+        title = "Statistical test on school cost and region",
+        type = input$s3_test,
+        plot.type = input$s3_plotType,
+        mean.ci = TRUE, 
+        pairwise.comparisons = TRUE, 
+        pairwise.display = "s",
+        p.adjust.method = "fdr",
+        messages = FALSE)
+    }
+    
+    else if (input$s3_yvariable == "jobRate"){
+      jobs_employers_df <- jobs_employers%>% as.data.frame()
+      joined_data <-  left_join(jobs_employers_df, buildings_df, by = "buildingId")
+      ggbetweenstats(
+        data = joined_data,
+        x = "region",
+        y = "hourlyRate",
+        title = "Statistical test on job hourly rate and region",
+        type = input$s3_test,
+        plot.type = input$s3_plotType,
+        mean.ci = TRUE, 
+        pairwise.comparisons = TRUE, 
+        pairwise.display = "s",
+        p.adjust.method = "fdr",
+        messages = FALSE)
+    }
     
   })
   
