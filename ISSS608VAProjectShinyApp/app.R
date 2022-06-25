@@ -66,7 +66,7 @@ siderbar <-
                 ),
                 menuItem("Predominant business", tabName = "predominant_business_tab", startExpanded = FALSE,
                          menuSubItem("Overall Town Map", tabName = "townmap_tab"),
-                         menuSubItem("Cost by Venue Type", tabName = "venuetype_tab"),
+                         menuSubItem("Cost Analysis", tabName = "venuetype_tab"),
                          menuSubItem("Check-in Analysis", tabName = "checkin_tab"),
                          menuSubItem("Traffic Analysis", tabName = "traffic_tab")
                 )
@@ -833,7 +833,14 @@ server <- function(input, output){
               size = 0.1,
               show.legend = TRUE) +
       coord_sf()+
-      theme_bw()
+      theme(
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        panel.grid.major = element_line(colour = "transparent")
+      )
+    #theme_bw()
     ggplotly(mapAreas)
     
   })
@@ -841,8 +848,8 @@ server <- function(input, output){
   output$mapPlotbyType <- renderTmap({
     if (input$locationType == "Apartments"){
       tmap_mode("view")
-      tm_shape(buildings)+
-        tm_polygons(col = "buildingType",
+      tm_shape(buildings_shp)+
+        tm_polygons(col = "region",
                     palette="Accent",
                     border.col = "black",
                     border.alpha = .5,
@@ -861,8 +868,8 @@ server <- function(input, output){
     
     else if (input$locationType == "Pubs"){
       tmap_mode("view")
-      tm_shape(buildings)+
-        tm_polygons(col = "buildingType",
+      tm_shape(buildings_shp)+
+        tm_polygons(col = "region",
                     palette="Accent",
                     border.col = "black",
                     border.alpha = .5,
@@ -881,8 +888,8 @@ server <- function(input, output){
     
     else if (input$locationType == "Restaurants"){
       tmap_mode("view")
-      tm_shape(buildings)+
-        tm_polygons(col = "buildingType",
+      tm_shape(buildings_shp)+
+        tm_polygons(col = "region",
                     palette="Accent",
                     border.col = "black",
                     border.alpha = .5,
@@ -901,8 +908,8 @@ server <- function(input, output){
     
     else if (input$locationType == "Schools"){
       tmap_mode("view")
-      tm_shape(buildings)+
-        tm_polygons(col = "buildingType",
+      tm_shape(buildings_shp)+
+        tm_polygons(col = "region",
                     palette="Accent",
                     border.col = "black",
                     border.alpha = .5,
@@ -921,8 +928,8 @@ server <- function(input, output){
     
     else if (input$locationType == "Employers"){
       tmap_mode("view")
-      tm_shape(buildings)+
-        tm_polygons(col = "buildingType",
+      tm_shape(buildings_shp)+
+        tm_polygons(col = "region",
                     palette="Accent",
                     border.col = "black",
                     border.alpha = .5,
