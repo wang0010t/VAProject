@@ -125,9 +125,9 @@ body <- dashboardBody(
           selectInput(inputId = "wage_factor", 
                       label = "Factor that may influence Wage",
                       choices = c(
-                        "Education Level" = "education_level",
-                        "Interest Group" = "interest_group",
-                        "Age Group" = "age_group"),
+                        "Education Level" = "educationLevel",
+                        "Interest Group" = "interestGroup",
+                        "Age Group" = "ageGroup"),
                       multiple = FALSE)
         )
         )
@@ -591,7 +591,7 @@ server <- function(input, output){
       palette = "info2", ## choosing a different color palette
       title = paste("Wage for different",input$wage_factor),
       caption = "Source: VAST Challenge",
-      x = educationLevel,
+      x = !!input$wage_factor,
       y = Wage,
       type = "robust", ## type of statistics
       xlab = "Education Level", ## label for the x-axis
