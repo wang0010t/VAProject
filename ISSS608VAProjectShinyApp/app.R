@@ -31,6 +31,12 @@ library(ggraph)
 library(graphlayouts)
 library(ggstatsplot)
 library(ggcorrplot)
+library(reactable)
+library(reactablefmtr)
+library(gt)
+library(gtExtras)
+library(ggthemes)
+
 
 
 # packages = c('tidyverse', 'sf', 'tmap', 'lubridate', 'clock', 'sftime', 'rmarkdown', 'plotly')
@@ -57,7 +63,8 @@ siderbar <-
                          tabName = "demographics_tab", startExpanded = FALSE,
                          menuSubItem("Overall DemoGraphic", tabName = "overall_demo_analysis"),
                          menuSubItem("Wage analysis", tabName = "wage_analysis"), # TO-DO
-                         menuSubItem("Joviality analysis", tabName = "jov_analysis") # TO-DO
+                         menuSubItem("Joviality analysis", tabName = "jov_analysis"), # TO-DO
+                         menuSubItem("Consume analysis", tabName = "consume_analysis")
                 ),
                 menuItem("Social activity", tabName = "social_activity_tab", startExpanded = FALSE,
                          menuSubItem("Overall Network Graph", tabName = "network_tab"),
@@ -90,57 +97,40 @@ body <- dashboardBody(
         # box(plotlyOutput('statsTest_plot'))
       )
     ),
+    tabItem(
+      tabName = 'consume_analysis',
+      h2("Consume analysis"),
+      h4('What is influencing people\'s consume'),
+      fluidRow(
+        box(
+          DT::dataTableOutput("values")
+        )
+      )
+    ),
     tabItem( # TO-DO
       tabName = "wage_analysis",
       h2("Wage Analysis"),
       h4('What is influencing people\'s wage'),
       fluidRow(
         box(
-          sliderInput(inputId = "Month", 
-                      label = "Timeline", 
-                      min = 3, 
-                      max = 11,
-                      value = 5, step = 1)
+          sliderInput(inputId = "wageDate",
+                      label = "Date Range",
+                      min = as.Date("2022-03-01","%Y-%m-%d"),
+                      max = as.Date("2023-05-25","%Y-%m-%d"),
+                      value=c(as.Date("2022-03-01"), as.Date("2023-05-25")),
+                      timeFormat="%Y-%m-%d"),
+          plotOutput("wage_ana_plot")
         ),
         box(
-          radioButtons(inputId = "edu_level", 
-                       label = "Education Level:",
-                       c("Low" = "low",
-                         "HighSchoolorCollege" = "hc",
-                         "Bachelor" = "bac",
-                         "Graduate" = 'grad'
-                       )
-          ),
-          radioButtons(inputId = "interest_group", "Interest Group:",
-                       c("A" = "A",
-                         "B" = "B",
-                         "C" = "C",
-                         "D" = 'D',
-                         "E" = 'E',
-                         "F" = 'F',
-                         "G" = 'G',
-                         "H" = 'H',
-                         "I" = 'I',
-                         'J' = 'J'
-                       ),
-          ),
-          radioButtons("househould_size", "Household Size:",
-                       c("1" = 1,
-                         "2" = 2,
-                         "3" = 3
-                       )
-          ),
-          radioButtons("have_kids", "Have Kids:",
-                       c("Yes" = "True",
-                         "No" = "False"
-                       )
-          )
-        ),
-        box(
-          tableOutput("values")
-          # plotlyOutput("wage_ana_plot")
+          selectInput(inputId = "wage_factor", 
+                      label = "Factor that may influence Wage",
+                      choices = c(
+                        "Education Level" = "education_level",
+                        "Interest Group" = "interest_group",
+                        "Age Group" = "age_group"),
+                      multiple = FALSE)
         )
-      )
+        )
     ),
     tabItem(tabName = "network_tab",
             fluidPage(
@@ -283,9 +273,9 @@ ui <- dashboardPage(skin = "green",
 
 ## Start of Data Import
 participants_data <- read_rds('data/participants.rds')
-
-financeJ <- read_csv(file = "data/FinancialJournal.csv")
-financeJ$timestamp <- as.POSIXct(financeJ$timestamp)
+participants <- read_csv("data/Participants.csv")
+consume_report <- read_rds('data/consume_report.rds')
+financeJ <- read_rds(file = "data/financeJ.rds")
 
 schools <- read_sf("data/Schools.csv", 
                    options = "GEOM_POSSIBLE_NAMES=location")
@@ -353,7 +343,6 @@ participants_data_ag_haveKids <- participants_data %>%
   filter(`haveKids` ==  TRUE) %>%
   mutate (householdSize = -householdSize)
 
-
 participants_data_ag_noKids <-participants_data %>%
   filter(`haveKids` ==  FALSE)
 
@@ -404,13 +393,6 @@ network_graph_2023 %>%
 
 server <- function(input, output){
   ## Start of Section 1
-  wage_ana_plot <- ggplot(financeJ %>% 
-                            filter(lubridate::month(timestamp) == 9),
-                          aes (x = participantId, y = wage , fill = haveKids))+
-    geom_bar(stat = "identity") +
-    scale_y_continuous(name = "Count")+
-    labs(x = "Age Group", title = "Participants'num by age groups and whether have kids")+
-    theme_bw()
   valueBoxSpark <- function(value, title, sparkobj = NULL, subtitle, info = NULL, 
                             icon = NULL, color = "aqua", width = 4, href = NULL){
     
@@ -533,6 +515,7 @@ server <- function(input, output){
     color = "red",
     href = NULL
   )
+  
   educationHist <- participants_data %>%
     group_by(educationLevel) %>%
     mutate(count = n()) %>%
@@ -552,6 +535,7 @@ server <- function(input, output){
     color = "blue",
     href = NULL
   )
+  
   # Reactive expression to create data frame of all input values ----
   sliderValues <- reactive({
     
@@ -562,8 +546,13 @@ server <- function(input, output){
     )
     
   })
-  output$values <- renderTable({
-    sliderValues()
+  output$values <- DT::renderDataTable({
+      dt <-  DT::datatable(as.data.frame(consume_report %>%
+                                           group_by(category) %>%
+                                           summarize('Monthly Consume' = list(consume), 
+                                                     .groups = "drop") %>%
+                                           gt() %>%
+                                           gt_plt_sparkline('Monthly Consume')),  rownames = FALSE)
   })
   output$wage_ana_plot <- renderPlotly({
     wage_ana_plot
@@ -584,13 +573,37 @@ server <- function(input, output){
   output$wage <- renderValueBox(wage_vb)
   output$age <- renderValueBox(age_vb)
   output$education <- renderValueBox(education_vb)
-  
+  output$wage_ana_plot <- renderPlot({
+    ggbetweenstats(
+      data = financeJ %>%
+        filter(`timestamp` >= input$wageDate[1] & `timestamp` <= input$wageDate[2],category=='Wage') %>%
+        group_by(participantId) %>%
+        summarise(Wage = mean(amount)) %>%
+        ungroup() %>%
+        merge(participants,by='participantId')
+      ,
+      outlier.tagging = TRUE, ## whether outliers should be flagged
+      outlier.label = participantId, ## label to attach to outlier values
+      outlier.label.args = list(color = "red"), ## outlier point label color
+      ## turn off messages
+      ggtheme = ggplot2::theme_gray(), ## a different theme
+      package = "yarrr", ## package from which color palette is to be take
+      palette = "info2", ## choosing a different color palette
+      title = paste("Wage for different",input$wage_factor),
+      caption = "Source: VAST Challenge",
+      x = educationLevel,
+      y = Wage,
+      type = "robust", ## type of statistics
+      xlab = "Education Level", ## label for the x-axis
+      ylab = "Wage", ## label for the y-axis
+      plot.type = "boxviolin", ## type of plot
+    )
+       })
   ## End of Section 1
   
   
   ## Start of Section 2
   #output$social_act_table <- renderDataTable(mtcars)
-
   output$network_plot <- renderPlot({
     if (input$yearMonth == "2022-03"){
       set.seed(1234)
