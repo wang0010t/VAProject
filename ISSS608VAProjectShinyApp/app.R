@@ -73,7 +73,7 @@ siderbar <-
                 ),
                 menuItem("Predominant business", tabName = "predominant_business_tab", startExpanded = FALSE,
                          menuSubItem("Overall Town Map", tabName = "townmap_tab"),
-                         menuSubItem("Cost by Venue Type", tabName = "venuetype_tab"),
+                         menuSubItem("Cost Analysis", tabName = "venuetype_tab"),
                          menuSubItem("Check-in Analysis", tabName = "checkin_tab"),
                          menuSubItem("Traffic Analysis", tabName = "traffic_tab")
                 )
@@ -169,7 +169,7 @@ body <- dashboardBody(
                 ),
                 mainPanel(
                   h2("Social network of Different Groups"),
-                  plotOutput("network_group")
+                  plotOutput(outputId = "network_group")
             )
           )
         )
@@ -622,30 +622,53 @@ server <- function(input, output){
    }
   })
   
-  network_education <- ggraph(network_graph_2022, layout = "nicely") + 
-    geom_edge_link(aes(width=Weight), alpha=0.2) +
-    scale_edge_width(range = c(0.1, 5)) +
-    geom_node_point(aes(colour = educationLevel), size = 2)+
-    labs(title = "Network of Engagemnet")
   
   output$network_group <- renderPlot({
+    if(input$yearMonth =="2022-03"){
     if (input$groups =="educationLevel"){
-      network_education + facet_nodes(~educationLevel)+
-        th_foreground(foreground = "grey80",  
-                      border = TRUE) +
-        theme(legend.position = 'bottom')
+      network_group <- ggraph(network_graph_2022, layout = "nicely") + 
+        geom_edge_link(aes(width=Weight), alpha=0.2) +
+        scale_edge_width(range = c(0.1, 1)) +
+        geom_node_point(aes(colour = educationLevel), size = 1)
+      network_group + theme_graph()
     }
-    else if (input$groups =="insterestGroup"){
-      network_education + facet_nodes(~educationLevel)+
-        th_foreground(foreground = "grey80",  
-                      border = TRUE) +
-        theme(legend.position = 'bottom')
+    else if (input$groups =="interestGroup"){
+      network_group <- ggraph(network_graph_2022, layout = "nicely") + 
+        geom_edge_link(aes(width=Weight), alpha=0.2) +
+        scale_edge_width(range = c(0.1, 1)) +
+        geom_node_point(aes(colour = interestGroup), size = 1)
+      network_group + theme_graph()
     }
     else if (input$groups =="joviality"){
-      network_education + facet_nodes(~educationLevel)+
-        th_foreground(foreground = "grey80",  
-                      border = TRUE) +
-        theme(legend.position = 'bottom')
+      network_group <- ggraph(network_graph_2022, layout = "nicely") + 
+        geom_edge_link(aes(width=Weight), alpha=0.2) +
+        scale_edge_width(range = c(0.1, 1)) +
+        geom_node_point(aes(colour = joviality), size = 1)
+      network_group + theme_graph()
+    }
+    }
+    else if (input$yearMonth =="2023-03"){
+    if (input$groups =="educationLevel" ){
+        network_group <- ggraph(network_graph_2023, layout = "nicely") + 
+          geom_edge_link(aes(width=Weight), alpha=0.2) +
+          scale_edge_width(range = c(0.1, 1)) +
+          geom_node_point(aes(colour = educationLevel), size = 1)
+        network_group + theme_graph()
+      }
+      else if (input$groups =="interestGroup"){
+        network_group <- ggraph(network_graph_2023, layout = "nicely") + 
+          geom_edge_link(aes(width=Weight), alpha=0.2) +
+          scale_edge_width(range = c(0.1, 1)) +
+          geom_node_point(aes(colour = interestGroup), size = 1)
+        network_group + theme_graph()
+      }
+      else if (input$groups =="joviality"){
+        network_group <- ggraph(network_graph_2023, layout = "nicely") + 
+          geom_edge_link(aes(width=Weight), alpha=0.2) +
+          scale_edge_width(range = c(0.1, 1)) +
+          geom_node_point(aes(colour = joviality), size = 1)
+        network_group + theme_graph()
+      }
     }
   })
   
@@ -823,7 +846,14 @@ server <- function(input, output){
               size = 0.1,
               show.legend = TRUE) +
       coord_sf()+
-      theme_bw()
+      theme(
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        panel.grid.major = element_line(colour = "transparent")
+      )
+    #theme_bw()
     ggplotly(mapAreas)
     
   })
@@ -831,8 +861,8 @@ server <- function(input, output){
   output$mapPlotbyType <- renderTmap({
     if (input$locationType == "Apartments"){
       tmap_mode("view")
-      tm_shape(buildings)+
-        tm_polygons(col = "buildingType",
+      tm_shape(buildings_shp)+
+        tm_polygons(col = "region",
                     palette="Accent",
                     border.col = "black",
                     border.alpha = .5,
@@ -851,8 +881,8 @@ server <- function(input, output){
     
     else if (input$locationType == "Pubs"){
       tmap_mode("view")
-      tm_shape(buildings)+
-        tm_polygons(col = "buildingType",
+      tm_shape(buildings_shp)+
+        tm_polygons(col = "region",
                     palette="Accent",
                     border.col = "black",
                     border.alpha = .5,
@@ -871,8 +901,8 @@ server <- function(input, output){
     
     else if (input$locationType == "Restaurants"){
       tmap_mode("view")
-      tm_shape(buildings)+
-        tm_polygons(col = "buildingType",
+      tm_shape(buildings_shp)+
+        tm_polygons(col = "region",
                     palette="Accent",
                     border.col = "black",
                     border.alpha = .5,
@@ -891,8 +921,8 @@ server <- function(input, output){
     
     else if (input$locationType == "Schools"){
       tmap_mode("view")
-      tm_shape(buildings)+
-        tm_polygons(col = "buildingType",
+      tm_shape(buildings_shp)+
+        tm_polygons(col = "region",
                     palette="Accent",
                     border.col = "black",
                     border.alpha = .5,
@@ -911,8 +941,8 @@ server <- function(input, output){
     
     else if (input$locationType == "Employers"){
       tmap_mode("view")
-      tm_shape(buildings)+
-        tm_polygons(col = "buildingType",
+      tm_shape(buildings_shp)+
+        tm_polygons(col = "region",
                     palette="Accent",
                     border.col = "black",
                     border.alpha = .5,
