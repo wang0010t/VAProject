@@ -179,7 +179,7 @@ body <- dashboardBody(
                 ),
                 mainPanel(
                   h2("Social network of Different Groups"),
-                  plotOutput("network_group")
+                  plotOutput(outputId = "network_group")
             )
           )
         )
@@ -609,31 +609,51 @@ server <- function(input, output){
    }
   })
   
-  network_education <- ggraph(network_graph_2022, layout = "nicely") + 
-    geom_edge_link(aes(width=Weight), alpha=0.2) +
-    scale_edge_width(range = c(0.1, 5)) +
-    geom_node_point(aes(colour = educationLevel), size = 2)+
-    labs(title = "Network of Engagemnet")
   
   output$network_group <- renderPlot({
-    if (input$groups =="educationLevel"){
-      network_education + facet_nodes(~educationLevel)+
-        th_foreground(foreground = "grey80",  
-                      border = TRUE) +
-        theme(legend.position = 'bottom')
+    if (input$groups =="educationLevel" &input$yearMonth =="2022-03"){
+      network_group <- ggraph(network_graph_2022, layout = "nicely") + 
+        geom_edge_link(aes(width=Weight), alpha=0.2) +
+        scale_edge_width(range = c(0.1, 1)) +
+        geom_node_point(aes(colour = educationLevel), size = 1)
+      network_group + theme_graph()
     }
-    else if (input$groups =="insterestGroup"){
-      network_education + facet_nodes(~educationLevel)+
-        th_foreground(foreground = "grey80",  
-                      border = TRUE) +
-        theme(legend.position = 'bottom')
+    else if (input$groups =="insterestGroup" & input$yearMonth =="2022-03"){
+      network_group <- ggraph(network_graph_2022, layout = "nicely") + 
+        geom_edge_link(aes(width=Weight), alpha=0.2) +
+        scale_edge_width(range = c(0.1, 1)) +
+        geom_node_point(aes(colour = interestGroup), size = 1)
+      network_group + theme_graph()
     }
-    else if (input$groups =="joviality"){
-      network_education + facet_nodes(~educationLevel)+
-        th_foreground(foreground = "grey80",  
-                      border = TRUE) +
-        theme(legend.position = 'bottom')
+    else if (input$groups =="joviality" & input$yearMonth =="2022-03"){
+      network_group <- ggraph(network_graph_2022, layout = "nicely") + 
+        geom_edge_link(aes(width=Weight), alpha=0.2) +
+        scale_edge_width(range = c(0.1, 1)) +
+        geom_node_point(aes(colour = joviality), size = 1)
+      network_group + theme_graph()
     }
+      
+    else if (input$groups =="educationLevel" & input$yearMonth =="2023-03"){
+        network_group <- ggraph(network_graph_2023, layout = "nicely") + 
+          geom_edge_link(aes(width=Weight), alpha=0.2) +
+          scale_edge_width(range = c(0.1, 1)) +
+          geom_node_point(aes(colour = educationLevel), size = 1)
+        network_group + theme_graph()
+      }
+      else if (input$groups =="insterestGroup" &input$yearMonth =="2023-03"){
+        network_group <- ggraph(network_graph_2023, layout = "nicely") + 
+          geom_edge_link(aes(width=Weight), alpha=0.2) +
+          scale_edge_width(range = c(0.1, 1)) +
+          geom_node_point(aes(colour = interestGroup), size = 1)
+        network_group + theme_graph()
+      }
+      else if (input$groups =="joviality" &input$yearMonth =="2023-03"){
+        network_group <- ggraph(network_graph_2023, layout = "nicely") + 
+          geom_edge_link(aes(width=Weight), alpha=0.2) +
+          scale_edge_width(range = c(0.1, 1)) +
+          geom_node_point(aes(colour = joviality), size = 1)
+        network_group + theme_graph()
+      }
   })
   
   output$network <- renderVisNetwork({
