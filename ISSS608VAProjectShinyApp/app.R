@@ -130,7 +130,7 @@ body <- dashboardBody(
                         "Age Group" = "ageGroup"),
                       multiple = FALSE)
         )
-        )
+      )
     ),
     tabItem(tabName = "network_tab",
             fluidPage(
@@ -141,8 +141,8 @@ body <- dashboardBody(
                               label = "yearMonth",
                               choices = c("2022-03" = "2022-03",
                                           "2023-03" = "2023-03"),
-                                          multiple = FALSE)
-                  ),
+                              multiple = FALSE)
+                ),
                 mainPanel(
                   h2("Social network"),
                   plotOutput(outputId = "network_plot",width = 800, height = 400)
@@ -170,10 +170,10 @@ body <- dashboardBody(
                 mainPanel(
                   h2("Social network of Different Groups"),
                   plotOutput(outputId = "network_group")
+                )
+              )
             )
-          )
-        )
-      ),
+    ),
     tabItem(tabName = "vis_tab",
             fluidPage(
               h2("Social network"),
@@ -190,7 +190,8 @@ body <- dashboardBody(
               valueBoxOutput('s3_restaurants', width = 2),
               valueBoxOutput('s3_schools', width = 2),
               box( h4("Geographical region of the city"), plotlyOutput(outputId = "mapPlotAreas", height = 300)),
-              box(h4("Building type of the city"), tmapOutput(outputId = "mapPlotAll", height = 300)),
+              #NEWSTART
+              box(h4("Building type in the city"), tmapOutput(outputId = "mapPlotAll", height = 300)),
               
             ),
             fluidRow(
@@ -203,11 +204,14 @@ body <- dashboardBody(
                                         "Pubs" = "Pubs",
                                         "Restaurants" = "Restaurants",
                                         "Schools" = "Schools"),
-                            multiple = FALSE)
+                            multiple = FALSE),
+                radioButtons(inputId="radioForMap", label = "Please select additional details to be shown in the map:",
+                             choices = list("Geographical Region" = "region", "Building Type" = "bldngTy", "None" = ""), 
+                             selected = ""),
               ),
               
-              box(h4("Selected venue type of the city"), tmapOutput(outputId = "mapPlotAllDetails", height = 300))
-              
+              box(h4("Venue type in the city"), tmapOutput(outputId = "mapPlotAllDetails", height = 300))
+              #NEWEND
             ),
             
     ),
@@ -253,11 +257,16 @@ body <- dashboardBody(
                                           "box" = "box",
                                           "violin" = "violin"),
                               selected = "boxviolin"),
+                  textInput(inputId = "s3_plotTitle",
+                            label = "Plot title",
+                            placeholder = "Enter text to be used as plot title"),
+                  actionButton(inputId = "s3_goButton", 
+                               "Update Plot Title!")
                   
                 ),
                 fluidRow(
                   box(h4("Map for selected venue type with cost details"), tmapOutput(outputId = "mapPlotbyType", width = 780, height = 360)),
-                  box(h4("Statistical test"), plotOutput(outputId = "costTestPlot",width = 780, height = 360)),
+                  box(h4("Statistical test for the selected variables"), plotOutput(outputId = "costTestPlot",width = 780, height = 360)),
                 )
               )
             )
@@ -265,27 +274,69 @@ body <- dashboardBody(
     
     tabItem(tabName = "checkin_tab",
             fluidPage(
+              #NEWSTART
               titlePanel("Check-in Analysis for Pubs and Restaurants"),
               sidebarLayout(
                 sidebarPanel(
                   selectInput(inputId = "checkinType", 
-                              label = "Check-in Location:",
+                              label = "Check-in Venue Type:",
                               choices = c("Pubs" = "Pubs",
-                                          "Restaurants" = "Restaurants",
-                                          "Workplaces" = "Workplaces"),
+                                          "Restaurants" = "Restaurants"),
                               multiple = FALSE),
                   sliderInput(inputId = "checkinDate",
                               label = "Date Range",
                               min = as.Date("2022-03-01","%Y-%m-%d"),
                               max = as.Date("2023-05-25","%Y-%m-%d"),
-                              value=c(as.Date("2022-03-01"), as.Date("2023-05-25")),
-                              timeFormat="%Y-%m-%d")
+                              value=c(as.Date("2022-03-01"), as.Date("2022-04-01")),
+                              timeFormat="%Y-%m-%d"),
+                  HTML('<hr style="color: black;">'),
+                  helpText("Please select below fields for a correlation test on selected variables."),
+                  selectInput(inputId = "s3_xyvariable",
+                              label = "Select x and y variables:",
+                              choices = c("Mean of check-ins VS. Pub Cost" = "pubMean",
+                                          "Median of check-ins VS. Pub Cost" = "pubMedian",
+                                          "Mean of check-ins VS. Restaurant Food Cost" = "restMean",
+                                          "Median of check-ins VS. RestaurantFood Cost" = "restMedian"
+                              ),
+                              selected = "pubMean"),
+                  selectInput(inputId = "s3_test1",
+                              label = "Type of statistical test:",
+                              choices = c("parametric" = "p",
+                                          "nonparametric" = "np",
+                                          "robust" = "r",
+                                          "Bayes Factor" = "bf"),
+                              selected = "p"),
+                  checkboxInput(inputId = "s3_marginal", 
+                                label = "Display marginal graphs", 
+                                value = TRUE),
+                  textInput(inputId = "s3_plotTitle1",
+                            label = "Plot title",
+                            placeholder = "Enter text to be used as plot title"),
+                  actionButton(inputId = "s3_goButton1", 
+                               "Update Plot Title!")
                 ),
                 mainPanel(
-                  h4("Check-in trends for selected venue type"),
-                  plotlyOutput("checkinPlot", width = 800, height = 800)
+                  tabsetPanel(
+                    tabPanel("Plots", 
+                             fluidRow(
+                               box(h4("Check-in trends for selected venue type"), 
+                                   plotlyOutput("checkinPlot",width = "90%", height = "340px"), width = 10, height = 400),
+                             ),
+                             fluidRow(
+                               box(h4("Total no. of check-ins for the selected period and venue type on the map"), 
+                                   tmapOutput(outputId = "checkinMap", height = 300), width = 10),
+                             )    
+                    ), 
+                    tabPanel("Correlation Test", 
+                             fluidRow(
+                               box(h4("Correlation test for the selected variables"), 
+                                   plotOutput(outputId = "corrPlot",width = "90%", height = "340px"), width = 10, height = 400),
+                             )    
+                    ), 
+                  ),
                 )
               )
+              #NEWEND
             )
     )
   )
@@ -351,10 +402,10 @@ jobs <- jobs%>%
 
 jobs_employers <- merge(jobs, employers, by="employerId")
 jobs_employers <- st_as_sf(jobs_employers)
-
-checkin_journal <- read_csv("data/CheckinJournal.csv")
+#NEWSTART
+checkin_journal <- read_rds("data/checkin_journal_selected.rds")
 checkin_journal$timestamp <- as.Date(checkin_journal$timestamp, "%Y-%m-%d")
-
+#NEWEND
 
 network_nodes <- read_csv("data/Participants.csv")
 
@@ -575,12 +626,12 @@ server <- function(input, output){
     
   })
   output$values <- DT::renderDataTable({
-      dt <-  DT::datatable(as.data.frame(consume_report %>%
-                                           group_by(category) %>%
-                                           summarize('Monthly Consume' = list(consume), 
-                                                     .groups = "drop") %>%
-                                           gt() %>%
-                                           gt_plt_sparkline('Monthly Consume')),  rownames = FALSE)
+    dt <-  DT::datatable(as.data.frame(consume_report %>%
+                                         group_by(category) %>%
+                                         summarize('Monthly Consume' = list(consume), 
+                                                   .groups = "drop") %>%
+                                         gt() %>%
+                                         gt_plt_sparkline('Monthly Consume')),  rownames = FALSE)
   })
   output$wage_ana_plot <- renderPlotly({
     wage_ana_plot
@@ -626,7 +677,7 @@ server <- function(input, output){
       ylab = "Wage", ## label for the y-axis
       plot.type = "boxviolin", ## type of plot
     )
-       })
+  })
   ## End of Section 1
   
   
@@ -641,42 +692,42 @@ server <- function(input, output){
         geom_node_point()
       network_plot + theme_graph()
     }
-   else if (input$yearMonth == "2023-03"){
+    else if (input$yearMonth == "2023-03"){
       network_plot<- ggraph(network_graph_2023,layout = "nicely") + 
         geom_edge_link(aes(width=Weight), alpha=0.25) +
         scale_edge_width(range = c(0.1, 1)) +
         geom_node_point() 
       network_plot + theme_graph()
-   }
+    }
   })
   
   
   output$network_group <- renderPlot({
     if(input$yearMonth =="2022-03"){
-    if (input$groups =="educationLevel"){
-      network_group <- ggraph(network_graph_2022, layout = "nicely") + 
-        geom_edge_link(aes(width=Weight), alpha=0.2) +
-        scale_edge_width(range = c(0.1, 1)) +
-        geom_node_point(aes(colour = educationLevel), size = 1)
-      network_group + theme_graph()
-    }
-    else if (input$groups =="interestGroup"){
-      network_group <- ggraph(network_graph_2022, layout = "nicely") + 
-        geom_edge_link(aes(width=Weight), alpha=0.2) +
-        scale_edge_width(range = c(0.1, 1)) +
-        geom_node_point(aes(colour = interestGroup), size = 1)
-      network_group + theme_graph()
-    }
-    else if (input$groups =="joviality"){
-      network_group <- ggraph(network_graph_2022, layout = "nicely") + 
-        geom_edge_link(aes(width=Weight), alpha=0.2) +
-        scale_edge_width(range = c(0.1, 1)) +
-        geom_node_point(aes(colour = joviality), size = 1)
-      network_group + theme_graph()
-    }
+      if (input$groups =="educationLevel"){
+        network_group <- ggraph(network_graph_2022, layout = "nicely") + 
+          geom_edge_link(aes(width=Weight), alpha=0.2) +
+          scale_edge_width(range = c(0.1, 1)) +
+          geom_node_point(aes(colour = educationLevel), size = 1)
+        network_group + theme_graph()
+      }
+      else if (input$groups =="interestGroup"){
+        network_group <- ggraph(network_graph_2022, layout = "nicely") + 
+          geom_edge_link(aes(width=Weight), alpha=0.2) +
+          scale_edge_width(range = c(0.1, 1)) +
+          geom_node_point(aes(colour = interestGroup), size = 1)
+        network_group + theme_graph()
+      }
+      else if (input$groups =="joviality"){
+        network_group <- ggraph(network_graph_2022, layout = "nicely") + 
+          geom_edge_link(aes(width=Weight), alpha=0.2) +
+          scale_edge_width(range = c(0.1, 1)) +
+          geom_node_point(aes(colour = joviality), size = 1)
+        network_group + theme_graph()
+      }
     }
     else if (input$yearMonth =="2023-03"){
-    if (input$groups =="educationLevel" ){
+      if (input$groups =="educationLevel" ){
         network_group <- ggraph(network_graph_2023, layout = "nicely") + 
           geom_edge_link(aes(width=Weight), alpha=0.2) +
           scale_edge_width(range = c(0.1, 1)) +
@@ -771,18 +822,20 @@ server <- function(input, output){
   output$s3_restaurants <- renderValueBox(restaurants_summary)
   output$s3_pubs <- renderValueBox(pubs_summary)
   output$s3_schools <- renderValueBox(schools_summary)
-  
+  #NEWSTART
   output$mapPlotAllDetails <- renderTmap({
     tmap_mode("view")
-    mapAll <- tm_shape(buildings)+
+    mapAll <- tm_shape(buildings_shp)+
       tm_polygons(
+        col = ifelse(input$radioForMap == "", NA, input$radioForMap),
         palette="Accent",
         border.col = "black",
         border.alpha = .5,
         border.lwd = 0.5)
     if (input$venueTypeSelected == "All"){
-      mapAll <- tm_shape(buildings)+
+      mapAll <- tm_shape(buildings_shp)+
         tm_polygons(
+          col = ifelse(input$radioForMap == "", NA, input$radioForMap),
           palette="Accent",
           border.col = "black",
           border.alpha = .5,
@@ -800,8 +853,9 @@ server <- function(input, output){
     }
     
     if (input$venueTypeSelected == "Restaurants"){
-      mapAll <- tm_shape(buildings)+
+      mapAll <- tm_shape(buildings_shp)+
         tm_polygons(
+          col = ifelse(input$radioForMap == "", NA, input$radioForMap),
           palette="Accent",
           border.col = "black",
           border.alpha = .5,
@@ -811,8 +865,9 @@ server <- function(input, output){
     }
     
     if (input$venueTypeSelected == "Employers"){
-      mapAll <- tm_shape(buildings)+
+      mapAll <- tm_shape(buildings_shp)+
         tm_polygons(
+          col = ifelse(input$radioForMap == "", NA, input$radioForMap),
           palette="Accent",
           border.col = "black",
           border.alpha = .5,
@@ -822,8 +877,9 @@ server <- function(input, output){
     }
     
     if (input$venueTypeSelected == "Apartments"){
-      mapAll <- tm_shape(buildings)+
+      mapAll <- tm_shape(buildings_shp)+
         tm_polygons(
+          col = ifelse(input$radioForMap == "", NA, input$radioForMap),
           palette="Accent",
           border.col = "black",
           border.alpha = .5,
@@ -833,8 +889,9 @@ server <- function(input, output){
     }
     
     if (input$venueTypeSelected == "Pubs"){
-      mapAll <- tm_shape(buildings)+
+      mapAll <- tm_shape(buildings_shp)+
         tm_polygons(
+          col = ifelse(input$radioForMap == "", NA, input$radioForMap),
           palette="Accent",
           border.col = "black",
           border.alpha = .5,
@@ -844,8 +901,9 @@ server <- function(input, output){
     }
     
     if (input$venueTypeSelected == "Schools"){
-      mapAll <- tm_shape(buildings)+
+      mapAll <- tm_shape(buildings_shp)+
         tm_polygons(
+          col = ifelse(input$radioForMap == "", NA, input$radioForMap),
           palette="Accent",
           border.col = "black",
           border.alpha = .5,
@@ -856,7 +914,7 @@ server <- function(input, output){
     mapAll
     
   })
-  
+  #NEWEND
   output$mapPlotAll <- renderTmap({
     tmap_mode("view")
     tm_shape(buildings)+
@@ -989,8 +1047,9 @@ server <- function(input, output){
     
     
   })
-  
+  #NEWSTART
   output$costTestPlot <-renderPlot({
+    input$s3_goButton
     set.seed(1234)
     buildings_shp <- buildings_shp %>%
       rename(buildingId = bldngId)
@@ -1003,7 +1062,7 @@ server <- function(input, output){
         data = joined_data,
         x = "region",
         y = "rentalCost",
-        title = "Statistical test on apartment rental cost and region",
+        title = input$s3_plotTitle,
         type = input$s3_test,
         plot.type = input$s3_plotType,
         mean.ci = TRUE, 
@@ -1020,7 +1079,7 @@ server <- function(input, output){
         data = joined_data,
         x = "region",
         y = "hourlyCost",
-        title = "Statistical test on pub cost and region",
+        title = input$s3_plotTitle,
         type = input$s3_test,
         plot.type = input$s3_plotType,
         mean.ci = TRUE, 
@@ -1037,7 +1096,7 @@ server <- function(input, output){
         data = joined_data,
         x = "region",
         y = "foodCost",
-        title = "Statistical test on restaurant food cost and region",
+        title = input$s3_plotTitle,
         type = input$s3_test,
         plot.type = input$s3_plotType,
         mean.ci = TRUE, 
@@ -1054,7 +1113,7 @@ server <- function(input, output){
         data = joined_data,
         x = "region",
         y = "monthlyCost",
-        title = "Statistical test on school cost and region",
+        title = input$s3_plotTitle,
         type = input$s3_test,
         plot.type = input$s3_plotType,
         mean.ci = TRUE, 
@@ -1071,7 +1130,7 @@ server <- function(input, output){
         data = joined_data,
         x = "region",
         y = "hourlyRate",
-        title = "Statistical test on job hourly rate and region",
+        title = input$s3_plotTitle,
         type = input$s3_test,
         plot.type = input$s3_plotType,
         mean.ci = TRUE, 
@@ -1080,15 +1139,13 @@ server <- function(input, output){
         p.adjust.method = "fdr",
         messages = FALSE)
     }
-    
+    #NEWEND
   })
-  
+  #NEWSTART
   output$checkinPlot <- renderPlotly({
     if (input$checkinType == "Restaurants"){
       checkin_journal_rest <- checkin_journal %>%
         filter(`venueType` == "Restaurant" & `timestamp` >= input$checkinDate[1] & `timestamp` <= input$checkinDate[2])
-      #print(input$checkinDate[1])
-      #print(input$checkinDate[2])
       checkin_rest <- checkin_journal_rest %>%
         group_by(`venueId`, `timestamp`) %>%
         summarise('checkins' = n()) %>%
@@ -1102,15 +1159,12 @@ server <- function(input, output){
         labs(x ="Month-Year", y = "No. of Check-ins", 
              title = "No. of check-ins for restaurants") +
         geom_line()
-      
       ggplotly(p1)
     }
     
     else if (input$checkinType == "Pubs"){
       checkin_journal_pub <- checkin_journal %>%
         filter(`venueType` == "Pub" & `timestamp` >= input$checkinDate[1] & `timestamp` <= input$checkinDate[2])
-      print(input$checkinDate[1])
-      print(input$checkinDate[2])
       checkin_pub <- checkin_journal_pub %>%
         group_by(`venueId`, `timestamp`) %>%
         summarise('checkins' = n()) %>%
@@ -1124,13 +1178,173 @@ server <- function(input, output){
         labs(x ="Month-Year", y = "No. of Check-ins", 
              title = "No. of check-ins for pubs") +
         geom_line()
-      
       ggplotly(p2)
       
     }
+  })
+  
+  output$checkinMap <- renderTmap({
+    tmap_mode("plot")
+    checkintm <- tm_shape(buildings_shp)+
+      tm_polygons(
+        col = "region",
+        palette="Accent",
+        border.col = "black",
+        border.alpha = .5,
+        border.lwd = 0.5)
     
+    if (input$checkinType == "Restaurants"){
+      checkin_journal_rest <- checkin_journal %>%
+        filter(`venueType` == "Restaurant" & `timestamp` >= input$checkinDate[1] & `timestamp` <= input$checkinDate[2])
+      checkin_rest <- checkin_journal_rest %>%
+        group_by(`venueId`) %>%
+        summarise('checkins' = n()) %>%
+        ungroup()
+      checkin_rest$venueId <- as.character(checkin_rest$venueId)
+      restaurants_df <- restaurants %>% 
+        as.data.frame()%>%
+        rename(venueId = restaurantId)
+      checkin_rest <-  left_join(checkin_rest, restaurants_df, by = "venueId")
+      checkin_rest <- st_as_sf(checkin_rest )
+      tmap_mode("plot")
+      checkintm <- tm_shape(buildings_shp)+
+        tm_polygons(
+          col = "region",
+          palette="Accent",
+          border.col = "black",
+          border.alpha = .5,
+          border.lwd = 0.5) +
+        tm_shape(checkin_rest)+
+        tm_bubbles(col = "checkins",
+                   alpha = 0.8,
+                   n = 6,
+                   style = "jenks",
+                   palette="Reds",
+                   size = "checkins",
+                   scale = 0.8,
+                   border.col = "black",
+                   border.lwd = 0.5)
+      
+    }
+    
+    else if (input$checkinType == "Pubs"){
+      checkin_journal_pub <- checkin_journal %>%
+        filter(`venueType` == "Pub" & `timestamp` >= input$checkinDate[1] & `timestamp` <= input$checkinDate[2])
+      checkin_pub <- checkin_journal_pub %>%
+        group_by(`venueId`) %>%
+        summarise('checkins' = n()) %>%
+        ungroup()
+      checkin_pub$venueId <- as.character(checkin_pub$venueId)
+      pubs_df <- pubs %>% 
+        as.data.frame()%>%
+        rename(venueId = pubId)
+      checkin_pub <-  left_join(checkin_pub, pubs_df, by = "venueId")
+      checkin_pub <- st_as_sf(checkin_pub)
+      tmap_mode("plot")
+      checkintm <- tm_shape(buildings_shp)+
+        tm_polygons(
+          col = "region",
+          palette="Accent",
+          border.col = "black",
+          border.alpha = .5,
+          border.lwd = 0.5) +
+        tm_shape(checkin_pub)+
+        tm_bubbles(col = "checkins",
+                   alpha = 0.8,
+                   n = 6,
+                   style = "jenks",
+                   palette="Blues",
+                   size = "checkins",
+                   scale = 0.8,
+                   border.col = "black",
+                   border.lwd = 0.5)
+      
+    }
+    tmap_mode("plot")
+    checkintm
+  })
+  
+  output$corrPlot <- renderPlot({
+    input$s3_goButton1
+    set.seed(1234)
+    if (grepl("rest", input$s3_xyvariable, fixed=TRUE)){
+      checkin_rest <- checkin_journal %>%
+        filter(`venueType` == "Restaurant" & `timestamp` >= input$checkinDate[1] & `timestamp` <= input$checkinDate[2])
+      if (input$s3_xyvariable == "restMean"){
+        checkin_rest <- checkin_rest %>%
+          group_by(`venueId`, `timestamp`) %>%
+          summarise('checkins' = n()) %>%
+          ungroup()%>%
+          group_by(`venueId`) %>%
+          summarise('checkins' = mean(checkins, na.rm = TRUE)) %>%
+          ungroup()
+      }
+      else if (input$s3_xyvariable == "restMedian"){
+        checkin_rest <- checkin_rest %>%
+          group_by(`venueId`, `timestamp`) %>%
+          summarise('checkins' = n()) %>%
+          ungroup()%>%
+          group_by(`venueId`) %>%
+          summarise('checkins' = median(checkins,na.rm = TRUE)) %>%
+          ungroup()
+      }
+      checkin_rest$venueId <- as.character(checkin_rest$venueId)
+      restaurants_df <- restaurants %>% 
+        as.data.frame()%>%
+        rename(venueId = restaurantId)
+      checkin_rest <-  left_join(checkin_rest, restaurants_df, by = "venueId")
+      ggscatterstats(
+        data = checkin_rest,
+        x = "checkins", 
+        y = "foodCost",
+        type = input$s3_test1,
+        marginal = input$s3_marginal,
+        title = input$s3_plotTitle1,
+        conf.level = 0.95,
+        bf.prior = 0.707)
+    }
+    
+    else if (grepl("pub", input$s3_xyvariable, fixed=TRUE)){
+      checkin_pub <- checkin_journal %>%
+        filter(`venueType` == "Pub" & `timestamp` >= input$checkinDate[1] & `timestamp` <= input$checkinDate[2])
+      if (input$s3_xyvariable == "pubMean"){
+        checkin_pub <- checkin_pub %>%
+          group_by(`venueId`, `timestamp`) %>%
+          summarise('checkins' = n()) %>%
+          ungroup()%>%
+          group_by(`venueId`) %>%
+          summarise('checkins' = mean(checkins, na.rm = TRUE)) %>%
+          ungroup()
+      }
+      else if (input$s3_xyvariable == "pubMedian"){
+        checkin_pub <- checkin_pub %>%
+          group_by(`venueId`, `timestamp`) %>%
+          summarise('checkins' = n()) %>%
+          ungroup()%>%
+          group_by(`venueId`) %>%
+          summarise('checkins' = median(checkins, na.rm = TRUE)) %>%
+          ungroup()
+      }
+      
+      checkin_pub$venueId <- as.character(checkin_pub$venueId)
+      pubs_df <- pubs %>% 
+        as.data.frame()%>%
+        rename(venueId = pubId)
+      checkin_pub <-  left_join(checkin_pub, pubs_df, by = "venueId")
+      ggscatterstats(
+        data = checkin_pub,
+        x = "checkins", 
+        y = "hourlyCost",
+        type = input$s3_test1,
+        marginal = input$s3_marginal,
+        title = input$s3_plotTitle1,
+        conf.level = 0.95,
+        bf.prior = 0.707)
+      
+    }
     
   })
+  #NEWEND
   ## End of Section 3
   
 }
