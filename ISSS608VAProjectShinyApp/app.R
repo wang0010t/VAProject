@@ -81,7 +81,7 @@ siderbar <-
                          menuSubItem("Network Among Different Groups", tabName = "group_tab"),
                          menuSubItem("visnetwork Graph", tabName = "vis_tab")
                 ),
-                menuItem("Predominant business", tabName = "predominant_business_tab", startExpanded = FALSE,
+                menuItem("Predominant business", tabName = "predominant_business_tab", startExpanded = FALSE, icon = icon("building"),  
                          menuSubItem("Overall Town Map", tabName = "townmap_tab"),
                          menuSubItem("Cost Analysis", tabName = "venuetype_tab"),
                          menuSubItem("Check-in Analysis", tabName = "checkin_tab"),
@@ -311,15 +311,22 @@ body <- dashboardBody(
               valueBoxOutput('s3_pubs', width = 2),
               valueBoxOutput('s3_restaurants', width = 2),
               valueBoxOutput('s3_schools', width = 2),
-              box( h4("Geographical region of the city"), plotlyOutput(outputId = "mapPlotAreas", height = 300)),
+              box( title = "Geographical region of the city", 
+                   solidHeader = TRUE, 
+                   status = "primary",  
+                   plotlyOutput(outputId = "mapPlotAreas", height = 300)),
               #NEWSTART
-              box(h4("Building type in the city"), tmapOutput(outputId = "mapPlotAll", height = 300)),
+              box(title = "Building type in the city", 
+                  solidHeader = TRUE, 
+                  status = "primary", tmapOutput(outputId = "mapPlotAll", height = 300)),
               
             ),
             fluidRow(
-              box(
-                selectInput(inputId = "venueTypeSelected", 
-                            label = "Please select venue type to be shown in the map:",
+              box(title = "Select Venue type in the city", 
+                  solidHeader = TRUE, 
+                  status = "primary",
+                  selectInput(inputId = "venueTypeSelected", 
+                            label = "",
                             choices = c("All" = "All",
                                         "Apartments" = "Apartments",
                                         "Employers" = "Employers",
@@ -332,7 +339,9 @@ body <- dashboardBody(
                              selected = ""),
               ),
               
-              box(h4("Venue type in the city"), tmapOutput(outputId = "mapPlotAllDetails", height = 300))
+              box(title = "Venue type in the city", 
+                  solidHeader = TRUE, 
+                  status = "primary", tmapOutput(outputId = "mapPlotAllDetails", height = 300))
               #NEWEND
             ),
             
@@ -387,8 +396,12 @@ body <- dashboardBody(
                   
                 ),
                 fluidRow(
-                  box(h4("Map for selected venue type with cost details"), tmapOutput(outputId = "mapPlotbyType", width = 780, height = 360)),
-                  box(h4("Statistical test for the selected variables"), plotOutput(outputId = "costTestPlot",width = 780, height = 360)),
+                  box(title = "Map for selected venue type with cost details", 
+                      solidHeader = TRUE, 
+                      status = "primary", tmapOutput(outputId = "mapPlotbyType", width = 780, height = 360)),
+                  box(title = "Statistical test for the selected variables", 
+                      solidHeader = TRUE, 
+                      status = "primary", plotOutput(outputId = "costTestPlot",width = 780, height = 360)),
                 )
               )
             )
@@ -418,7 +431,7 @@ body <- dashboardBody(
                               choices = c("Mean of check-ins VS. Pub Cost" = "pubMean",
                                           "Median of check-ins VS. Pub Cost" = "pubMedian",
                                           "Mean of check-ins VS. Restaurant Food Cost" = "restMean",
-                                          "Median of check-ins VS. RestaurantFood Cost" = "restMedian"
+                                          "Median of check-ins VS. Restaurant Food Cost" = "restMedian"
                               ),
                               selected = "pubMean"),
                   selectInput(inputId = "s3_test1",
@@ -441,17 +454,23 @@ body <- dashboardBody(
                   tabsetPanel(
                     tabPanel("Plots", 
                              fluidRow(
-                               box(h4("Check-in trends for selected venue type"), 
+                               box(title = "Check-in trends for selected venue type", 
+                                   solidHeader = TRUE, 
+                                   status = "primary",
                                    plotlyOutput("checkinPlot",width = "90%", height = "340px"), width = 10, height = 400),
                              ),
                              fluidRow(
-                               box(h4("Total no. of check-ins for the selected period and venue type on the map"), 
+                               box(title = "Total no. of check-ins for the selected period and venue type on the map", 
+                                   solidHeader = TRUE, 
+                                   status = "primary", 
                                    tmapOutput(outputId = "checkinMap", height = 300), width = 10),
                              )    
                     ), 
                     tabPanel("Correlation Test", 
                              fluidRow(
-                               box(h4("Correlation test for the selected variables"), 
+                               box(title = "Correlation test for the selected variables", 
+                                   solidHeader = TRUE, 
+                                   status = "primary",  
                                    plotOutput(outputId = "corrPlot",width = "90%", height = "340px"), width = 10, height = 400),
                              )    
                     ), 
@@ -460,6 +479,121 @@ body <- dashboardBody(
               )
               #NEWEND
             )
+    ),
+    tabItem(tabName = "revenue_tab",
+          fluidPage(
+            titlePanel("Revenue Analysis for Pubs and Restaurants"),
+            sidebarLayout(
+              sidebarPanel(
+                selectInput(inputId = "revVenueType", 
+                            label = "Select Venue Type:",
+                            choices = c("Pubs" = "Pubs",
+                                        "Restaurants" = "Restaurants"),
+                            multiple = FALSE),
+                sliderInput(inputId = "revDate",
+                            label = "Period",
+                            min = as.Date("2022-03-01"),
+                            max = as.Date("2023-05-01"),
+                            value=c(as.Date("2022-03-01"), as.Date("2022-09-01")),
+                            timeFormat="%Y-%m"),
+                selectInput(inputId = "revPlotType", 
+                            label = "Select Plot Type:",
+                            choices = c("Monthly Revenue Plot" = "revenue",
+                                        "Monthly Customers Plot" = "customers",
+                                        "Monthly Revenue/Customer Plot" = "RevenuePerCustomer"),
+                            multiple = FALSE),
+                HTML('<hr style="color: black;">'),
+                helpText("Please select below fields for a statistical test on selected variables."),
+                selectInput(inputId = "s3_revxvariable",
+                            label = "Select x-variable:",
+                            choices = c("Region" = "Region"),
+                            selected = "Region"),
+                selectInput(inputId = "s3_revyvariable",
+                            label = "Select y-variable:",
+                            choices = c("Monthly Revenue" = "revenue",
+                                        "Monthly Customers" = "customers",
+                                        "Monthly Revenue/Customer" = "RevenuePerCustomer"),
+                            selected = "revenue"),
+                selectInput(inputId = "s3_revtest",
+                            label = "Type of statistical test:",
+                            choices = c("nonparametric" = "np",
+                                        "parametric" = "p",
+                                        "robust" = "r",
+                                        "Bayes Factor" = "bf"),
+                            selected = "p"),
+                selectInput(inputId = "s3_revplotType",
+                            label = "Type of plot:",
+                            choices = c("boxviolin" = "boxviolin",
+                                        "box" = "box",
+                                        "violin" = "violin"),
+                            selected = "boxviolin"),
+                textInput(inputId = "s3_revStatsPlotTitle",
+                          label = "Plot title",
+                          placeholder = "Enter text to be used as plot title"),
+                actionButton(inputId = "s3_revStatsGoButton", 
+                             "Update Plot Title!"),
+                
+                HTML('<hr style="color: black;">'),
+                helpText("Please select below fields for a correlation test on selected variables."),
+                selectInput(inputId = "s3_revxyvariable",
+                            label = "Select x and y variables:",
+                            choices = c("Revenue VS. Pub Cost" = "pubRev",
+                                        "Customers VS. Pub Cost" = "pubCust",
+                                        "Revenue VS. Restaurant Food Cost" = "restRev",
+                                        "Customers VS. Restaurant Food Cost" = "restCust"
+                            ),
+                            selected = "pubRev"),
+                selectInput(inputId = "s3_revCorrtest",
+                            label = "Type of statistical test:",
+                            choices = c("parametric" = "p",
+                                        "nonparametric" = "np",
+                                        "robust" = "r",
+                                        "Bayes Factor" = "bf"),
+                            selected = "p"),
+                checkboxInput(inputId = "s3_revMarginal",
+                              label = "Display marginal graphs",
+                              value = TRUE),
+                textInput(inputId = "s3_revCorrPlotTitle",
+                          label = "Plot title",
+                          placeholder = "Enter text to be used as plot title"),
+                actionButton(inputId = "s3_revCorrGoButton", 
+                             "Update Plot Title!"),
+                
+              ),
+              mainPanel(
+                tabsetPanel(
+                  tabPanel("Plots", 
+                           fluidRow(
+                             box(title = "Monthly revenue and customers for selected venue type", 
+                                 solidHeader = TRUE, 
+                                 status = "primary",
+                                 plotlyOutput("revPlot",width = "90%", height = "340px"), width = 10, height = 400),
+                           ),
+                           fluidRow(
+                             box(title = "Revenue and customers for selected venue type on map", 
+                                 solidHeader = TRUE, 
+                                 status = "primary", 
+                                 tmapOutput(outputId = "revMap", height = 300), width = 10),
+                           )    
+                  ), 
+                  
+                  tabPanel("Statistical Test", 
+                           fluidRow(
+                             box(title = "Statistical test for the selected variables", 
+                                 solidHeader = TRUE, 
+                                 status = "primary",  
+                                 plotOutput(outputId = "revStatsPlot",width = "90%", height = "340px"), width = 10, height = 400),
+                             box(title = "Correlation test for the selected variables", 
+                                 solidHeader = TRUE, 
+                                 status = "primary",  
+                                 plotOutput(outputId = "revCorrPlot",width = "90%", height = "340px"), width = 10, height = 400),
+                           )    
+                  ), 
+                ),
+              )
+            )
+            #NEWEND
+          )
     )
   )
 )
@@ -531,6 +665,8 @@ jobs_employers <- st_as_sf(jobs_employers)
 #NEWSTART
 checkin_journal <- read_rds("data/checkin_journal_selected.rds")
 checkin_journal$timestamp <- as.Date(checkin_journal$timestamp, "%Y-%m-%d")
+pub_cust_rev <- read_rds("data/pub_cust_rev.rds")
+rest_cust_rev <- read_rds("data/rest_cust_rev.rds")
 #NEWEND
 
 network_nodes <- read_csv("data/Participants.csv")
@@ -1705,6 +1841,246 @@ server <- function(input, output){
         title = input$s3_plotTitle1,
         conf.level = 0.95,
         bf.prior = 0.707)
+      
+    }
+    
+  })
+  
+  output$revPlot <- renderPlotly({
+    #print(input$revDate[1])
+    #print(input$revDate[2])
+    if (input$revVenueType == "Restaurants"){
+      rest_cust_rev <- rest_cust_rev %>%
+        filter(`monthYear` >= format(input$revDate[1], "%Y-%m") & `monthYear` <= format(input$revDate[2], "%Y-%m"))
+      rest_cust_rev$venueId <- as.character(rest_cust_rev$venueId)
+      #print(rest_cust_rev)
+      rest_cust_rev$monthYear <- as.yearmon(rest_cust_rev$monthYear)
+      revP <- ggplot(data=rest_cust_rev, 
+                     aes_string(x = "monthYear",
+                       y = input$revPlotType, 
+                       color="venueId"
+                   )) +
+        labs(x="", y="", title = paste0("Monthly ", input$revPlotType, " for ", input$revVenueType)) +
+        geom_line()
+      ggplotly(revP)
+    }
+    
+    else if (input$checkinType == "Pubs"){
+      pub_cust_rev <- pub_cust_rev %>%
+        filter(`monthYear` >= format(input$revDate[1], "%Y-%m") & `monthYear` <= format(input$revDate[2], "%Y-%m"))
+      pub_cust_rev$venueId <- as.character(pub_cust_rev$venueId)
+      #print(pub_cust_rev)
+      pub_cust_rev$monthYear <- as.yearmon(pub_cust_rev$monthYear)
+      revP <- ggplot(data=pub_cust_rev, 
+                     aes_string(x = "monthYear",
+                         y = input$revPlotType, 
+                         color="venueId"
+                     )) +
+        labs(x = "", y="", title = paste0("Monthly ", input$revPlotType, " for ", input$revVenueType))+
+        geom_line()
+      ggplotly(revP)
+      
+    }
+  })
+  
+  output$revMap <- renderTmap({
+    tmap_mode("plot")
+    revtm <- tm_shape(buildings_shp)+
+      tm_polygons(
+        col = "region",
+        palette="Accent",
+        border.col = "black",
+        border.alpha = .5,
+        border.lwd = 0.5)
+    
+    if (input$revVenueType == "Restaurants"){
+      rest_cust_rev <- rest_cust_rev %>%
+        filter(`monthYear` >= format(input$revDate[1], "%Y-%m") & `monthYear` <= format(input$revDate[2], "%Y-%m"))
+      rest_cust_rev$venueId <- as.character(rest_cust_rev$venueId)
+      rest_cust_rev$monthYear <- as.yearmon(rest_cust_rev$monthYear)
+      restaurants_df <- restaurants %>% 
+        as.data.frame()%>%
+        rename(venueId = restaurantId)
+      rev_rest <-  left_join(rest_cust_rev, restaurants_df, by = "venueId")
+      rev_rest <- st_as_sf(rev_rest )
+      tmap_mode("plot")
+      revtm <- tm_shape(buildings_shp)+
+        tm_polygons(
+          col = "region",
+          palette="Accent",
+          border.col = "black",
+          border.alpha = .5,
+          border.lwd = 0.5) +
+        tm_shape(rev_rest)+
+        tm_bubbles(col = input$revPlotType,
+                   alpha = 0.8,
+                   n = 6,
+                   style = "jenks",
+                   palette="Reds",
+                   size = input$revPlotType,
+                   scale = 0.8,
+                   border.col = "black",
+                   border.lwd = 0.5)
+      
+    }
+    
+    else if (input$checkinType == "Pubs"){
+      pub_cust_rev <- pub_cust_rev %>%
+        filter(`monthYear` >= format(input$revDate[1], "%Y-%m") & `monthYear` <= format(input$revDate[2], "%Y-%m"))
+      pub_cust_rev$venueId <- as.character(pub_cust_rev$venueId)
+      pub_cust_rev$monthYear <- as.yearmon(pub_cust_rev$monthYear)
+      pubs_df <- pubs %>% 
+        as.data.frame()%>%
+        rename(venueId = pubId)
+      rev_pub <-  left_join(pub_cust_rev, pubs_df, by = "venueId")
+      rev_pub <- st_as_sf(rev_pub)
+      tmap_mode("plot")
+      revtm <- tm_shape(buildings_shp)+
+        tm_polygons(
+          col = "region",
+          palette="Accent",
+          border.col = "black",
+          border.alpha = .5,
+          border.lwd = 0.5) +
+        tm_shape(rev_pub)+
+        tm_bubbles(col = input$revPlotType,
+                   alpha = 0.8,
+                   n = 6,
+                   style = "jenks",
+                   palette="Blues",
+                   size = input$revPlotType,
+                   scale = 0.8,
+                   border.col = "black",
+                   border.lwd = 0.5)
+      
+    }
+    tmap_mode("plot")
+    revtm
+  })
+  
+  output$revStatsPlot <-renderPlot({
+    input$s3_revStatsGoButton
+    set.seed(1234)
+    buildings_shp <- buildings_shp %>%
+      rename(buildingId = bldngId)
+    buildings_df <- buildings_shp%>% as.data.frame()
+    if (input$revVenueType == "Restaurants"){
+      rest_cust_rev <- rest_cust_rev %>%
+        filter(`monthYear` >= format(input$revDate[1], "%Y-%m") & `monthYear` <= format(input$revDate[2], "%Y-%m"))
+      rest_cust_rev$venueId <- as.character(rest_cust_rev$venueId)
+      #rest_cust_rev$monthYear <- as.yearmon(rest_cust_rev$monthYear)
+      rest_df <- restaurants%>% 
+        as.data.frame()%>%
+        rename(venueId = restaurantId)
+      joined_data <- left_join(rest_cust_rev, rest_df, by = "venueId")
+      joined_data <- left_join(joined_data, buildings_df, by = "buildingId")
+      #print(joined_data)
+      ggbetweenstats(
+        data = joined_data,
+        x = "region",
+        y = !!input$s3_revyvariable,
+        title = input$s3_revStatsPlotTitle,
+        type = input$s3_revtest,
+        plot.type = input$s3_revplotType,
+        mean.ci = TRUE, 
+        pairwise.comparisons = TRUE, 
+        pairwise.display = "s",
+        p.adjust.method = "fdr",
+        messages = FALSE)
+    }
+    else if (input$revVenueType == "Pubs"){
+      pub_cust_rev <- pub_cust_rev %>%
+        filter(`monthYear` >= format(input$revDate[1], "%Y-%m") & `monthYear` <= format(input$revDate[2], "%Y-%m"))
+      pub_cust_rev$venueId <- as.character(pub_cust_rev$venueId)
+      #pub_cust_rev$monthYear <- as.yearmon(pub_cust_rev$monthYear)
+      pub_df <- pubs%>% 
+        as.data.frame()%>%
+        rename(venueId = pubId)
+      joined_data <- left_join(pub_cust_rev, pub_df, by = "venueId")
+      joined_data <- left_join(joined_data, buildings_df, by = "buildingId")
+      #print(joined_data)
+      ggbetweenstats(
+        data = joined_data,
+        x = "region",
+        y = !!input$s3_revyvariable,
+        title = input$s3_revStatsPlotTitle,
+        type = input$s3_revtest,
+        plot.type = input$s3_revplotType,
+        mean.ci = TRUE, 
+        pairwise.comparisons = TRUE, 
+        pairwise.display = "s",
+        p.adjust.method = "fdr",
+        messages = FALSE)
+    }
+    
+  })
+  
+  output$revCorrPlot <- renderPlot({
+    input$s3_revCorrGoButton
+    set.seed(1234)
+    if (grepl("rest", input$s3_revxyvariable, fixed=TRUE)){
+      rest_cust_rev <- rest_cust_rev %>%
+        filter(`monthYear` >= format(input$revDate[1], "%Y-%m") & `monthYear` <= format(input$revDate[2], "%Y-%m"))
+      rest_cust_rev$venueId <- as.character(rest_cust_rev$venueId)
+      restaurants_df <- restaurants %>% 
+        as.data.frame()%>%
+        rename(venueId = restaurantId)
+      rev_rest <-  left_join(rest_cust_rev, restaurants_df, by = "venueId")
+      if (input$s3_revxyvariable == "restRev"){
+        ggscatterstats(
+          data = rev_rest,
+          x = "revenue", 
+          y = "foodCost",
+          type = input$s3_revCorrtest,
+          marginal = input$s3_revMarginal,
+          title = input$s3_revCorrPlotTitle,
+          conf.level = 0.95,
+          bf.prior = 0.707)
+      }
+      else if (input$s3_revxyvariable == "restCust"){
+        ggscatterstats(
+          data = rev_rest,
+          x = "customers", 
+          y = "foodCost",
+          type = input$s3_revCorrtest,
+          marginal = input$s3_revMarginal,
+          title = input$s3_revCorrPlotTitle,
+          conf.level = 0.95,
+          bf.prior = 0.707)
+      }
+      
+    }
+    
+    else if (grepl("pub", input$s3_revxyvariable, fixed=TRUE)){
+      pub_cust_rev <- pub_cust_rev %>%
+        filter(`monthYear` >= format(input$revDate[1], "%Y-%m") & `monthYear` <= format(input$revDate[2], "%Y-%m"))
+      pub_cust_rev$venueId <- as.character(pub_cust_rev$venueId)
+      pubs_df <- pubs %>% 
+        as.data.frame()%>%
+        rename(venueId = pubId)
+      rev_pub <-  left_join(pub_cust_rev, pubs_df, by = "venueId")
+      if (input$s3_revxyvariable == "pubRev"){
+        ggscatterstats(
+          data = rev_pub,
+          x = "revenue", 
+          y = "hourlyCost",
+          type = input$s3_revCorrtest,
+          marginal = input$s3_revMarginal,
+          title = input$s3_revCorrPlotTitle,
+          conf.level = 0.95,
+          bf.prior = 0.707)
+      }
+      else if (input$s3_revxyvariable == "pubCust"){
+        ggscatterstats(
+          data = rev_pub,
+          x = "customers", 
+          y = "hourlyCost",
+          type = input$s3_revCorrtest,
+          marginal = input$s3_revMarginal,
+          title = input$s3_revCorrPlotTitle,
+          conf.level = 0.95,
+          bf.prior = 0.707)
+      }
       
     }
     
