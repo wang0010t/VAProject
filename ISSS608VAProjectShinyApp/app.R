@@ -861,7 +861,7 @@ server <- function(input, output){
                                          summarize('Monthly Expense' = list(consume), 
                                                    .groups = "drop") %>%
                                          gt() %>%
-                                         gt_plt_sparkline('Monthly Consume')),  rownames = FALSE)
+                                         gt_plt_sparkline('Monthly Expense')),  rownames = FALSE)
   })
   output$wage_ana_plot <- renderPlotly({
     wage_ana_plot
