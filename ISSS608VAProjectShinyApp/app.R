@@ -36,8 +36,12 @@ library(reactablefmtr)
 library(gt)
 library(gtExtras)
 library(ggthemes)
-
-
+library(ggrepel)
+library(formattable)
+library(magrittr)
+library(ggpol)
+library(ggridges)
+library(zoo)
 
 # packages = c('tidyverse', 'sf', 'tmap', 'lubridate', 'clock', 'sftime', 'rmarkdown', 'plotly')
 # 
@@ -46,6 +50,12 @@ library(ggthemes)
 #     install.packages(p)
 #   }
 # }
+true_false_formatter <-
+  formatter("span",
+            style = x ~ style(
+              font.weight = "bold",
+              color = ifelse(x == TRUE, "forestgreen", ifelse(x == FALSE, "red", "black"))
+            ))
 
 
 ## build ui.R -----------------------------------
@@ -60,11 +70,11 @@ siderbar <-
   dashboardSidebar(
     sidebarMenu(id = 'sidebarmenu',
                 menuItem("Demographics analysis", 
-                         tabName = "demographics_tab", startExpanded = FALSE,
+                         tabName = "demographics_tab", startExpanded = FALSE, icon = icon("tachometer-alt"),
                          menuSubItem("Overall DemoGraphic", tabName = "overall_demo_analysis"),
                          menuSubItem("Wage analysis", tabName = "wage_analysis"), # TO-DO
-                         menuSubItem("Joviality analysis", tabName = "jov_analysis"), # TO-DO
-                         menuSubItem("Consume analysis", tabName = "consume_analysis")
+                         menuSubItem("Expenditure analysis", tabName = "expend_analysis") # TO-DO
+                         #menuSubItem("Consume analysis", tabName = "consume_analysis")
                 ),
                 menuItem("Social activity", tabName = "social_activity_tab", startExpanded = FALSE,
                          menuSubItem("Overall Network Graph", tabName = "network_tab"),
@@ -97,40 +107,152 @@ body <- dashboardBody(
         # box(plotlyOutput('statsTest_plot'))
       )
     ),
-    tabItem(
-      tabName = 'consume_analysis',
-      h2("Consume analysis"),
-      h4('What is influencing people\'s consume'),
-      fluidRow(
-        box(
-          DT::dataTableOutput("values")
-        )
-      )
-    ),
-    tabItem( # TO-DO
+    tabItem( # TO-DO'
       tabName = "wage_analysis",
+      fluidPage(
       h2("Wage Analysis"),
-      h4('What is influencing people\'s wage'),
-      fluidRow(
-        box(
-          sliderInput(inputId = "wageDate",
-                      label = "Date Range",
-                      min = as.Date("2022-03-01","%Y-%m-%d"),
-                      max = as.Date("2023-05-25","%Y-%m-%d"),
-                      value=c(as.Date("2022-03-01"), as.Date("2023-05-25")),
-                      timeFormat="%Y-%m-%d"),
-          plotOutput("wage_ana_plot")
-        ),
-        box(
-          selectInput(inputId = "wage_factor", 
-                      label = "Factor that may influence Wage",
-                      choices = c(
-                        "Education Level" = "educationLevel",
-                        "Interest Group" = "interestGroup",
-                        "Age Group" = "ageGroup"),
-                      multiple = FALSE)
-        )
-      )
+      tabsetPanel(
+        tabPanel("Explore Analysis", 
+                 fluidRow(
+                   box(
+                     title = "Wage Distribution in different groups", 
+                     solidHeader = TRUE, 
+                     status = "primary",
+                     width = 6, # Half of the body
+                     selectInput(
+                       inputId = "wage_boxplot_var",
+                       label = "Group by",
+                       choices = c(
+                         "Education Level" = "educationLevel",
+                         "Interest Group" = "interestGroup",
+                         "Joviality Status" = "jovialityGroup",
+                         "Age Group" = "ageGroup",
+                         "Have Kids" = "haveKids"
+                       ),
+                       multiple = FALSE),
+                     plotlyOutput("wage_distribution",width="90%")
+                   ),
+                   box(width = 6, # Half of the body
+                       title='What is influencing people\'s wage',
+                       solidHeader = TRUE, 
+                       status = "primary",
+                       sliderInput(inputId = "wageDate",
+                                   label = "Date Range",
+                                   min = as.Date("2022-03-01","%Y-%m-%d"),
+                                   max = as.Date("2023-05-25","%Y-%m-%d"),
+                                   value=c(as.Date("2022-03-01"), as.Date("2023-05-25")),
+                                   timeFormat="%Y-%m-%d"),
+                       selectInput(inputId = "wage_factor", 
+                                   label = "Factor that may influence Wage",
+                                   choices = c(
+                                     "Education Level" = "educationLevel",
+                                     "Interest Group" = "interestGroup",
+                                     "Age Group" = "ageGroup",
+                                     "Joviality Status" = "Joviality_Group"),
+                                   multiple = FALSE),
+                       plotOutput("wage_ana_plot",width="100%")
+                   )
+                 ),
+                 fluidRow(
+                   box(width = 12,
+                       title = "Predict participant\'s wage",
+                       solidHeader = TRUE,
+                       status='primary',
+                       column(width = 4,
+                              selectInput(inputId = "par_educationLevel", 
+                                          label = "Education Level:",
+                                          choices = c(
+                                            #"Any Status" = "Any Status",
+                                            "Low" = "Low",
+                                            "High School or College" = "HighSchoolOrCollege",
+                                            "Bachelors" = "Bachelors",
+                                            "Graduate" = "Graduate"),
+                                          multiple = FALSE),
+                              selectInput(inputId = "par_ageGroup", 
+                                          label = "Age Group:",
+                                          choices = c(
+                                            "26-35" = "26-35",
+                                            "36-45" = "36-45",
+                                            "46-55" = "46-55"),
+                                          multiple = FALSE),
+                              selectInput(inputId = "par_haveKids", 
+                                          label = "Have Kids:",
+                                          choices = c(
+                                            "True" = "TRUE",
+                                            "False" = "FALSE"),
+                                          multiple = FALSE)),
+                       column(width = 8,
+                              plotlyOutput("wageScatterPlot")
+                       )
+                   )
+                 )
+                 ), 
+        tabPanel("Summary", 
+                 fluidRow(
+                    column(width = 4,valueBoxOutput(width = 12,"blue_value_box")) ,
+                    column(width = 4,valueBoxOutput(width = 12,"red_value_box")) ,
+                    column(width = 4,valueBoxOutput(width = 12,"purple_value_box"))
+                  ),
+                 fluidRow(
+                   box(
+                    width = 12,
+                    status = 'primary',
+                    title = "Wage Distribution Through Time",
+                    solidHeader = TRUE,
+                    plotOutput("wageByMonth")
+                   )
+                 ),
+                 fluidRow(
+                   box(
+                     width = 12,
+                     status = 'primary',
+                     title = "Wage By Education Level",
+                     solidHeader = TRUE,
+                     plotlyOutput("wageByEducationLevel")
+                   ),
+                 ),
+                 fluidRow(
+                   box(
+                     width = 12,
+                     title = "Wage By Age Group",
+                     status = 'primary',
+                     solidHeader = TRUE,
+                     plotlyOutput("wageByAgeGroup")
+                   )
+                 ),
+                 fluidRow(
+                   box(
+                     width = 12,
+                     title = "Wage By Have Kids or not",
+                     status = 'primary',
+                     solidHeader = TRUE,
+                     plotlyOutput("wageByKids")
+                   )
+                 ),
+                 
+        ), 
+        tabPanel("Table", fluidRow(DT::dataTableOutput("par_wage_table")))
+      ),
+    )
+  ),
+  tabItem(tabName ="expend_analysis",
+          fluidPage(
+            box(
+              width = 12,
+              title = "Daily Expense",
+              status = 'primary',
+              solidHeader = TRUE,
+              h4('the residents spend more on saturdays and sundays.'),
+              girafeOutput(outputId = "exp_plot",width = 800, height = 400)
+            ),
+            box(
+              width = 12,
+              title = "Income and Expense",
+              status = 'primary',
+              solidHeader = TRUE,
+              girafeOutput("income_spend_scatterplot"),
+              DT::dataTableOutput("consume_table"))
+          )
     ),
     tabItem(tabName = "network_tab",
             fluidPage(
@@ -351,10 +473,14 @@ ui <- dashboardPage(skin = "green",
                     body )
 
 ## Start of Data Import
+participant_fin <- read_rds("data/participant_fin.rds")
+Education_fin <- read_rds("data/Education_fin.rds")
 participants_data <- read_rds('data/participants.rds')
 participants <- read_csv("data/Participants.csv")
 consume_report <- read_rds('data/consume_report.rds')
 financeJ <- read_rds(file = "data/financeJ.rds")
+monthlyFinancial <- read_rds(file = 'data/monthlyFinance.rds')
+expense_part_month_data <- read_rds(file = 'data/expense_part_month_data.rds')
 
 schools <- read_sf("data/Schools.csv", 
                    options = "GEOM_POSSIBLE_NAMES=location")
@@ -418,6 +544,10 @@ buildings_shp <- read_sf("data/buildings.shp",
 ## End of Data Import
 
 ## Start of data processing
+max_wage <- round(max(participants_data$wage),2)
+min_wage <- round(min(participants_data$wage),2)
+avg_wage <- round(mean(participants_data$wage),2)
+
 participants_data_ag_haveKids <- participants_data %>%
   filter(`haveKids` ==  TRUE) %>%
   mutate (householdSize = -householdSize)
@@ -522,18 +652,46 @@ server <- function(input, output){
   #                colour="red",
   #                size=4) +
   #   ggtitle("Distribution of Juviality for different Education Level")
-  wage_edu_plot <- ggplot(participants_data, aes(x = wage, fill = educationLevel)) + 
+  wage_edu_plot <- Education_fin %>%
+    ggplot(aes(x=date, y = income,col =educationLevel))+
+    geom_line(size = 0.75)+
+    ylab("Income")+
+    xlab("Month, Year")+
+    theme(axis.title.y=element_text(angle =0),
+          axis.title.x=element_text(margin = margin(t=-10)),
+          panel.grid.minor.y = element_blank(),
+          panel.grid.minor.x = element_line(colour = "grey90"),
+          panel.grid.major.x = element_line(colour = "grey90"),
+          panel.grid.major.y = element_line(colour = "grey90"),
+          panel.background = element_rect(fill = "white"),
+          axis.text.x = element_text(size =16, angle = 45, margin = margin(t = 30)),
+          axis.text.y = element_text(size =16),
+          axis.line = element_line(color="grey25", size = 0.02),
+          axis.title = element_text(size=16),
+          legend.title = element_text(size =16),
+          legend.text = element_text(size = 16),
+          plot.title = element_text(size =20,hjust = 0.5))+
+    ggtitle("Average Wage by Education Level")
+  wage_age_plot <- ggplot(participants_data, aes(x = wage, fill = ageGroup)) + 
     geom_histogram(data=participants_data, alpha=.5) +
     geom_histogram() +
-    labs(x = "Wage", title = "Participants'wage wih different Education Level")+
-    facet_wrap(~ educationLevel) + 
+    labs(x = "Wage", title = "Participants'wage wih different Age Group")+
+    facet_wrap(~ ageGroup) + 
+    guides(fill = "none") + 
+    theme_bw()
+  wage_kid_plot <- ggplot(participants_data, aes(x = wage, fill = haveKids)) + 
+    geom_histogram(data=participants_data, alpha=.5) +
+    geom_histogram() +
+    labs(x = "Wage", title = "Participants'wage wih Kids or not")+
     guides(fill = "none") + 
     theme_bw()
   kids_plot <- ggplot(participants_data_ag_byKids, aes (x = ageGroup, y = participantId , fill = haveKids)) +
     geom_bar(stat = "identity") +
+    facet_share(~haveKids, dir = "h", scales = "free", reverse_num = TRUE) +
     scale_y_continuous(name = "Count")+
     labs(x = "Age Group", title = "Participants'num by age groups and whether have kids")+
-    theme_bw()
+    coord_flip() +
+    theme_minimal()
   set.seed(1234)
   anova_education_plot <- ggbetweenstats(
     data = participants_data,
@@ -614,6 +772,18 @@ server <- function(input, output){
     color = "blue",
     href = NULL
   )
+  wage_month_ridge_plot <- ggplot(monthlyFinancial, 
+                                  aes(x=joviality, 
+                                      y=monthlyFinancial$yearmonth, 
+                                      fill = factor(stat(quantile)))) +
+    stat_density_ridges(geom = "density_ridges_gradient", 
+                        calc_ecdf = TRUE,
+                        quantiles = 4, 
+                        quantile_lines = TRUE) +
+    scale_fill_viridis_d(name = "Quartiles") +
+    labs(x= "Wage",
+         y= "Time",
+         title="Distribution of Residents' =Wage")
   
   # Reactive expression to create data frame of all input values ----
   sliderValues <- reactive({
@@ -625,10 +795,70 @@ server <- function(input, output){
     )
     
   })
-  output$values <- DT::renderDataTable({
+  output$exp_plot <- renderGirafe({
+    p3 <- expense_part_month_data%>%
+      ggplot(aes(day,month,fill=AvgExpense))+
+      geom_tile_interactive(aes(tooltip = tooltip),color = "white", size = 0.1)+
+      theme_tufte(base_family = "Helvetica")+
+      coord_equal() +
+      scale_fill_gradient(name = "Expense",
+                          low = "sky blue", 
+                          high = "dark blue")+
+      labs(x = "Day of the month", 
+           y = NULL, 
+           title = "Average Daily Expense of Residents") +
+      theme(axis.text = element_text(size = 12,margin = margin(r = -60)),
+            axis.ticks.y= element_blank(),
+            legend.title = element_text(size =16),
+            legend.text = element_text(size = 16),
+            plot.title = element_text(size =18),
+            axis.title.x = element_text(size = 14))
+    
+    girafe(
+      ggobj = p3,
+      width_svg = 12,
+      height_svg = 12*0.618
+    )
+  })
+  output$income_spend_scatterplot <- renderGirafe({
+    p2 <- participant_fin %>%
+      filter(date == 'Apr 2022') %>%
+      ggplot(aes(x=income, y = abs(expense), size = savings, color = educationLevel))+
+      geom_point_interactive(aes(tooltip = tooltip), alpha=0.7) +
+      ggtitle("Income vs Expense by different Education Levels") +
+      ylab("Expense") +
+      xlab("Income")+
+      theme_minimal() +
+      theme(axis.line = element_line(size = 0.5),
+            axis.text = element_text(size = 16),
+            axis.title = element_text(size=16),
+            axis.title.y = element_text(angle = 0),
+            legend.title = element_text(size =16),
+            legend.text = element_text(size = 16),
+            plot.title = element_text(size =20,hjust = 0.5))
+    
+    girafe(
+      ggobj = p2,
+      width_svg = 16,
+      height_svg = 16*0.618
+    )
+  })
+  output$wageByMonth <- renderPlot({
+    wage_month_ridge_plot
+  })
+  output$wageByEducationLevel <- renderPlotly({
+    wage_edu_plot
+  })
+  output$wageByAgeGroup <- renderPlotly({
+    wage_age_plot
+  })
+  output$wageByKids <- renderPlotly({
+    wage_kid_plot
+  })
+  output$consume_table <- DT::renderDataTable({
     dt <-  DT::datatable(as.data.frame(consume_report %>%
                                          group_by(category) %>%
-                                         summarize('Monthly Consume' = list(consume), 
+                                         summarize('Monthly Expense' = list(consume), 
                                                    .groups = "drop") %>%
                                          gt() %>%
                                          gt_plt_sparkline('Monthly Consume')),  rownames = FALSE)
@@ -636,8 +866,143 @@ server <- function(input, output){
   output$wage_ana_plot <- renderPlotly({
     wage_ana_plot
   })
+  output$par_wage_table <- DT::renderDataTable({
+    ## Colour and values for table colour formatting
+    brks <- seq(min_wage, max_wage, 10)
+    clrs <- colorRampPalette(c("white", "#6baed6"))(length(brks) + 1)
+    dt <-  DT::datatable(as.data.frame(participants_data %>%
+                                         #filter((educationLevel == input$par_educationLevel) &
+                                                  #(ageGroup == input$par_ageGroup) &
+                                                  #(haveKids == input$par_haveKids))%>%
+                                         select(participantId, age, householdSize, joviality, interestGroup, wage) %>%
+                                         gt() %>%
+                                         fmt_number(columns = 2,
+                                                    decimals = 2)
+    )) %>%
+      formatStyle(c("wage"), backgroundColor = styleInterval(brks, clrs))
+  })
+  output$wage_distribution <- renderPlotly({
+    if(input$wage_boxplot_var == "educationLevel"){
+      p <- ggplot(data=participants_data, aes(x = educationLevel, 
+                                              y = wage))+
+        geom_boxplot(position="dodge",aes(x = educationLevel, y = wage)) +
+        stat_summary(geom = "point",
+                     fun="mean",
+                     colour ="red",
+                     size=2) +
+        stat_summary(aes(label = round(..y.., 0)), fun=mean, geom = "label_repel", size=3, angle=150) +
+        labs(y= 'Wage', x= 'Education Level',
+             title = paste("Wage Distribution by","Education Level"))
+      ggplotly(p)
+    }
+    else if(input$wage_boxplot_var == "interestGroup"){
+      p <- ggplot(data=participants_data, aes(x = interestGroup, 
+                                              y = wage))+
+        geom_boxplot(position="dodge",aes(x = interestGroup, y = wage)) +
+        stat_summary(geom = "point",
+                     fun="mean",
+                     colour ="red",
+                     size=2) +
+        stat_summary(aes(label = round(..y.., 0)), fun=mean, geom = "label_repel", size=3, angle=150) +
+        labs(y= 'Wage', x= 'Interest Group',
+             title = paste("Wage Distribution by","Interest Group"))
+      ggplotly(p)
+    }
+    else if(input$wage_boxplot_var == "jovialityGroup"){
+      p <- ggplot(data=participants_data, aes(x = Joviality_Group, 
+                                              y = wage))+
+        geom_boxplot(position="dodge",aes(x = Joviality_Group, y = wage)) +
+        stat_summary(geom = "point",
+                     fun="mean",
+                     colour ="red",
+                     size=2) +
+        stat_summary(aes(label = round(..y.., 0)), fun=mean, geom = "label_repel", size=3, angle=150) +
+        labs(y= 'Wage', x= 'Joviality Group',
+             title = paste("Wage Distribution by","Joviality Group"))
+      ggplotly(p)
+    }
+    else if(input$wage_boxplot_var == "ageGroup"){
+      p <- ggplot(data=participants_data, aes(x = ageGroup, 
+                                              y = wage))+
+        geom_boxplot(position="dodge",aes(x = ageGroup, y = wage)) +
+        stat_summary(geom = "point",
+                     fun="mean",
+                     colour ="red",
+                     size=2) +
+        stat_summary(aes(label = round(..y.., 0)), fun=mean, geom = "label_repel", size=3, angle=150) +
+        labs(y= 'Wage', x= 'Age Group',
+             title = paste("Wage Distribution by","Age Group"))
+      ggplotly(p)
+    }
+    else if(input$wage_boxplot_var == "haveKids"){
+      p <- ggplot(data=participants_data, aes(x = haveKids, 
+                                              y = wage))+
+        geom_boxplot(position="dodge",aes(x = haveKids, y = wage)) +
+        stat_summary(geom = "point",
+                     fun="mean",
+                     colour ="red",
+                     size=2) +
+        stat_summary(aes(label = round(..y.., 0)), fun=mean, geom = "label_repel", size=3, angle=150) +
+        labs(y= 'Wage', x= 'Have Kids',
+             title = paste("Wage Distribution by","Whether They Have Kids"))
+      ggplotly(p)
+    }
+  })
+  output$wageScatterPlot <- renderPlotly({
+    p <- ggplot(participants_data %>%
+                  filter((educationLevel == input$par_educationLevel) &
+                           (ageGroup == input$par_ageGroup) &
+                           (haveKids == input$par_haveKids)
+                  ), aes (x=participantId,
+                          y = wage,
+                          color=wage,
+                          text = paste('</br>participantId: ', participantId,
+                                       '</br>Wage: ', wage,
+                                       '</br>Age: ', age,
+                                       '</br>Have Kids:', haveKids,
+                                       '</br>Interest Group:', interestGroup,
+                                       '</br>Joviality:', joviality,
+                                       '</br>Education Level:', educationLevel
+                          )
+                  )
+    ) +
+      geom_point() +
+      geom_hline(aes(yintercept=mean(wage)), color='red', linetype='dashed')+
+      geom_text(aes(0, mean(wage), label = "Avg", hjust = -1, vjust=-1),color='red') +
+      scale_y_continuous(name = "Wage",limits = c(1800, 16240))+
+      labs(title = "Participants' wage")+
+      theme_bw()
+    ggplotly(p,tooltip="text")
+  })
+  output$blue_value_box <- renderValueBox({
+    valueBox(
+      value = max_wage,
+      subtitle = "Max Wage",
+      icon = icon("area-chart"),
+      color =  "aqua"
+    )
+  })
+  output$red_value_box <- renderValueBox({
+    valueBox(
+      value = min_wage,
+      subtitle = "Min Wage",
+      icon = icon("area-chart"),
+      color =  "red"
+    )
+  })
+  output$purple_value_box <- renderValueBox({
+    valueBox(
+      value = avg_wage,
+      subtitle = "Mean Wage",
+      icon = icon("area-chart"),
+      color =  "purple"
+    )
+  })
   output$wage_edu_plot <- renderPlotly({
     wage_edu_plot
+  })
+  output$wage_age_plot <- renderPlotly({
+    wage_age_plot
   })
   output$kids_plot <- renderPlotly({
     kids_plot
@@ -652,6 +1017,7 @@ server <- function(input, output){
   output$wage <- renderValueBox(wage_vb)
   output$age <- renderValueBox(age_vb)
   output$education <- renderValueBox(education_vb)
+  myvars <- names(participants_data) %in% c("wage")
   output$wage_ana_plot <- renderPlot({
     ggbetweenstats(
       data = financeJ %>%
@@ -659,9 +1025,8 @@ server <- function(input, output){
         group_by(participantId) %>%
         summarise(Wage = mean(amount)) %>%
         ungroup() %>%
-        merge(participants,by='participantId')
-      ,
-      outlier.tagging = TRUE, ## whether outliers should be flagged
+        left_join(participants_data[!myvars],by='participantId'),
+      outlier.tagging = FALSE, ## whether outliers should be flagged
       outlier.label = participantId, ## label to attach to outlier values
       outlier.label.args = list(color = "red"), ## outlier point label color
       ## turn off messages
