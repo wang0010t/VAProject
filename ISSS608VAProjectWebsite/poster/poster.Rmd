@@ -1,19 +1,18 @@
 ---
-title: Generate Reproducible & Live HTML and PDF Conference Posters Using RMarkdown
+title: VA project
 author:
-  - name: Brent Thorne
-    affil: 1
-    orcid: '0000-0002-1099-3857'
-  - name: Another G. Author
-    affil: 2
-  - name: Another G. Author
-    affil: 2
+  - name: HUANG ANNI
+  - name: NI JUNQIU
+  - name: WANG TIANQI
 affiliation:
-  - num: 1
-    address: MITB, Singapore Management University
+  - address: School of Computing and Information Systems, Singapore Management University
+primary_colour: "#354ca1"
+#poster_height:	"23.39in"
+#poster_width: "33.11in"
 column_numbers: 3
-logoright_name: https&#58;//raw.githubusercontent.com/brentthorne/posterdown/master/images/betterhexlogo.png
-logoleft_name: https&#58;//raw.githubusercontent.com/brentthorne/posterdown/master/images/betterhexlogo.png
+
+#logoright_name: https&#58;//raw.githubusercontent.com/brentthorne/posterdown/master/images/betterhexlogo.png
+#logoleft_name: https&#58;//raw.githubusercontent.com/brentthorne/posterdown/master/images/betterhexlogo.png
 output: 
   posterdown::posterdown_html:
     self_contained: false
@@ -74,12 +73,10 @@ An explanation of how the work could be extended.
 
 Aliquam sed faucibus risus, quis efficitur erat. Vestibulum semper mauris quis tempus eleifend. Aliquam sagittis dictum ipsum, quis viverra ligula eleifend ut. Curabitur sagittis vitae arcu eget faucibus. In non elementum felis. Duis et aliquam nunc. Nunc pulvinar sapien nunc, vel pretium nisi efficitur in. Fusce fringilla maximus leo et maximus. Fusce at ligula laoreet, iaculis mi at, auctor odio. Praesent sed elementum justo. Aenean consectetur risus rhoncus tincidunt efficitur. Praesent dictum mauris at diam maximus maximus [@R-posterdown].
 
-# Conclusion
 
-Try `posterdown` out! Hopefully you like it!
 
 ```{r, include=FALSE}
 knitr::write_bib(c('knitr','rmarkdown','posterdown','pagedown'), 'packages.bib')
 ```
 
-# References
+
