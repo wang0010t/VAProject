@@ -165,7 +165,7 @@ body <- dashboardBody(
               titlePanel("social network of groups"),
               sidebarLayout(
                 sidebarPanel(
-                  selectInput(inputId = "yearMonth", 
+                  selectInput(inputId = "yearMonth2", 
                               label = "yearMonth",
                               choices = c("2022-03" = "2022-03",
                                           "2023-03" = "2023-03"),
@@ -186,9 +186,21 @@ body <- dashboardBody(
       ),
     tabItem(tabName = "vis_tab",
             fluidPage(
-              h2("Social network"),
-              visNetworkOutput("network")
+                titlePanel("social network"),
+                sidebarLayout(
+                  sidebarPanel(
+                    selectInput(inputId = "yearMonth3", 
+                                label = "yearMonth",
+                                choices = c("2022-03" = "2022-03",
+                                            "2023-03" = "2023-03"),
+                                multiple = FALSE)
+                  ),
+                  mainPanel(
+                    h2("Social network"),
+                    visNetworkOutput("vis_network")
             )
+          )
+        )
     ),
     tabItem(tabName = "townmap_tab",
             titlePanel("Overall Town Map"),
@@ -594,24 +606,34 @@ server <- function(input, output){
   output$network_plot <- renderPlot({
     if (input$yearMonth == "2022-03"){
       set.seed(1234)
-      network_plot<- ggraph(network_graph_2022,layout = "nicely") + 
+      network_graph_2022 <- network_graph_2022  %>%
+        mutate(Centrality = centrality_betweenness())
+      network_plot <-ggraph(network_graph_2022,layout = "nicely") + 
         geom_edge_link(aes(width=Weight), alpha=0.25) +
         scale_edge_width(range = c(0.1, 1)) +
-        geom_node_point()
+        geom_node_point(aes(alpha=0.05,size = centrality_betweenness()))+
+        geom_node_text(aes(filter=Centrality > 35000, 
+                         label = name),
+                     repel = TRUE)
       network_plot + theme_graph()
     }
    else if (input$yearMonth == "2023-03"){
+     network_graph_2023 <- network_graph_2023  %>%
+       mutate(Centrality = centrality_betweenness())
       network_plot<- ggraph(network_graph_2023,layout = "nicely") + 
         geom_edge_link(aes(width=Weight), alpha=0.25) +
         scale_edge_width(range = c(0.1, 1)) +
-        geom_node_point() 
+        geom_node_point(aes(alpha=0.05, size = centrality_betweenness()))+
+        geom_node_text(aes(filter=Centrality > 15000, 
+                           label = name),
+                       repel = TRUE)
       network_plot + theme_graph()
    }
   })
   
   
   output$network_group <- renderPlot({
-    if(input$yearMonth =="2022-03"){
+    if(input$yearMonth2 =="2022-03"){
     if (input$groups =="educationLevel"){
       network_group <- ggraph(network_graph_2022, layout = "nicely") + 
         geom_edge_link(aes(width=Weight), alpha=0.2) +
@@ -634,7 +656,7 @@ server <- function(input, output){
       network_group + theme_graph()
     }
     }
-    else if (input$yearMonth =="2023-03"){
+    else if (input$yearMonth2 =="2023-03"){
     if (input$groups =="educationLevel" ){
         network_group <- ggraph(network_graph_2023, layout = "nicely") + 
           geom_edge_link(aes(width=Weight), alpha=0.2) +
@@ -660,14 +682,27 @@ server <- function(input, output){
   })
   
   output$network <- renderVisNetwork({
+    if(yearMonth3 =="2022-03"){
     visNetwork(network_nodes,
-               network_edges_aggregated) %>%
+               network_edges_aggregated_2022) %>%
       visIgraphLayout(layout = "layout_with_fr") %>%
       visOptions(highlightNearest = TRUE,
                  nodesIdSelection = TRUE,
                  selectedBy = "joviality") %>%
       visLegend() %>%
       visLayout(randomSeed = 1234)
+    }
+    else if (yearMonth3=="2023-03"){
+      visNetwork(network_nodes,
+                 network_edges_aggregated_2023) %>%
+        visIgraphLayout(layout = "layout_with_fr") %>%
+        visOptions(highlightNearest = TRUE,
+                   nodesIdSelection = TRUE,
+                   selectedBy = "joviality") %>%
+        visLegend() %>%
+        visLayout(randomSeed = 1234)
+      
+    }
   })
   
   
