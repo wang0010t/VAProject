@@ -1,0 +1,82 @@
+---
+title: Visualizing the Demographics, Neighbourhood and Business Base in Engagement
+author:
+  - name: ISSS608 Group 9    HUANG ANNI
+  - name: NI JUNQIU
+  - name: WANG TIANQI       Advised By Prof. KAM Tin Seong
+affiliation:
+  - address: School of Computing and Information Systems, Singapore Management University
+primary_colour: "#354ca1"
+#poster_height:	"23.39in"
+#poster_width: "33.11in"
+column_numbers: 3
+
+#logoright_name: https&#58;//raw.githubusercontent.com/brentthorne/posterdown/master/images/betterhexlogo.png
+#logoleft_name: https&#58;//raw.githubusercontent.com/brentthorne/posterdown/master/images/betterhexlogo.png
+output: 
+  posterdown::posterdown_html:
+    self_contained: false
+#bibliography: packages.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# Issues and problems
+
+`posterdown` [@R-rmarkdown]
+The topic of this Visual Analytics Project will be based on [VAST Challenge 2022](https://vast-challenge.github.io/2022/). To understand the city’s demographics and relationships and answer questions from Challenge 1, our team will firstly characterize the demographics of the town. Also, we will describe the patterns in the social networks in the town. Lastly, we will identify the predominant business base of the town, and describe patterns observed.
+
+
+# Motivation
+
+To make better use of the data collected from the representative residents of Engagement, Ohio USA using the city’s urban planning app and democratize the data and analytics, our team use related visual analytic techniques. With the visual analytics of the city’s demographics, its neighborhoods, and its business base, we may be able to help the city planning team to understand the current state of the city and identify opportunities for future growth.
+
+# Approach
+
+To learn about the city’s demographics, its neighborhoods, and its business base, our team build web-enabled visual analytics application by using R Shiny. The application will focus and emphasize on interactivity and effective integration of techniques from data analytics and data visualization. Related visual analytics include 
+
+# Results
+
+Screenshots and a working demo of the system you built.
+
+Usually you want to have a nice table displaying some important results that you have calculated. In `posterdown` this is as easy as using the `kable` table formatting you are probably use to as per typical R Markdown formatting.
+
+You can reference tables like so: Table \@ref(tab:mytable). Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam placerat augue at velit tincidunt semper. Donec elementum porta posuere. Nullam interdum, odio at tincidunt feugiat, turpis nisi blandit eros, eu posuere risus felis non quam. Nam eget lorem odio. Duis et aliquet orci. Phasellus nec viverra est.
+
+```{r mytable, out.width='80%'}
+knitr::kable(iris[1:10, 1:4], caption = 'Table caption.',align = 'c',"html")
+```
+
+Or with figures: Figure \@ref(fig:standard-plot), or Figure \@ref(fig:morefigs).
+
+```{r standard-plot, out.width='80%', fig.align='center', fig.cap='Great figure!', fig.height=5}
+plot(mtcars[1:2])
+```
+
+```{r morefigs, out.width='80%', echo=TRUE, fig.cap='Amazing, right?!', fig.height=5}
+data <- iris
+
+plot(x = data$Sepal.Length, 
+     y = data$Sepal.Width, 
+     col = data$Species,
+     pch = 19, 
+     xlab = "Sepal Length (cm)",
+     ylab = "Sepal Width (cm)")
+
+```
+
+# Future Work
+
+An explanation of how the work could be extended.
+
+Aliquam sed faucibus risus, quis efficitur erat. Vestibulum semper mauris quis tempus eleifend. Aliquam sagittis dictum ipsum, quis viverra ligula eleifend ut. Curabitur sagittis vitae arcu eget faucibus. In non elementum felis. Duis et aliquam nunc. Nunc pulvinar sapien nunc, vel pretium nisi efficitur in. Fusce fringilla maximus leo et maximus. Fusce at ligula laoreet, iaculis mi at, auctor odio. Praesent sed elementum justo. Aenean consectetur risus rhoncus tincidunt efficitur. Praesent dictum mauris at diam maximus maximus [@R-posterdown].
+
+
+
+```{r, include=FALSE}
+knitr::write_bib(c('knitr','rmarkdown','posterdown','pagedown'), 'packages.bib')
+```
+
+

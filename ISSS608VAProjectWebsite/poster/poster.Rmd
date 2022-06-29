@@ -1,14 +1,15 @@
 ---
-title: VA project
+title:  Visualizing the Demographics, Neighbourhoods and Business Base in Engagement
 author:
+#ISSS608 Group 9        Advised By Prof. KAM Tin Seong  
   - name: HUANG ANNI
   - name: NI JUNQIU
   - name: WANG TIANQI
 affiliation:
   - address: School of Computing and Information Systems, Singapore Management University
 primary_colour: "#354ca1"
-#poster_height:	"23.39in"
-#poster_width: "33.11in"
+#poster_height:	"33.11in"
+#poster_width: "23.39in"
 column_numbers: 3
 
 #logoright_name: https&#58;//raw.githubusercontent.com/brentthorne/posterdown/master/images/betterhexlogo.png
@@ -16,6 +17,7 @@ column_numbers: 3
 output: 
   posterdown::posterdown_html:
     self_contained: false
+knit: pagedown::chrome_print
 #bibliography: packages.bib
 ---
 
@@ -25,17 +27,15 @@ knitr::opts_chunk$set(echo = FALSE)
 
 # Issues and problems
 
-`posterdown`[@R-rmarkdown]
-The topic of this Visual Analytics Project will be based on [VAST Challenge 2022](https://vast-challenge.github.io/2022/). To understand the city’s demographics and relationships and answer questions from Challenge 1, our team will firstly characterize the demographics of the town. Also, we will describe the patterns in the social networks in the town. Lastly, we will identify the predominant business base of the town, and describe patterns observed.
-
+`posterdown` [@R-rmarkdown] The topic of this Visual Analytics Project will be based on [VAST Challenge 2022](https://vast-challenge.github.io/2022/). To understand the city's demographics and relationships and answer questions from Challenge 1, our team will firstly characterize the demographics of the town. Also, we will describe the patterns in the social networks in the town. Lastly, we will identify the predominant business base of the town, and describe patterns observed.
 
 # Motivation
 
-To make better use of the data collected from the representative residents of Engagement, Ohio USA using the city’s urban planning app and democratize the data and analytics, our team use related visual analytic techniques. With the visual analytics of the city’s demographics, its neighbourhoods, and its business base, we may be able to help the city planning team to understand the current state of the city and identify opportunities for future growth.
+To make better use of the data collected from the representative residents of Engagement, Ohio USA using the city's urban planning app and democratize the data and analytics, our team use related visual analytic techniques. With the visual analytics of the city's demographics, its neighborhoods, and its business base, we may be able to help the city planning team to understand the current state of the city and identify opportunities for future growth.
 
 # Approach
 
-To learn about the city’s demographics, its neighbourhoods, and its business base, our team build web-enabled visual analytics application by using R Shiny. The application will focus and emphasize on interactivity and effective integration of techniques from data analytics and data visualization. Related visual analytics include 
+To learn about the city's demographics, its neighborhoods, and its business base, our team build web-enabled visual analytics application by using R Shiny. The application will focus and emphasize on interactivity and effective integration of techniques from data analytics and data visualization. Related visual analytics include
 
 # Results
 
@@ -73,10 +73,25 @@ An explanation of how the work could be extended.
 
 Aliquam sed faucibus risus, quis efficitur erat. Vestibulum semper mauris quis tempus eleifend. Aliquam sagittis dictum ipsum, quis viverra ligula eleifend ut. Curabitur sagittis vitae arcu eget faucibus. In non elementum felis. Duis et aliquam nunc. Nunc pulvinar sapien nunc, vel pretium nisi efficitur in. Fusce fringilla maximus leo et maximus. Fusce at ligula laoreet, iaculis mi at, auctor odio. Praesent sed elementum justo. Aenean consectetur risus rhoncus tincidunt efficitur. Praesent dictum mauris at diam maximus maximus [@R-posterdown].
 
+An explanation of how the work could be extended.
+
+Aliquam sed faucibus risus, quis efficitur erat. Vestibulum semper mauris quis tempus eleifend. Aliquam sagittis dictum ipsum, quis viverra ligula eleifend ut. Curabitur sagittis vitae arcu eget faucibus. In non elementum felis. Duis et aliquam nunc. Nunc pulvinar sapien nunc, vel pretium nisi efficitur in. Fusce fringilla maximus leo et maximus. Fusce at ligula laoreet, iaculis mi at, auctor odio. Praesent sed elementum justo. Aenean consectetur risus rhoncus tincidunt efficitur. Praesent dictum mauris at diam maximus maximus [@R-posterdown].
+
+An explanation of how the work could be extended.
+
+Aliquam sed faucibus risus, quis efficitur erat. Vestibulum semper mauris quis tempus eleifend. Aliquam sagittis dictum ipsum, quis viverra ligula eleifend ut. Curabitur sagittis vitae arcu eget faucibus. In non elementum felis. Duis et aliquam nunc. Nunc pulvinar sapien nunc, vel pretium nisi efficitur in. Fusce fringilla maximus leo et maximus. Fusce at ligula laoreet, iaculis mi at, auctor odio. Praesent sed elementum justo. Aenean consectetur risus rhoncus tincidunt efficitur. Praesent dictum mauris at diam maximus maximus [@R-posterdown].
+
+An explanation of how the work could be extended.
+
+Aliquam sed faucibus risus, quis efficitur erat. Vestibulum semper mauris quis tempus eleifend. Aliquam sagittis dictum ipsum, quis viverra ligula eleifend ut. Curabitur sagittis vitae arcu eget faucibus. In non elementum felis. Duis et aliquam nunc. Nunc pulvinar sapien nunc, vel pretium nisi efficitur in. Fusce fringilla maximus leo et maximus. Fusce at ligula laoreet, iaculis mi at, auctor odio. Praesent sed elementum justo. Aenean consectetur risus rhoncus tincidunt efficitur. Praesent dictum mauris at diam maximus maximus [@R-posterdown].
+
+
+An explanation of how the work could be extended.
+
+Aliquam sed faucibus risus, quis efficitur erat. Vestibulum semper mauris quis tempus eleifend. Aliquam sagittis dictum ipsum, quis viverra ligula eleifend ut. Curabitur sagittis vitae arcu eget faucibus. In non elementum felis. Duis et aliquam nunc. Nunc pulvinar sapien nunc, vel pretium nisi efficitur in. Fusce fringilla maximus leo et maximus. Fusce at ligula laoreet, iaculis mi at, auctor odio. Praesent sed elementum justo. Aenean consectetur risus rhoncus tincidunt efficitur. Praesent dictum mauris at diam maximus maximus [@R-posterdown].
 
 
 ```{r, include=FALSE}
 knitr::write_bib(c('knitr','rmarkdown','posterdown','pagedown'), 'packages.bib')
 ```
-
 

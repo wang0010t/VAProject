@@ -14,6 +14,6 @@ navbar:
     - text: "User Guide"
       href: guide.html
     - text: "Poster"
-      href: poster.html
+      href: poster/poster.html
 
 output: distill::distill_article
