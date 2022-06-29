@@ -630,7 +630,6 @@ ui <- dashboardPage(skin = "green",
 participant_fin <- read_rds("data/participant_fin.rds")
 Education_fin <- read_rds("data/Education_fin.rds")
 participants_data <- read_rds('data/participants.rds')
-participants <- read_csv("data/Participants.csv")
 consume_report <- read_rds('data/consume_report.rds')
 financeJ <- read_rds(file = "data/financeJ.rds")
 monthlyFinancial <- read_rds(file = 'data/monthlyFinance.rds')
@@ -841,15 +840,15 @@ server <- function(input, output){
     labs(x = "Wage", title = "Participants'wage wih Kids or not")+
     guides(fill = "none") + 
     theme_bw()
-  kids_plot <- ggplot(participants_data_ag_byKids, aes (x = ageGroup, y = participantId , fill = haveKids)) +
-    geom_bar(stat = "identity") +
-    facet_share(~haveKids, dir = "h", scales = "free", reverse_num = TRUE) +
-    scale_y_continuous(name = "Count", 
-                       #breaks = seq(-100000, 30000, 15000), 
-                       #labels = paste0(as.character(c(seq(100000, 0, -15000), seq(15000, 30000, 15000))))
-                       )+
-    labs(x = "Age Group", title = "Participants'num by age groups and whether have kids")+
-    coord_flip() +
+  kids_plot <- participants_data %>%
+    group_by(ageGroup, haveKids) %>%
+    summarise(n = n()) %>%
+    mutate(perc = paste(round(100*round(n / sum(n),3), 2), "%", sep="")) %>%
+    ggplot(aes(fill=haveKids, x=ageGroup, y=perc)) + 
+    geom_col() +
+    geom_text(aes(label = perc), size = 3, position = position_stack(vjust = 0.5)) +
+    labs(x="Age group", y="Percentage",
+         title = "The percentage of people with kids in different age groups", fill = "Have Kids?") +
     theme_minimal()
   set.seed(1234)
   anova_education_plot <- ggbetweenstats(
@@ -1116,11 +1115,11 @@ server <- function(input, output){
                           y = wage,
                           color=wage,
                           text = paste('</br>participantId: ', participantId,
-                                       '</br>Wage: ', wage,
+                                       '</br>Wage: ', round(wage,2),
                                        '</br>Age: ', age,
                                        '</br>Have Kids:', haveKids,
                                        '</br>Interest Group:', interestGroup,
-                                       '</br>Joviality:', joviality,
+                                       '</br>Joviality:', round(joviality,2),
                                        '</br>Education Level:', educationLevel
                           )
                   )
