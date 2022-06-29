@@ -69,19 +69,19 @@ header <-
 siderbar <- 
   dashboardSidebar(
     sidebarMenu(id = 'sidebarmenu',
-                menuItem("Demographics analysis", 
+                menuItem("Demographics Analysis", 
                          tabName = "demographics_tab", startExpanded = FALSE, icon = icon("tachometer-alt"),
-                         menuSubItem("Overall DemoGraphic", tabName = "overall_demo_analysis"),
-                         menuSubItem("Wage analysis", tabName = "wage_analysis"), # TO-DO
-                         menuSubItem("Expenditure analysis", tabName = "expend_analysis") # TO-DO
+                         menuSubItem("Overall Demographics", tabName = "overall_demo_analysis"),
+                         menuSubItem("Wage Analysis", tabName = "wage_analysis"), # TO-DO
+                         menuSubItem("Expenditure Analysis", tabName = "expend_analysis") # TO-DO
                          #menuSubItem("Consume analysis", tabName = "consume_analysis")
                 ),
-                menuItem("Social activity", tabName = "social_activity_tab", startExpanded = FALSE,
-                         menuSubItem("Overall Network Graph", tabName = "network_tab"),
-                         menuSubItem("Network Among Different Groups", tabName = "group_tab"),
-                         menuSubItem("visnetwork Graph", tabName = "vis_tab")
+                menuItem("Social Activity", tabName = "social_activity_tab", startExpanded = FALSE, icon = icon("users"),
+                         menuSubItem("Overall Social Network", tabName = "network_tab"),
+                         menuSubItem("Network by Group", tabName = "group_tab"),
+                         menuSubItem("Network by Individual", tabName = "vis_tab")
                 ),
-                menuItem("Predominant business", tabName = "predominant_business_tab", startExpanded = FALSE, icon = icon("building"),  
+                menuItem("Predominant Business", tabName = "predominant_business_tab", startExpanded = FALSE, icon = icon("building"),  
                          menuSubItem("Overall Town Map", tabName = "townmap_tab"),
                          menuSubItem("Cost Analysis", tabName = "venuetype_tab"),
                          menuSubItem("Check-in Analysis", tabName = "checkin_tab"),
@@ -95,7 +95,7 @@ body <- dashboardBody(
   tabItems(
     tabItem(
       tabName = "overall_demo_analysis",
-      h2("The overall view of demographics in Ohio City"),
+      h2("The overall view of demographics in City of Engagement, Ohio USA"),
       fluidRow(
         valueBoxOutput('wage'),
         valueBoxOutput('age'),
@@ -112,10 +112,10 @@ body <- dashboardBody(
       fluidPage(
         h2("Wage Analysis"),
         tabsetPanel(
-          tabPanel("Explore Analysis", 
+          tabPanel("Exploratory Data Analysis (EDA)", 
                    fluidRow(
                      box(
-                       title = "Wage Distribution in different groups", 
+                       title = "Wage Distribution in Different Groups", 
                        solidHeader = TRUE, 
                        status = "primary",
                        width = 6, # Half of the body
@@ -187,7 +187,7 @@ body <- dashboardBody(
                      )
                    )
           ), 
-          tabPanel("Summary", 
+          tabPanel("Wage by Groups", 
                    fluidRow(
                      column(width = 4,valueBoxOutput(width = 12,"blue_value_box")) ,
                      column(width = 4,valueBoxOutput(width = 12,"red_value_box")) ,
@@ -231,23 +231,24 @@ body <- dashboardBody(
                    ),
                    
           ), 
-          tabPanel("Table", fluidRow(DT::dataTableOutput("par_wage_table")))
+          tabPanel("Data Table", fluidRow(DT::dataTableOutput("par_wage_table")))
         ),
       )
     ),
     tabItem(tabName ="expend_analysis",
             fluidPage(
+              h2("Expenditure Analysis"),
               box(
                 width = 12,
-                title = "Daily Expense",
+                title = "Daily Expenses",
                 status = 'primary',
                 solidHeader = TRUE,
-                h4('the residents spend more on saturdays and sundays.'),
+                h4('The residents spend more on Saturdays and Sundays.'),
                 girafeOutput(outputId = "exp_plot",width = 800, height = 400)
               ),
               box(
                 width = 12,
-                title = "Income and Expense",
+                title = "Income and Expenses",
                 status = 'primary',
                 solidHeader = TRUE,
                 girafeOutput("income_spend_scatterplot"),
@@ -256,60 +257,67 @@ body <- dashboardBody(
     ),
     tabItem(tabName = "network_tab",
             fluidPage(
-              titlePanel("social network"),
+              titlePanel("Development of Social Network Over Time"),
               sidebarLayout(
                 sidebarPanel(
                   selectInput(inputId = "yearMonth", 
-                              label = "yearMonth",
+                              label = "Please select year and month:",
                               choices = c("2022-03" = "2022-03",
                                           "2023-03" = "2023-03"),
                               multiple = FALSE)
                 ),
-                mainPanel(
-                  h2("Social network"),
-                  plotOutput(outputId = "network_plot",width = 800, height = 400)
+                
+                fluidRow(
+                  box(title = "Overall Social Network for the Selected Month",
+                      solidHeader = TRUE, 
+                      status = "primary", 
+                      h5("Notes: Participants with higher centrality betweenness are highlighted"), plotOutput(outputId = "network_plot",width = 800, height = 600)),
                 )
               )
             )
     ),
     tabItem(tabName = "group_tab",
             fluidPage(
-              titlePanel("social network of groups"),
+              titlePanel("Social Network by Groups"),
               sidebarLayout(
                 sidebarPanel(
                   selectInput(inputId = "yearMonth2", 
-                              label = "yearMonth",
+                              label = "Please select year and month:",
                               choices = c("2022-03" = "2022-03",
                                           "2023-03" = "2023-03"),
                               multiple = FALSE),
                   selectInput(inputId = "groups", 
-                              label = "group",
-                              choices = c("educationLevel" = "educationLevel",
-                                          "interestGroup" = "interestGroup",
-                                          "joviality" = "joviality"),
+                              label = "Please select participant group:",
+                              choices = c("Education Level" = "educationLevel",
+                                          "Interest Group" = "interestGroup",
+                                          "Joviality" = "joviality"),
                               multiple = FALSE)
                 ),
-                mainPanel(
-                  h2("Social network of Different Groups"),
-                  plotOutput(outputId = "network_group")
+                fluidRow(
+                  box(title = "Social Network for the Selected Group and Period",
+                      solidHeader = TRUE, 
+                      status = "primary", 
+                      h5("Notes: Participants with higher centrality betweenness are highlighted"), plotOutput(outputId = "network_group",width = 800, height = 600)),
                 )
               )
             )
     ),
     tabItem(tabName = "vis_tab",
             fluidPage(
-              titlePanel("social network"),
+              titlePanel("Social Network for Individual Participant"),
               sidebarLayout(
                 sidebarPanel(
                   selectInput(inputId = "yearMonth3", 
-                              label = "yearMonth",
+                              label = "Please select year and month:",
                               choices = c("2022-03" = "2022-03",
                                           "2023-03" = "2023-03"),
                               multiple = FALSE)
                 ),
-                mainPanel(
-                  h2("Social network"),
-                  visNetworkOutput(outputId="visplot")
+                
+                fluidRow(
+                  box(title = "Social Network for the Selected Participant or Interest Group", 
+                      solidHeader = TRUE, 
+                      status = "primary", visNetworkOutput(outputId="visplot", width = 800, height = 600)),
                 )
               )
             )
@@ -812,13 +820,13 @@ server <- function(input, output){
           panel.grid.major.x = element_line(colour = "grey90"),
           panel.grid.major.y = element_line(colour = "grey90"),
           panel.background = element_rect(fill = "white"),
-          axis.text.x = element_text(size =16, angle = 45, margin = margin(t = 30)),
-          axis.text.y = element_text(size =16),
-          axis.line = element_line(color="grey25", size = 0.02),
-          axis.title = element_text(size=16),
-          legend.title = element_text(size =16),
-          legend.text = element_text(size = 16),
-          plot.title = element_text(size =20,hjust = 0.5))+
+          axis.text.x = element_text(angle = 45, margin = margin(t = 30)),
+          #axis.text.y = element_text(),
+          axis.line = element_line(color="grey25", size = 0.02))+
+          #axis.title = element_text(size=16),
+          #legend.title = element_text(size =16),
+          #legend.text = element_text(size = 16),
+          #plot.title = element_text(size =20,hjust = 0.5))+
     ggtitle("Average Wage by Education Level")
   wage_age_plot <- ggplot(participants_data, aes(x = wage, fill = ageGroup)) + 
     geom_histogram(data=participants_data, alpha=.5) +
@@ -836,7 +844,10 @@ server <- function(input, output){
   kids_plot <- ggplot(participants_data_ag_byKids, aes (x = ageGroup, y = participantId , fill = haveKids)) +
     geom_bar(stat = "identity") +
     facet_share(~haveKids, dir = "h", scales = "free", reverse_num = TRUE) +
-    scale_y_continuous(name = "Count")+
+    scale_y_continuous(name = "Count", 
+                       #breaks = seq(-100000, 30000, 15000), 
+                       #labels = paste0(as.character(c(seq(100000, 0, -15000), seq(15000, 30000, 15000))))
+                       )+
     labs(x = "Age Group", title = "Participants'num by age groups and whether have kids")+
     coord_flip() +
     theme_minimal()
@@ -1204,8 +1215,8 @@ server <- function(input, output){
       network_plot <-ggraph(network_graph_2022,layout = "nicely") + 
         geom_edge_link(aes(width=Weight), alpha=0.25) +
         scale_edge_width(range = c(0.1, 1)) +
-        geom_node_point(aes(alpha=0.05,size = centrality_betweenness()))+
-        geom_node_text(aes(filter=Centrality > 35000, label = name),
+        geom_node_point(color="lightblue", aes( alpha=0.05,size = centrality_betweenness()))+
+        geom_node_text(color="red", aes( filter=Centrality > 35000, label = name),
                        repel = TRUE)
       network_plot + theme_graph()
     }
@@ -1215,8 +1226,8 @@ server <- function(input, output){
       network_plot<- ggraph(network_graph_2023,layout = "nicely") + 
         geom_edge_link(aes(width=Weight), alpha=0.25) +
         scale_edge_width(range = c(0.1, 1)) +
-        geom_node_point(aes(alpha=0.05, size = centrality_betweenness()))+
-        geom_node_text(aes(filter=Centrality > 15000, label = name),repel = TRUE)
+        geom_node_point(color="lightblue", aes( alpha=0.05, size = centrality_betweenness()))+
+        geom_node_text(color="red", aes( filter=Centrality > 15000, label = name),repel = TRUE)
       network_plot + theme_graph()
     }
   })
@@ -1231,7 +1242,7 @@ server <- function(input, output){
           geom_edge_link(aes(width=Weight), alpha=0.2) +
           scale_edge_width(range = c(0.1, 1)) +
           geom_node_point(aes(colour = educationLevel,alpha=0.05,size = centrality_betweenness()))+
-          geom_node_text(aes(filter=Centrality > 35000, label = name),repel = TRUE)
+          geom_node_text(color="red",aes(filter=Centrality > 35000, label = name),repel = TRUE)
         network_group + theme_graph()
       }
       else if (input$groups =="interestGroup"){
@@ -1239,7 +1250,7 @@ server <- function(input, output){
           geom_edge_link(aes(width=Weight), alpha=0.2) +
           scale_edge_width(range = c(0.1, 1)) +
           geom_node_point(aes(colour = interestGroup,alpha=0.05,size = centrality_betweenness()))+
-          geom_node_text(aes(filter=Centrality > 35000, label = name),repel = TRUE)
+          geom_node_text(color="red",aes(filter=Centrality > 35000, label = name),repel = TRUE)
         network_group + theme_graph()
       }
       else if (input$groups =="joviality"){
@@ -1247,7 +1258,7 @@ server <- function(input, output){
           geom_edge_link(aes(width=Weight), alpha=0.2) +
           scale_edge_width(range = c(0.1, 1)) +
           geom_node_point(aes(colour = joviality,alpha=0.05,size = centrality_betweenness()))+
-          geom_node_text(aes(filter=Centrality > 35000, label = name),repel = TRUE)
+          geom_node_text(color="red",aes(filter=Centrality > 35000, label = name),repel = TRUE)
         network_group + theme_graph()
       }
     }
@@ -1260,7 +1271,7 @@ server <- function(input, output){
           geom_edge_link(aes(width=Weight), alpha=0.2) +
           scale_edge_width(range = c(0.1, 1)) +
           geom_node_point(aes(colour = educationLevel,alpha=0.05,size = centrality_betweenness()))+
-          geom_node_text(aes(filter=Centrality > 15000, label = name),repel = TRUE)
+          geom_node_text(color="red",aes(filter=Centrality > 15000, label = name),repel = TRUE)
         network_group + theme_graph()
       }
       else if (input$groups =="interestGroup"){
@@ -1268,7 +1279,7 @@ server <- function(input, output){
           geom_edge_link(aes(width=Weight), alpha=0.2) +
           scale_edge_width(range = c(0.1, 1)) +
           geom_node_point(aes(colour = interestGroup,alpha=0.05,size = centrality_betweenness()))+
-          geom_node_text(aes(filter=Centrality > 15000, label = name),repel = TRUE)
+          geom_node_text(color="red",aes(filter=Centrality > 15000, label = name),repel = TRUE)
         network_group + theme_graph()
       }
       else if (input$groups =="joviality"){
@@ -1276,7 +1287,7 @@ server <- function(input, output){
           geom_edge_link(aes(width=Weight), alpha=0.2) +
           scale_edge_width(range = c(0.1, 1)) +
           geom_node_point(aes(colour = joviality,alpha=0.05,size = centrality_betweenness()))+
-          geom_node_text(aes(filter=Centrality > 15000, label = name),repel = TRUE)
+          geom_node_text(color="red",aes(filter=Centrality > 15000, label = name),repel = TRUE)
         network_group + theme_graph()
       }
     }
