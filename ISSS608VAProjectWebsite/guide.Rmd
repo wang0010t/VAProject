@@ -1,0 +1,90 @@
+---
+title: "User Guide"
+description: |
+  User Guide for Shiny Application
+author:
+  - name: Group9:<br> HUANG ANNI <br> NI JUNQIU <br> WANG TIANQI <br>
+    #url: 
+date: 2022-07-02
+output:
+  distill::distill_article:
+    self_contained: false
+    toc: true
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# 1. Introduction
+
+XXX
+
+# 2. Modules in Shiny Application
+
+
+## 2.1 Demographics Analysis
+
+xx
+
+<img src="image/XX.png"/>
+
+### 2.1.1 Overall Demographics
+
+xxx
+
+### 2.1.2 Wage Analysis
+
+XXX
+
+### 2.1.3 Expenditure analysis
+
+XXX
+
+
+## 2.2 Social Activity
+
+xx
+
+<img src="image/XX.png"/>
+
+### 2.2.1 Overall Network Graph
+
+xxx
+
+### 2.2.2 Network Among Different Groups
+
+XXX
+
+### 2.2.3 visnetwork Graph
+
+XXX
+
+
+
+## 2.3 Predominant Business
+
+xx
+
+<img src="image/XX.png"/>
+
+### 2.3.1 Overall Town Map
+
+xxx
+
+### 2.3.2 Cost Analysis
+
+XXX
+
+### 2.3.3 Check-in Analysis
+
+XXX
+
+### 2.3.4 Revenue Analysis
+
+XXX
+
+
