@@ -187,7 +187,7 @@ body <- dashboardBody(
                      )
                    )
           ), 
-          tabPanel("Wage by Groups", 
+          tabPanel("Crutial factors", 
                    fluidRow(
                      column(width = 4,valueBoxOutput(width = 12,"blue_value_box")) ,
                      column(width = 4,valueBoxOutput(width = 12,"red_value_box")) ,
@@ -210,6 +210,15 @@ body <- dashboardBody(
                        solidHeader = TRUE,
                        plotlyOutput("wageByEducationLevel")
                      ),
+                   ),
+                   fluidRow(
+                     box(
+                       width = 12,
+                       title = "Wage By Joviality Status",
+                       status = 'primary',
+                       solidHeader = TRUE,
+                       plotlyOutput("wageByJov")
+                     )
                    ),
                    fluidRow(
                      box(
@@ -840,15 +849,22 @@ server <- function(input, output){
     labs(x = "Wage", title = "Participants'wage wih Kids or not")+
     guides(fill = "none") + 
     theme_bw()
+  wage_jov_plot <- ggplot(participants_data, aes(x = wage, fill = Joviality_Group)) + 
+    geom_histogram(data=participants_data, alpha=.5) +
+    geom_histogram() +
+    labs(x = "Wage", title = "Participants'wage wih different Joviality Status")+
+    facet_wrap(~ Joviality_Group) + 
+    guides(fill = "none") + 
+    theme_bw()
   kids_plot <- participants_data %>%
     group_by(ageGroup, haveKids) %>%
     summarise(n = n()) %>%
     mutate(perc = paste(round(100*round(n / sum(n),3), 2), "%", sep="")) %>%
     ggplot(aes(fill=haveKids, x=ageGroup, y=perc)) + 
     geom_col() +
-    geom_text(aes(label = perc), size = 3, position = position_stack(vjust = 0.5)) +
+    geom_text(aes(label = perc), position = position_stack(vjust = 0.5)) +
     labs(x="Age group", y="Percentage",
-         title = "The percentage of people with kids in different age groups", fill = "Have Kids?") +
+         title = "Percentage of people with kids in different age groups", fill = "Have Kids?") +
     theme_minimal()
   set.seed(1234)
   anova_education_plot <- ggbetweenstats(
@@ -1012,6 +1028,9 @@ server <- function(input, output){
   })
   output$wageByKids <- renderPlotly({
     wage_kid_plot
+  })
+  output$wageByJov <- renderPlotly({
+    wage_jov_plot
   })
   output$consume_table <- DT::renderDataTable({
     dt <-  DT::datatable(as.data.frame(consume_report %>%
