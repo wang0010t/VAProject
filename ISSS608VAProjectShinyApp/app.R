@@ -260,6 +260,14 @@ body <- dashboardBody(
                 title = "Income and Expenses",
                 status = 'primary',
                 solidHeader = TRUE,
+                selectInput(inputId = "in_ex_factor", 
+                            label = "Group by",
+                            choices = c(
+                              "Education Level" = "educationLevel",
+                              "Interest Group" = "interestGroup",
+                              "Age Group" = "ageGroup",
+                              "Joviality Status" = "Joviality_Group"),
+                            multiple = FALSE),
                 girafeOutput("income_spend_scatterplot"),
                 DT::dataTableOutput("consume_table"))
             )
@@ -840,7 +848,7 @@ server <- function(input, output){
     geom_histogram(data=participants_data, alpha=.5) +
     geom_histogram() +
     labs(x = "Wage", title = "Participants'wage wih different Age Group")+
-    facet_wrap(~ ageGroup) + 
+    facet_wrap(~ ageGroup,scales = "free_y") + 
     guides(fill = "none") + 
     theme_bw()
   wage_kid_plot <- ggplot(participants_data, aes(x = wage, fill = haveKids)) + 
@@ -849,11 +857,12 @@ server <- function(input, output){
     labs(x = "Wage", title = "Participants'wage wih Kids or not")+
     guides(fill = "none") + 
     theme_bw()
-  wage_jov_plot <- ggplot(participants_data, aes(x = wage, fill = Joviality_Group)) + 
+  wage_jov_plot <- ggplot(participants_data, aes(x = wage, 
+                                                 fill = Joviality_Group)) + 
     geom_histogram(data=participants_data, alpha=.5) +
     geom_histogram() +
     labs(x = "Wage", title = "Participants'wage wih different Joviality Status")+
-    facet_wrap(~ Joviality_Group) + 
+    facet_wrap(~ Joviality_Group,scales = "free_y") + 
     guides(fill = "none") + 
     theme_bw()
   kids_plot <- participants_data %>%
@@ -995,21 +1004,75 @@ server <- function(input, output){
     )
   })
   output$income_spend_scatterplot <- renderGirafe({
-    p2 <- participant_fin %>%
-      filter(date == 'Apr 2022') %>%
-      ggplot(aes(x=income, y = abs(expense), size = savings, color = educationLevel))+
-      geom_point_interactive(aes(tooltip = tooltip), alpha=0.7) +
-      ggtitle("Income vs Expense by different Education Levels") +
-      ylab("Expense") +
-      xlab("Income")+
-      theme_minimal() +
-      theme(axis.line = element_line(size = 0.5),
-            axis.text = element_text(size = 16),
-            axis.title = element_text(size=16),
-            axis.title.y = element_text(angle = 0),
-            legend.title = element_text(size =16),
-            legend.text = element_text(size = 16),
-            plot.title = element_text(size =20,hjust = 0.5))
+    if (!!input$in_ex_factor == "educationLevel"){
+      p2 <- participant_fin %>%
+        filter(date == 'Apr 2022') %>%
+        ggplot(aes(x=income, y = abs(expense), size = savings, color = educationLevel))+
+        geom_point_interactive(aes(tooltip = tooltip), alpha=0.7) +
+        ggtitle(paste("Income vs Expense by different"),"Education Level") +
+        ylab("Expense") +
+        xlab("Income")+
+        theme_minimal() +
+        theme(axis.line = element_line(size = 0.5),
+              axis.text = element_text(size = 16),
+              axis.title = element_text(size=16),
+              axis.title.y = element_text(angle = 0),
+              legend.title = element_text(size =16),
+              legend.text = element_text(size = 16),
+              plot.title = element_text(size =20,hjust = 0.5))
+    }
+    else if (!!input$in_ex_factor == "interestGroup"){
+      p2 <- participant_fin %>%
+        filter(date == 'Apr 2022') %>%
+        ggplot(aes(x=income, y = abs(expense), size = savings, color = interestGroup))+
+        geom_point_interactive(aes(tooltip = tooltip), alpha=0.7) +
+        ggtitle(paste("Income vs Expense by different"),"Education Level") +
+        ylab("Expense") +
+        xlab("Income")+
+        theme_minimal() +
+        theme(axis.line = element_line(size = 0.5),
+              axis.text = element_text(size = 16),
+              axis.title = element_text(size=16),
+              axis.title.y = element_text(angle = 0),
+              legend.title = element_text(size =16),
+              legend.text = element_text(size = 16),
+              plot.title = element_text(size =20,hjust = 0.5))
+    }
+    else if (!!input$in_ex_factor == "ageGroup"){
+      p2 <- participant_fin %>%
+        filter(date == 'Apr 2022') %>%
+        ggplot(aes(x=income, y = abs(expense), size = savings, color = ageGroup))+
+        geom_point_interactive(aes(tooltip = tooltip), alpha=0.7) +
+        ggtitle(paste("Income vs Expense by different"),"Education Level") +
+        ylab("Expense") +
+        xlab("Income")+
+        theme_minimal() +
+        theme(axis.line = element_line(size = 0.5),
+              axis.text = element_text(size = 16),
+              axis.title = element_text(size=16),
+              axis.title.y = element_text(angle = 0),
+              legend.title = element_text(size =16),
+              legend.text = element_text(size = 16),
+              plot.title = element_text(size =20,hjust = 0.5))
+    }
+    else if (!!input$in_ex_factor == "Joviality_Group"){
+      p2 <- participant_fin %>%
+        filter(date == 'Apr 2022') %>%
+        ggplot(aes(x=income, y = abs(expense), size = savings, color = Joviality_Group))+
+        geom_point_interactive(aes(tooltip = tooltip), alpha=0.7) +
+        ggtitle(paste("Income vs Expense by different"),"Education Level") +
+        ylab("Expense") +
+        xlab("Income")+
+        theme_minimal() +
+        theme(axis.line = element_line(size = 0.5),
+              axis.text = element_text(size = 16),
+              axis.title = element_text(size=16),
+              axis.title.y = element_text(angle = 0),
+              legend.title = element_text(size =16),
+              legend.text = element_text(size = 16),
+              plot.title = element_text(size =20,hjust = 0.5))
+    }
+    
     
     girafe(
       ggobj = p2,
