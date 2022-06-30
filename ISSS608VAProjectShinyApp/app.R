@@ -271,7 +271,7 @@ body <- dashboardBody(
                   box(title = "Overall Social Network for the Selected Month",
                       solidHeader = TRUE, 
                       status = "primary", 
-                      h5("Notes: Participants with higher centrality betweenness are highlighted"), plotOutput(outputId = "network_plot",width = 800, height = 600)),
+                      h5("Notes: Participants with higher centrality betweenness are highlighted"), plotOutput(outputId = "network_plot",width = 700, height = 600)),
                 )
               )
             )
@@ -293,14 +293,24 @@ body <- dashboardBody(
                                           "Joviality" = "joviality"),
                               multiple = FALSE)
                 ),
-                fluidRow(
-                  box(title = "Social Network for the Selected Group and Period",
-                      solidHeader = TRUE, 
-                      status = "primary", 
-                      h5("Notes: Participants with higher centrality betweenness are highlighted"), plotOutput(outputId = "network_group",width = 800, height = 600)),
+                mainPanel(
+                  fluidRow(
+                    box(title = "Social Network for the Selected Group and Period",
+                        width = "600px",
+                        solidHeader = TRUE, 
+                        status = "primary", 
+                        h5("Notes: Participants with higher centrality betweenness are highlighted"), plotOutput(outputId = "network_group",width = "90%", height = 600)),
+                  ),
+                  fluidRow(
+                    box(title = "Facet Social Network for the Selected Group", 
+                        width = "600px",
+                        solidHeader = TRUE, 
+                        status = "primary", 
+                        plotOutput(outputId = "network_group1",width = "90%", height = 600),)  
+                  )
                 )
-              )
             )
+          )
     ),
     tabItem(tabName = "vis_tab",
             fluidPage(
@@ -317,7 +327,7 @@ body <- dashboardBody(
                 fluidRow(
                   box(title = "Social Network for the Selected Participant or Interest Group", 
                       solidHeader = TRUE, 
-                      status = "primary", visNetworkOutput(outputId="visplot", width = 800, height = 600)),
+                      status = "primary", visNetworkOutput(outputId="visplot", width = "90%", height = 600)),
                 )
               )
             )
@@ -1211,12 +1221,14 @@ server <- function(input, output){
       set.seed(1234)
       network_graph_2022 <- network_graph_2022  %>%
         mutate(Centrality = centrality_betweenness())
-      network_plot <-ggraph(network_graph_2022,layout = "nicely") + 
+      network_plot <- ggraph(network_graph_2022,layout = "nicely") + 
         geom_edge_link(aes(width=Weight), alpha=0.25) +
         scale_edge_width(range = c(0.1, 1)) +
-        geom_node_point(color="lightblue", aes( alpha=0.05,size = centrality_betweenness()))+
+        geom_node_point(color="lightblue", aes(alpha=1,size = centrality_betweenness()))+
         geom_node_text(color="red", aes( filter=Centrality > 35000, label = name),
-                       repel = TRUE)
+                       repel = TRUE)+ 
+        ggtitle("Social Network for 2022 Mar") +
+        theme(plot.title = element_text(size = 12))
       network_plot + theme_graph()
     }
     else if (input$yearMonth == "2023-03"){
@@ -1226,7 +1238,9 @@ server <- function(input, output){
         geom_edge_link(aes(width=Weight), alpha=0.25) +
         scale_edge_width(range = c(0.1, 1)) +
         geom_node_point(color="lightblue", aes( alpha=0.05, size = centrality_betweenness()))+
-        geom_node_text(color="red", aes( filter=Centrality > 15000, label = name),repel = TRUE)
+        geom_node_text(color="red", aes( filter=Centrality > 15000, label = name),repel = TRUE)+ 
+        ggtitle("Social Network for 2023 Mar") +
+        theme(plot.title = element_text(size = 12))
       network_plot + theme_graph()
     }
   })
@@ -1241,7 +1255,9 @@ server <- function(input, output){
           geom_edge_link(aes(width=Weight), alpha=0.2) +
           scale_edge_width(range = c(0.1, 1)) +
           geom_node_point(aes(colour = educationLevel,alpha=0.05,size = centrality_betweenness()))+
-          geom_node_text(color="red",aes(filter=Centrality > 35000, label = name),repel = TRUE)
+          geom_node_text(color="red",aes(filter=Centrality > 35000, label = name),repel = TRUE)+ 
+          ggtitle("Social Network for 2022 Mar with Education Level") +
+          theme(plot.title = element_text(size = 12))
         network_group + theme_graph()
       }
       else if (input$groups =="interestGroup"){
@@ -1249,7 +1265,9 @@ server <- function(input, output){
           geom_edge_link(aes(width=Weight), alpha=0.2) +
           scale_edge_width(range = c(0.1, 1)) +
           geom_node_point(aes(colour = interestGroup,alpha=0.05,size = centrality_betweenness()))+
-          geom_node_text(color="red",aes(filter=Centrality > 35000, label = name),repel = TRUE)
+          geom_node_text(color="red",aes(filter=Centrality > 35000, label = name),repel = TRUE)+ 
+          ggtitle("Social Network for 2022 Mar with Interest Group") +
+          theme(plot.title = element_text(size = 12))
         network_group + theme_graph()
       }
       else if (input$groups =="joviality"){
@@ -1257,7 +1275,9 @@ server <- function(input, output){
           geom_edge_link(aes(width=Weight), alpha=0.2) +
           scale_edge_width(range = c(0.1, 1)) +
           geom_node_point(aes(colour = joviality,alpha=0.05,size = centrality_betweenness()))+
-          geom_node_text(color="red",aes(filter=Centrality > 35000, label = name),repel = TRUE)
+          geom_node_text(color="red",aes(filter=Centrality > 35000, label = name),repel = TRUE)+ 
+          ggtitle("Social Network for 2022 Mar with joviality") +
+          theme(plot.title = element_text(size = 12))
         network_group + theme_graph()
       }
     }
@@ -1270,7 +1290,9 @@ server <- function(input, output){
           geom_edge_link(aes(width=Weight), alpha=0.2) +
           scale_edge_width(range = c(0.1, 1)) +
           geom_node_point(aes(colour = educationLevel,alpha=0.05,size = centrality_betweenness()))+
-          geom_node_text(color="red",aes(filter=Centrality > 15000, label = name),repel = TRUE)
+          geom_node_text(color="red",aes(filter=Centrality > 15000, label = name),repel = TRUE)+ 
+          ggtitle("Social Network for 2023 Mar with Education Level") +
+          theme(plot.title = element_text(size = 12))
         network_group + theme_graph()
       }
       else if (input$groups =="interestGroup"){
@@ -1278,7 +1300,9 @@ server <- function(input, output){
           geom_edge_link(aes(width=Weight), alpha=0.2) +
           scale_edge_width(range = c(0.1, 1)) +
           geom_node_point(aes(colour = interestGroup,alpha=0.05,size = centrality_betweenness()))+
-          geom_node_text(color="red",aes(filter=Centrality > 15000, label = name),repel = TRUE)
+          geom_node_text(color="red",aes(filter=Centrality > 15000, label = name),repel = TRUE)+ 
+          ggtitle("Social Network for 2023 Mar with Interest Group") +
+          theme(plot.title = element_text(size = 12))
         network_group + theme_graph()
       }
       else if (input$groups =="joviality"){
@@ -1286,8 +1310,70 @@ server <- function(input, output){
           geom_edge_link(aes(width=Weight), alpha=0.2) +
           scale_edge_width(range = c(0.1, 1)) +
           geom_node_point(aes(colour = joviality,alpha=0.05,size = centrality_betweenness()))+
-          geom_node_text(color="red",aes(filter=Centrality > 15000, label = name),repel = TRUE)
+          geom_node_text(color="red",aes(filter=Centrality > 15000, label = name),repel = TRUE)+ 
+          ggtitle("Social Network for 2023 Mar with Joviality") +
+          theme(plot.title = element_text(size = 12))
         network_group + theme_graph()
+      }
+    }
+  })
+  
+  
+  output$network_group1 <- renderPlot({
+    if(input$yearMonth2 =="2022-03"){
+      if (input$groups =="educationLevel"){
+      set_graph_style()
+      network_group1 <- ggraph(network_graph_2022, 
+                  layout = "circle") +
+        geom_edge_link(aes(width=Weight), 
+                       alpha=0.2) +
+        scale_edge_width(range = c(0.1, 1)) +
+        geom_node_point(aes(colour = educationLevel), 
+                        size = 1)+ 
+        ggtitle("Facet Social Network for 2022 Mar by Education Level") +
+        theme(plot.title = element_text(size = 12))
+      
+      network_group1 + facet_nodes(~educationLevel)
+      }
+      else if (input$groups =="interestGroup"){
+        network_group1 <- ggraph(network_graph_2022, 
+                    layout = "circle") +
+          geom_edge_link(aes(width=Weight), 
+                         alpha=0.2) +
+          scale_edge_width(range = c(0.1, 1)) +
+          geom_node_point(aes(colour = interestGroup), 
+                          size = 1)+ 
+          ggtitle("Facet Social Network for 2022 Mar by Interest Groups") +
+          theme(plot.title = element_text(size = 12))
+        
+        network_group1 + facet_nodes(~interestGroup)
+      }
+  }
+    else if (input$yearMonth2 =="2023-03"){
+      if (input$groups =="educationLevel"){
+        network_group1 <- ggraph(network_graph_2023, 
+                    layout = "circle") +
+          geom_edge_link(aes(width=Weight), 
+                         alpha=0.2) +
+          scale_edge_width(range = c(0.1, 1)) +
+          geom_node_point(aes(colour = educationLevel), 
+                          size = 1)+ 
+          ggtitle("Facet Social Network for 2023 Mar by Education Level") +
+          theme(plot.title = element_text(size = 12))
+        
+        network_group1 + facet_nodes(~educationLevel)
+      }
+      else if (input$groups =="interestGroup"){
+        network_group1 <- ggraph(network_graph_2023, 
+                    layout = "circle") +
+          geom_edge_link(aes(width=Weight), 
+                         alpha=0.2) +
+          scale_edge_width(range = c(0.1, 1)) +
+          geom_node_point(aes(colour = interestGroup), 
+                          size = 1)+ 
+          ggtitle("Facet Social Network for 2023 Mar by Interest Groups") +
+          theme(plot.title = element_text(size = 12))
+        network_group1 + facet_nodes(~interestGroup)
       }
     }
   })
