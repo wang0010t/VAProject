@@ -1026,7 +1026,7 @@ server <- function(input, output){
         filter(date == 'Apr 2022') %>%
         ggplot(aes(x=income, y = abs(expense), size = savings, color = interestGroup))+
         geom_point_interactive(aes(tooltip = tooltip), alpha=0.7) +
-        ggtitle(paste("Income vs Expense by different"),"Education Level") +
+        ggtitle(paste("Income vs Expense by different"),"Interest Group") +
         ylab("Expense") +
         xlab("Income")+
         theme_minimal() +
@@ -1043,7 +1043,7 @@ server <- function(input, output){
         filter(date == 'Apr 2022') %>%
         ggplot(aes(x=income, y = abs(expense), size = savings, color = ageGroup))+
         geom_point_interactive(aes(tooltip = tooltip), alpha=0.7) +
-        ggtitle(paste("Income vs Expense by different"),"Education Level") +
+        ggtitle(paste("Income vs Expense by different"),"Age Group") +
         ylab("Expense") +
         xlab("Income")+
         theme_minimal() +
@@ -1060,7 +1060,7 @@ server <- function(input, output){
         filter(date == 'Apr 2022') %>%
         ggplot(aes(x=income, y = abs(expense), size = savings, color = Joviality_Group))+
         geom_point_interactive(aes(tooltip = tooltip), alpha=0.7) +
-        ggtitle(paste("Income vs Expense by different"),"Education Level") +
+        ggtitle(paste("Income vs Expense by different"),"Joviality Status") +
         ylab("Expense") +
         xlab("Income")+
         theme_minimal() +
