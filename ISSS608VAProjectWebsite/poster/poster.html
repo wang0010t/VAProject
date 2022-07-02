@@ -19,78 +19,16 @@ Google fonts api stuff
 
 
 
-<title>Visualizing the Demographics, Neighbourhoods and Business Base in Engagement</title>
+<title>Visualizing the Demographics, Neighbourhoods and Business Base</title>
 
 
 
 
-<style type="text/css">pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */</style>
+
 
 <style>
 @page {
-size: 45in 38in;
+size: 45in 63.65in;
 margin: 0;
 padding: 0;
 }
@@ -98,19 +36,19 @@ body {
 margin: 0;
 font-size: 45px;
 width: 45in;
-height: 38in;
+height: 63.65in;
 padding: 0;
 text-align: justify;
 font-family: Palatino;
 }
 .poster_wrap {
 width: 45in;
-height: 38in;
+height: 63.65in;
 padding: 0cm;
 }
 .title_container {
 width: 45in;
-height: calc(38in * 0.15);
+height: calc(63.65in * 0.15);
 overflow: hidden;
 background-color: #354ca1;
 border: 0 solid #0b4545;
@@ -149,24 +87,24 @@ font-family: Palatino;
 }
 /* unvisited link */
 a:link {
-color: #cc0000;
+color: 00FFFF;
 }
 .mybreak {
   break-before: column;
 }
 /* visited link */
 a:visited {
-color: #cc0000;
+color: 00FFFF;
 }
 
 /* mouse over link */
 a:hover {
-color: #cc0000;
+color: 00FFFF;
 }
 
 /* selected link */
 a:active {
-color: #cc0000;
+color: 00FFFF;
 }
 .poster_body {
 -webkit-column-count: 3; /* Chrome, Safari, Opera */
@@ -199,9 +137,9 @@ font-weight: normal;
 }
 .poster_body_wrap{
 width: calc(45in + 0 + 0);
-height: calc(38in * 0.83);
-padding-top: calc(38in * 0.005);
-padding-bottom: calc(38in * 0.01);
+height: calc(63.65in * 0.83);
+padding-top: calc(63.65in * 0.005);
+padding-bottom: calc(63.65in * 0.01);
 background-color: #ffffff;
 }
 .poster_title h3 {
@@ -344,7 +282,7 @@ font-size: 20pt;
 </div>
 <!-- Poster Title -->
 <div class= "poster_title">
-<h1 id="title">Visualizing the Demographics, Neighbourhoods and Business Base in Engagement</h1>
+<h1 id="title">Visualizing the Demographics, Neighbourhoods and Business Base</h1>
 <h3 id="author">HUANG ANNI<sup></sup>, NI JUNQIU<sup></sup>, WANG TIANQI<sup></sup></h3><br>
 <h5 id="affiliation"><sup></sup> School of Computing and Information Systems, Singapore Management University</h5>
 </div>
@@ -355,9 +293,20 @@ font-size: 20pt;
 
 <div class='poster_body_wrap'>
 <div class='poster_body'>
+<style>
+.title_container {
+    height: calc(63.65in * 0.06);
+}
+.poster_body_wrap{
+    height: calc(63.65in * 0.92);
+}
+img {
+    margin-top: 0.001cm;
+}
+</style>
 <div id="issues-and-problems" class="section level1">
 <h1>Issues and problems</h1>
-<p><code>posterdown</code> <span class="citation">[@R-rmarkdown]</span> The topic of this Visual Analytics Project will be based on <a href="https://vast-challenge.github.io/2022/">VAST Challenge 2022</a>. To understand the city’s demographics and relationships and answer questions from Challenge 1, our team will firstly characterize the demographics of the town. Also, we will describe the patterns in the social networks in the town. Lastly, we will identify the predominant business base of the town, and describe patterns observed.</p>
+<p>The topic of this Visual Analytics Project will be based on <a href="https://vast-challenge.github.io/2022/">VAST Challenge 2022</a>. To understand the city’s demographics and relationships and answer questions from Challenge 1, our team will firstly characterize the demographics of the town. Also, we will describe the patterns in the social networks in the town. Lastly, we will identify the predominant business base of the town, and describe patterns observed.</p>
 </div>
 <div id="motivation" class="section level1">
 <h1>Motivation</h1>
@@ -365,210 +314,78 @@ font-size: 20pt;
 </div>
 <div id="approach" class="section level1">
 <h1>Approach</h1>
-<p>To learn about the city’s demographics, its neighborhoods, and its business base, our team build web-enabled visual analytics application by using R Shiny. The application will focus and emphasize on interactivity and effective integration of techniques from data analytics and data visualization. Related visual analytics include</p>
+<p>To learn about the city’s demographics, its neighborhoods, and its business base, our team build web-enabled visual analytics application by using <a href="https://shiny.rstudio.com/">R Shiny</a>. The application will focus and emphasize on interactivity and effective integration of techniques from data analytics and data visualization. Related visual analytics packages in R include <a href="https://www.tidyverse.org/">tidyverse</a>, <a href="https://www.rdocumentation.org/packages/sf/versions/0.1-1">sf</a>, <a href="https://plotly.com/">plotly</a>, <a href="https://indrajeetpatil.github.io/ggstatsplot/">ggstatsplot</a>, <a href="https://www.data-imaginist.com/2017/ggraph-introduction-layouts/">ggraph</a>, <a href="https://cran.r-project.org/web/packages/visNetwork/vignettes/Introduction-to-visNetwork.html">visNetwork</a>, <a href="https://cran.r-project.org/web/packages/tmap/vignettes/tmap-getstarted.html">tmap</a> and so on.</p>
 </div>
 <div id="results" class="section level1">
 <h1>Results</h1>
-<p>Screenshots and a working demo of the system you built.</p>
-<p>Usually you want to have a nice table displaying some important results that you have calculated. In <code>posterdown</code> this is as easy as using the <code>kable</code> table formatting you are probably use to as per typical R Markdown formatting.</p>
-<p>You can reference tables like so: Table <a href="#tab:mytable">1</a>. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam placerat augue at velit tincidunt semper. Donec elementum porta posuere. Nullam interdum, odio at tincidunt feugiat, turpis nisi blandit eros, eu posuere risus felis non quam. Nam eget lorem odio. Duis et aliquet orci. Phasellus nec viverra est.</p>
-<table>
-<caption>
-<span id="tab:mytable">Table 1: </span>Table caption.
-</caption>
-<thead>
-<tr>
-<th style="text-align:center;">
-Sepal.Length
-</th>
-<th style="text-align:center;">
-Sepal.Width
-</th>
-<th style="text-align:center;">
-Petal.Length
-</th>
-<th style="text-align:center;">
-Petal.Width
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center;">
-5.1
-</td>
-<td style="text-align:center;">
-3.5
-</td>
-<td style="text-align:center;">
-1.4
-</td>
-<td style="text-align:center;">
-0.2
-</td>
-</tr>
-<tr>
-<td style="text-align:center;">
-4.9
-</td>
-<td style="text-align:center;">
-3.0
-</td>
-<td style="text-align:center;">
-1.4
-</td>
-<td style="text-align:center;">
-0.2
-</td>
-</tr>
-<tr>
-<td style="text-align:center;">
-4.7
-</td>
-<td style="text-align:center;">
-3.2
-</td>
-<td style="text-align:center;">
-1.3
-</td>
-<td style="text-align:center;">
-0.2
-</td>
-</tr>
-<tr>
-<td style="text-align:center;">
-4.6
-</td>
-<td style="text-align:center;">
-3.1
-</td>
-<td style="text-align:center;">
-1.5
-</td>
-<td style="text-align:center;">
-0.2
-</td>
-</tr>
-<tr>
-<td style="text-align:center;">
-5.0
-</td>
-<td style="text-align:center;">
-3.6
-</td>
-<td style="text-align:center;">
-1.4
-</td>
-<td style="text-align:center;">
-0.2
-</td>
-</tr>
-<tr>
-<td style="text-align:center;">
-5.4
-</td>
-<td style="text-align:center;">
-3.9
-</td>
-<td style="text-align:center;">
-1.7
-</td>
-<td style="text-align:center;">
-0.4
-</td>
-</tr>
-<tr>
-<td style="text-align:center;">
-4.6
-</td>
-<td style="text-align:center;">
-3.4
-</td>
-<td style="text-align:center;">
-1.4
-</td>
-<td style="text-align:center;">
-0.3
-</td>
-</tr>
-<tr>
-<td style="text-align:center;">
-5.0
-</td>
-<td style="text-align:center;">
-3.4
-</td>
-<td style="text-align:center;">
-1.5
-</td>
-<td style="text-align:center;">
-0.2
-</td>
-</tr>
-<tr>
-<td style="text-align:center;">
-4.4
-</td>
-<td style="text-align:center;">
-2.9
-</td>
-<td style="text-align:center;">
-1.4
-</td>
-<td style="text-align:center;">
-0.2
-</td>
-</tr>
-<tr>
-<td style="text-align:center;">
-4.9
-</td>
-<td style="text-align:center;">
-3.1
-</td>
-<td style="text-align:center;">
-1.5
-</td>
-<td style="text-align:center;">
-0.1
-</td>
-</tr>
-</tbody>
-</table>
-<p>Or with figures: Figure <a href="#fig:standard-plot">1</a>, or Figure <a href="#fig:morefigs">2</a>.</p>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:standard-plot"></span>
-<img src="poster_files/figure-html/standard-plot-1.png" alt="Great figure!" width="80%" />
-<p class="caption">
-Figure 1: Great figure!
+<p><code>Demographics</code> The below dashboard containing the info boxes of distribution of wage, age and some plots such as the ratio of having kids in each age group, the average wage by education level.</p>
+<p align="center">
+<img src="poster_images/poster1-1.png" width="80%">
 </p>
-</div>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> iris</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> data<span class="sc">$</span>Sepal.Length, </span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">y =</span> data<span class="sc">$</span>Sepal.Width, </span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">col =</span> data<span class="sc">$</span>Species,</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">pch =</span> <span class="dv">19</span>, </span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Sepal Length (cm)&quot;</span>,</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;Sepal Width (cm)&quot;</span>)</span></code></pre></div>
-<div class="figure"><span style="display:block;" id="fig:morefigs"></span>
-<img src="poster_files/figure-html/morefigs-1.png" alt="Amazing, right?!" width="80%" />
-<p class="caption">
-Figure 2: Amazing, right?!
+<p><code>Demographics and Wage</code> There’s a shift of wage decreasing from March to November. People with higher education level has a significantly higher wage at any time.</p>
+<p align="center">
+<img src="poster_images/poster1-2.png" width="80%">
 </p>
-</div>
+<p align="center">
+<img src="poster_images/poster1-3.png" width="85%">
+</p>
+<p><code>Demographics and Expenditure</code> The below heatmap shows average daily expense of residents, where we can tell that people spend more money on Saturday and Sunday.</p>
+<p align="center">
+<img src="poster_images/poster1-7.png" width="85%">
+</p>
+<p>What’s more, happy people spend more money compared to less happy people with the same income, while “really sad” people earn a lot but do not spend more.The average spending on each category is quite stable and people spend most of their money on food.</p>
+<p align="center">
+<p><img src="poster_images/poster1-8.png" width="80%"></p>
+<p align="center">
+<img src="poster_images/poster1-9.png" width="80%">
+</p>
+<p><code>Social Network</code> There is a significant change of the network of the city from 2022 March to 2023 March. The participant id displays for those who have higher betweenness centrality in the network. The betweenness centrality of participants decreases from 2022 March to 2023 March. That means in 2023 March, participants are more likely to interacting directly to each other compared to 2022 March when there are more participants can be seen as “bridges”.</p>
+<p>With respect to different groups of participants, the visualization of the network also suggests that participants with higher centrality and more interactions with other person tend to have higher level of joviality.</p>
+<p align="center">
+<img src="poster_images/poster2-1.png" width="101%">
+</p>
+<p><code>Social Network with Groups</code> The group is closer for “High School or College” participants, while the group is loose among “Low” education level participants who seldom interact with each other. Moreover, for groups except “Low” education level, they all demonstrated increasing connections within each group after one year.</p>
+<p align="center">
+<img src="poster_images/poster2-3.png" width="101%">
+</p>
+<p><code>Individual Participants in the Social Network</code> As shown in previous graphs, we can identify participants who are more influential in the network. To further analyze those social influencers, we use visNetwork to interactively visualize the network by selecting the id of a specific participant. For example, we can choose id 566 who have higher centrality in 2022 March and visualize its network.</p>
+<p align="center">
+<img src="poster_images/poster2-7.png" width="80%">
+</p>
+<p><code>City Map</code> The City of Engagement has total no. of 1,042 buildings that consist of 1,517 apartments, 253 employers, 12 pubs, 20 restaurants and 4 schools. Commercial buildings are mainly in the central areas in the city and are surrounded by residential buildings. Employers, pubs, and restaurants are also mainly located in these commercial buildings. Schools are mainly located next to residential areas. North-west region has more apartments as compared to east and south areas where fewer apartments are built.</p>
+<p align="center">
+<img src="poster_images/poster3-1.png" width="75%">
+</p>
+<p><code>Cost Analysis</code> From the visualization, it seems those apartments located in central areas could have higher rental cost while apartments in the rural areas generally have lower rental cost.</p>
+<p align="center">
+<img src="poster_images/poster3-2.png" width="85%">
+</p>
+<p><code>Check-in Analysis</code> Pub-1344 in central region has relatively high no. of check-ins, i.e., appear to be prosperous over the study period, as compared to other pubs in the town. Pub-444 in south region appear to be struggling in business due to lowest no. of check-ins. For restaurants, restaurant-1346 and restaurant-1801 have the lowest and highest no. of check-ins respectively but both are located in the north-west region.</p>
+<p align="center">
+<img src="poster_images/poster3-4.png" width="85%">
+</p>
+<p align="center">
+<img src="poster_images/poster3-5.png" width="83%">
+</p>
+<p><code>Revenue Analysis</code> Pub-893 in central region has the highest revenue per customer whereas pub-443 in the east region has the lowest revenue per customer. Take note that pub-443 also has relatively lower no. of check-ins.</p>
+<p align="center">
+<img src="poster_images/poster3-8.png" width="85%">
+</p>
+<p>For restaurant, interestingly that most of the restaurants have constant revenue per customer. Only restaurant-1349 in central region has a sudden peak of revenue per customer in Apr 2023.</p>
+<p align="center">
+<img src="poster_images/poster3-9.png" width="85%">
+</p>
+<p>From the pairwise test, it can be concluded that there’s significant difference in revenue for pubs and restaurants located in different regions due to the small p value. There’s correlation between revenue and food or pub cost too as shown in the correlation test.</p>
+<p align="center">
+<img src="poster_images/poster3-10.png" width="80%">
+</p>
+<p align="center">
+<img src="poster_images/poster3-11.png" width="80%">
+</p>
 </div>
 <div id="future-work" class="section level1">
 <h1>Future Work</h1>
-<p>An explanation of how the work could be extended.</p>
-<p>Aliquam sed faucibus risus, quis efficitur erat. Vestibulum semper mauris quis tempus eleifend. Aliquam sagittis dictum ipsum, quis viverra ligula eleifend ut. Curabitur sagittis vitae arcu eget faucibus. In non elementum felis. Duis et aliquam nunc. Nunc pulvinar sapien nunc, vel pretium nisi efficitur in. Fusce fringilla maximus leo et maximus. Fusce at ligula laoreet, iaculis mi at, auctor odio. Praesent sed elementum justo. Aenean consectetur risus rhoncus tincidunt efficitur. Praesent dictum mauris at diam maximus maximus <span class="citation">[@R-posterdown]</span>.</p>
-<p>An explanation of how the work could be extended.</p>
-<p>Aliquam sed faucibus risus, quis efficitur erat. Vestibulum semper mauris quis tempus eleifend. Aliquam sagittis dictum ipsum, quis viverra ligula eleifend ut. Curabitur sagittis vitae arcu eget faucibus. In non elementum felis. Duis et aliquam nunc. Nunc pulvinar sapien nunc, vel pretium nisi efficitur in. Fusce fringilla maximus leo et maximus. Fusce at ligula laoreet, iaculis mi at, auctor odio. Praesent sed elementum justo. Aenean consectetur risus rhoncus tincidunt efficitur. Praesent dictum mauris at diam maximus maximus <span class="citation">[@R-posterdown]</span>.</p>
-<p>An explanation of how the work could be extended.</p>
-<p>Aliquam sed faucibus risus, quis efficitur erat. Vestibulum semper mauris quis tempus eleifend. Aliquam sagittis dictum ipsum, quis viverra ligula eleifend ut. Curabitur sagittis vitae arcu eget faucibus. In non elementum felis. Duis et aliquam nunc. Nunc pulvinar sapien nunc, vel pretium nisi efficitur in. Fusce fringilla maximus leo et maximus. Fusce at ligula laoreet, iaculis mi at, auctor odio. Praesent sed elementum justo. Aenean consectetur risus rhoncus tincidunt efficitur. Praesent dictum mauris at diam maximus maximus <span class="citation">[@R-posterdown]</span>.</p>
-<p>An explanation of how the work could be extended.</p>
-<p>Aliquam sed faucibus risus, quis efficitur erat. Vestibulum semper mauris quis tempus eleifend. Aliquam sagittis dictum ipsum, quis viverra ligula eleifend ut. Curabitur sagittis vitae arcu eget faucibus. In non elementum felis. Duis et aliquam nunc. Nunc pulvinar sapien nunc, vel pretium nisi efficitur in. Fusce fringilla maximus leo et maximus. Fusce at ligula laoreet, iaculis mi at, auctor odio. Praesent sed elementum justo. Aenean consectetur risus rhoncus tincidunt efficitur. Praesent dictum mauris at diam maximus maximus <span class="citation">[@R-posterdown]</span>.</p>
-<p>An explanation of how the work could be extended.</p>
-<p>Aliquam sed faucibus risus, quis efficitur erat. Vestibulum semper mauris quis tempus eleifend. Aliquam sagittis dictum ipsum, quis viverra ligula eleifend ut. Curabitur sagittis vitae arcu eget faucibus. In non elementum felis. Duis et aliquam nunc. Nunc pulvinar sapien nunc, vel pretium nisi efficitur in. Fusce fringilla maximus leo et maximus. Fusce at ligula laoreet, iaculis mi at, auctor odio. Praesent sed elementum justo. Aenean consectetur risus rhoncus tincidunt efficitur. Praesent dictum mauris at diam maximus maximus <span class="citation">[@R-posterdown]</span>.</p>
+<p>To provide better user interactivity experience, we can further combine the social network and business base analysis to the demographics. By adding more features from the network analysis and business base analysis to the demographics interactivity, we may gain more insights to help the city planning team to find opportunities for future growth. We can also consider identify the traffic of the city and the daily routines of the participants to better describe the patterns of life. What’s more, we can consider the financial status of Engagement to evaluate the financial health of the city. In the future, we can apply similar techniques to other cities to help the city planning teams or other stakeholders to enhance the development of the city and solve other possible problems.</p>
 </div>
 </div>
 </div>
