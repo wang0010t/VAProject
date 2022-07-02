@@ -1,10 +1,19 @@
 name: "ISSS608VAProjectWebsite"
 title: "ISSS608VA Project Website"
+base_url: https://github.com/wang0010t/VAProject
+repository_url: https://github.com/wang0010t/VAProject
 description: |
   ISSS608VA Project Website
 output_dir: "_site"
+collections:
+  posts:
+      categories: true
+      share: [twitter, linkedin]
+      citations: true
+      subscribe: _subscribe.html
 theme: apreshill.css
 navbar:
+  search: true
   right:
     - text: "Home"
       href: index.html
@@ -16,6 +25,8 @@ navbar:
       href: guide.html
     - text: "Poster"
       href: poster/poster.html
+    - icon: fab fa-github
+      href: https://github.com/wang0010t/VAProject
       
 
 output: distill::distill_article
