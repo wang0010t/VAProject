@@ -1,7 +1,7 @@
 ---
 title: "User Guide"
 description: |
-  User Guide for Shiny Application
+  User Guide for Shiny Application - A Visual Exploration of Demographics, Relationships, Business Base in the City of Engagement, Ohio USA
 author:
   - name: Group9:<br> HUANG ANNI <br> NI JUNQIU <br> WANG TIANQI <br>
     #url: 
@@ -21,70 +21,300 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # 1. Introduction
 
-XXX
+The [Shiny application](https://vaproject.shinyapps.io/ISSS608VAProjectShinyApp/) aims to provide various visual exploration tools and techniques for users to understand and analyze the city's demographics, social relationships, neighborhoods and business base.
+
+Below snapshot illustrates the home page of the Shiny application. 
+
+<img src="image/guide-01.png"/>
+
 
 # 2. Modules in Shiny Application
+
+The Shiny application provides 3 main modules to cover different areas of analysis. 
+
+* **Demographics Analysis**: aims to help users to characterize what they can tell about the demographics of the town.
+
+* **Social Activity**: aims to help users to explore the social activities in the community and identify patterns observed in the social networks in the town.
+
+* **Predominant Business**: aims to help users to describe patterns of the neighborhoods and identify the predominant business base of the town.
+
+<img src="image/guide-02.png"/>
 
 
 ## 2.1 Demographics Analysis
 
-xx
+Under Demographics Analysis, the application provides sub modules for:
 
-<img src="image/XX.png"/>
+* Overall Demographics
+
+* Wage Analysis
+
+* Expenditure Analysis
+
+<img src="image/guide-s1-01.png"/>
+
 
 ### 2.1.1 Overall Demographics
 
-xxx
+After selecting "Overall Demographics" from the menu bar, users will see a dashboard providing basic summaries of the demographics in the town. 
+
+<img src="image/guide-s1-02.png"/>
+
+When mouse over the first plot, the monthly wage of each participant in the city will be shown.
+
+<img src="image/guide-s1-03.png"/>
+
+The next plot shows the distribution of participants in different age groups. 
+
+<img src="image/guide-s1-04.png"/>
+
+The rightmost plot shows the distribution of participants by education level. 
+
+<img src="image/guide-s1-05.png"/>
+
+In the next row, 2 plots will be shown namely the percentage of participants with kids in each age group and average monthly wage by education level. 
+
+<img src="image/guide-s1-06.png"/>
+
+<img src="image/guide-s1-07.png"/>
+
+Both plots are generated using **plotly** so users are able to zoom in/out the plot and perform other functions such as download. 
+
+<img src="image/guide-s1-08.png"/>
+
+In the next row, first a box violin plot will be shown with pairwise statistical test on participant's joviality by education level. 
+
+<img src="image/guide-s1-09.png"/>
+
+The other plot is the correlogram for the relationship between participant's joviality and wage. 
+
+<img src="image/guide-s1-10.png"/>
+
 
 ### 2.1.2 Wage Analysis
 
-XXX
+* Exploratory Data Analysis (EDA)
 
-### 2.1.3 Expenditure analysis
+After selecting the Wage Analysis from the side menu bar, user will be able to see the Exploratory Data Analysis (EDA) tab with the first box plot for wage distribution in different groups. 
 
-XXX
+Users can select the option for "Group by" from the dropdown list. 
+<img src="image/guide-s1-11.png"/>
+
+On the right, user can adjust the date range and select factor to view the box violin plot that helps to explore factors that influence residents' wage.
+<img src="image/guide-s1-12.png"/>
+
+Users can scroll down to view the participants' wage and their average with different selection criteria such as education level, age group and have kids or not. 
+
+More details of the participant will be shown in the tooltip after user mouse over to the individual point in the plot.
+<img src="image/guide-s1-13.png"/>
+
+
+* Crucial Factors
+
+User can switch to the 2nd tab for crucial factors that affect people's wage. 
+In this tab, the minimum, maximum and mean of wage will be shown on top, followed by distribution of wage over time period. 
+<img src="image/guide-s1-14.png"/>
+
+Next, another 4 plots will be shown to illustrate the wage difference by education level, joviality status, age group, and having kids or not.
+<img src="image/guide-s1-15.png"/>
+
+<img src="image/guide-s1-16.png"/>
+
+<img src="image/guide-s1-17.png"/>
+
+<img src="image/guide-s1-18.png"/>
+
+
+* Data Table
+
+User can switch to the 3rd tab that provides a data table of the residents' data where users can search for any key word in the search field and perform sorting if requried. 
+
+<img src="image/guide-s1-19.png"/>
+
+
+### 2.1.3 Expenditure Analysis
+
+After selecting the Expenditure Analysis from the side menu bar, the heatmap of daily expenses of residents will be shown where users can identify the day of the month or week when residents usually spend more or less.
+
+<img src="image/guide-s1-20.png"/>
+
+User can scroll down to use the scatter plot for income and expense analysis and select the data by different groups.
+A data table for 4 categories of expenses with the Sparkline charts will be shown in the bottom. 
+
+<img src="image/guide-s1-21.png"/>
 
 
 ## 2.2 Social Activity
 
-xx
+Under Social Activity Analysis, the application provides sub modules for:
 
-<img src="image/XX.png"/>
+* Overall Social Network
 
-### 2.2.1 Overall Network Graph
+* Network by Group
 
-xxx
+* Network by Individual
 
-### 2.2.2 Network Among Different Groups
-
-XXX
-
-### 2.2.3 visnetwork Graph
-
-XXX
+<img src="image/guide-s2-01.png"/>
 
 
+### 2.2.1 Overall Social Network
+
+User can select Overall Social Network from the side menu bar and then a social network diagram for all the participants will be shown. 
+
+User can adjust the year and month to see the development of network over time. 
+
+<img src="image/guide-s2-02.png"/>
+
+Notes: participants with relatively higher centrality betweenness value are highlighted in red in the diagram.
+
+### 2.2.2 Network by Group
+
+User can go to the Network by Group menu item to explore the social network by education level, interest group or joviality. 
+User can also adjust the year and month to view the network changes over time. 
+
+<img src="image/guide-s2-03.png"/>
+
+<img src="image/guide-s2-04.png"/>
+
+Notes: participants with relatively higher centrality betweenness value are highlighted in red in the diagram.
+
+<img src="image/guide-s2-05.png"/>
+
+The social network for the selected group will be shown as facet of individual sub groups. 
+
+### 2.2.3 Network by Individual
+
+To view the network diagram for individual participant, user can switch to the Network by Individual menu item, where user can adjust the period and select participant ID or interest group to view their network diagram. 
+
+<img src="image/guide-s2-06.png"/>
+
+<img src="image/guide-s2-07.png"/>
 
 ## 2.3 Predominant Business
 
-xx
+Under Predominant Business Analysis, the application provides sub modules for:
 
-<img src="image/XX.png"/>
+* Overall Town Map
+
+* Cost Analysis
+
+* Check-in Analysis
+
+* Revenue Analysis
+
+<img src="image/guide-s3-01.png"/>
+
 
 ### 2.3.1 Overall Town Map
 
-xxx
+After user selects Overall Town Map from the side menu bar, a dashboard with summary of the no. of buildings, and venue types including apartments, employers, pubs, restaurants and schools will be shown on top of the page. 
+
+<img src="image/guide-s3-02.png"/>
+
+The first plot will show the geographical region of the town divided into central, east, north-west, and south regions.
+
+<img src="image/guide-s3-03.png"/>
+
+The building types will be shown in the next plot with different colors for commercial, residential or school buildings.
+
+<img src="image/guide-s3-04.png"/>
+
+Next, user can select the venue type including apartments, employers, pubs, restaurants and schools to be plotted in the map to view the location and distribution of business in the town. 
+
+User can choose to plot all venue types with different colors or plot only individual venue type. 
+Additional details such as geographic region or building type can be selected to add on to the map. 
+
+<img src="image/guide-s3-05.png"/>
+
+<img src="image/guide-s3-06.png"/>
+
 
 ### 2.3.2 Cost Analysis
 
-XXX
+User can go to the Cost Analysis from the side menu bar to explore the cost of the business in the town.
+
+First, user can select the venue type. Once done, the map plot on the right will be updated with the selected venue type plotted as points. 
+
+<img src="image/guide-s3-07.png"/>
+
+The color/size of the points will be determined based on the cost value such as food cost, rental cost, pub cost, school cost and job rate. 
+This helps the user to identify the areas in the city that has higher or lower business cost. 
+
+<img src="image/guide-s3-08.png"/>
+
+In this page, user can also select the x, y variables, type of statistical test, plot type to perform a pairwise statistical test to check if there's significant difference of the business cost in different regions. 
+
+<img src="image/guide-s3-09.png"/>
+
+User can also key in the plot title and the plot will be updated accordingly. 
+
+<img src="image/guide-s3-10.png"/>
+
 
 ### 2.3.3 Check-in Analysis
 
-XXX
+After user switches to the Check-in Analysis, the no. of daily check-ins will be plotted under the "Plots" tab. 
+
+* Check-in plots
+
+In this tab, user can select restaurant or pub for check-in analysis, and adjust the date range to view the trend changes. 
+
+<img src="image/guide-s3-11.png"/>
+
+After mouse over on the plot, more details of the check-in counts will be displayed in the tooltip for the restaurant or pub. With **plotly** graph, user can also choose to view individual restaurant/pub or select multiple ones. 
+
+<img src="image/guide-s3-12.png"/>
+
+The restaurants or pubs will also be shown in the map plot with color and size indicating the no. of check-ins. This helps user to identify the region and areas in the city with prosperous business. 
+
+<img src="image/guide-s3-13.png"/>
+
+
+* Correlation test
+
+User can switch to the correlation test tab to perform correlation test on selected variables such as no. of check-ins against pub cost or food cost. 
+
+<img src="image/guide-s3-14.png"/>
+
+User is allowed to select the type of test, display marginal graph and edit graph title. 
+
+<img src="image/guide-s3-15.png"/>
+
 
 ### 2.3.4 Revenue Analysis
 
-XXX
+User can click Revenue Analysis from the side menu bar to go to the function to check monthly revenue, customers, revenue per customer for restaurants or pubs. 
+
+* Revenue plots
+User can select the revenue parameter to be plotted on the graph and adjust the period.  
+<img src="image/guide-s3-16.png"/>
+
+After mouse over on the plot, user can examine the revenue value for individual restaurant or pub and select individual or multiple restaurants/pubs to shown in the plot if necessary. 
+
+<img src="image/guide-s3-17.png"/>
+
+The restaurants or pubs will also be shown in the map plot with color and size indicating the revenue or revenue/customer, which aims to help user to examine the business by region and areas in the city.  
+
+<img src="image/guide-s3-18.png"/>
+
+* Statistical test
+
+User can switch to the statistical test tab to select the x, y variables, type of statistical test, plot type to perform a pairwise statistical test to check if there's significant difference of the business revenue in different regions. 
+
+<img src="image/guide-s3-19.png"/>
+
+User can edit the plot title if required. 
+
+<img src="image/guide-s3-20.png"/>
+
+
+User can also perform the correlation test on selected variables such as revenue against pub or food cost as well as no. of customers against pub or food cost. 
+
+<img src="image/guide-s3-21.png"/>
+
+User is allowed to select the type of test, display marginal graph and edit graph title. 
+
+<img src="image/guide-s3-22.png"/>
+
 
 
