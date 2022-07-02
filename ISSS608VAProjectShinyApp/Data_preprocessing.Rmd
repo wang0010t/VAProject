@@ -1,0 +1,665 @@
+---
+title: "Data pre-processing on original datasets"
+author:
+- name: "Group 9"
+  affiliation: "Singapore Management University"
+description: | Data pre-processing for group project
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 3
+---
+
+```{r}
+packages = c('igraph', 'tidygraph', 
+             'ggraph', 'visNetwork', 
+             'lubridate', 'clock',
+             'tidyverse', 'ggmap',
+             'rmarkdown',"dplyr",
+             'gt','plotly',
+             "ggcorrplot",'ggstatsplot',
+             'ggridges','ggthemes')
+for(p in packages){
+  if(!require(p, character.only = T)){
+    install.packages(p)
+  }
+  library(p, character.only = T)
+}
+```
+
+
+# 1. Section for Demographics Analysis
+
+```{r, eval=FALSE}
+exam <- read_csv("./Datasets/Attributes/Participants.csv")
+financeJ <- read_csv("./Datasets/Journals/FinancialJournal.csv")
+participant_data <- readRDS("./Datasets/Processed/participants.rds")
+glimpse(participant_data)
+unique(participant_data$Joviality_Group)
+
+dt_df <- participant_data %>%
+    mutate("Min" = min(wage, na.rm = T),
+              "Max" = max(wage, na.rm = T),
+              "Average" = mean(wage, na.rm = T)
+    ) %>%
+    select(Min,Max,Average)
+dt_df[1,1]$Min
+
+participants_data %>%
+filter((educationLevel == input$par_educationLevel) &
+        (ageGroup == input$par_ageGroup) &
+        (haveKids == input$par_haveKids) &
+        (Joviality_Group == input$par_jovStatus))%>%
+        gt() %>%
+        fmt_number(columns = 10,
+                   decimals = 2)
+
+participant_data$wage <- round(participant_data$wage,2)
+participant_data$joviality <- round(participant_data$joviality,2)
+myvars <- names(participant_data) %in% c("wage")
+
+par_finance <- financeJ %>% left_join(participant_data[!myvars],by='participantId')
+saveRDS(par_finance,"par_finance.rds")
+glimpse(participant_data)
+saveRDS(participant_data,'participants_data.rds')
+par <- readRDS('participants_data.rds')
+glimpse(par)
+
+par_finance %>%
+        #filter(`timestamp` >= input$wageDate[1] & `timestamp` <= input$wageDate[2],category=='Wage') %>%
+  filter(`category` == 'wage') %>%
+        group_by(participantId) %>%
+        summarise(AVG_Wage = mean(amount),MAX_Wage = max(amount,160000), MIN_Wage = min(amount)) %>%
+        ungroup()
+
+library(geomtextpath)
+p <- ggplot(participant_data, aes (x=participantId,
+                              y = wage,
+                              color=wage,
+                              text = paste('</br>participantId: ', participantId,
+                      '</br>Wage: ', wage,
+                      '</br>Age: ', age,
+                      '</br>Have Kids:', haveKids,
+                      '</br>Interest Group:', interestGroup,
+                      '</br>Joviality:', joviality,
+                      '</br>Education Level:', educationLevel
+                      )
+                              )
+       ) +
+      geom_point() +
+      geom_hline(aes(yintercept=mean(wage)), color='red', linetype='dashed')+
+      geom_text(aes(0, mean(wage), label = round(mean(wage),2), hjust = 0.4, vjust=-1),color='red') +
+      scale_y_continuous(name = "Wage")+
+      labs(title = "Participants' wage")+
+      theme_bw()
+ggplotly(p,tooltip="text")
+```
+
+```{r, eval=FALSE}
+wage_cor_plot <- ggcorrmat(
+    data     = participant_data[c("age",'joviality','wage','householdSize')],
+    colors   = c("#B2182B", "white", "#4D4D4D"),
+    title    = "Correlalogram for participants' data",
+    subtitle = "Wage:-Joviality;"
+  )
+wage_cor_plot
+```
+
+```{r, eval=FALSE}
+remotes::install_github("hrbrmstr/waffle")
+library(waffle)
+by_jov <- participant_data %>%
+  group_by(Joviality_Group) %>%
+  summarise(
+   count =n()
+)
+by_jov
+ggplot(by_jov, aes(fill = Joviality_Group, values = count)) +
+  geom_waffle(n_rows = 8, size = 0.33, colour = "white") +
+  coord_equal() +
+  theme_void()
+
+install.packages("waffle", repos = "https://cinc.rud.is")
+library(waffle)
+
+# Data
+df <- data.frame(group = LETTERS[1:3],
+                 value = c(25, 20, 35))
+
+# Waffle plot
+library(emojifont)
+library(showtext)
+library(ggpubr)
+ggplot(df, aes(fill = group, values = value)) +
+  geom_waffle(n_rows = 8, size = 0.33, colour = "white") +
+  scale_fill_manual(name = NULL,
+                    values = c("#BA182A", "#FF8288", "#FFDBDD"),
+                    labels = c("A", "B", "C")) +
+  coord_equal() +
+  theme_void()
+
+library(waffle)
+library(magrittr)
+library(hrbrthemes)
+library(ggplot2)
+library(dplyr)
+data.frame(
+  parts = factor(rep(month.abb[1:3], 3), levels=month.abb[1:3]),
+  vals = c(10, 20, 30, 6, 14, 40, 30, 20, 10),
+  col = rep(c("blue", "black", "red"), 3),
+  fct = c(rep("Thing 1", 3),
+          rep("Thing 2", 3),
+          rep("Thing 3", 3))
+) -> xdf
+library(ggimage)
+packageVersion("waffle")
+ggplot(by_jov, aes(fill = Joviality_Group, values = count)) +
+  geom_icon(aes(image=icon),size = 0.1) +
+  geom_waffle(n_rows = 30, size = 0.33, colour = "white") +
+  scale_x_discrete() +
+  scale_y_continuous(labels = function(x) x * 20, expand = c(0,0)) +
+  coord_equal() +
+  theme(panel.grid = element_blank(), axis.ticks.y = element_line()) +
+  guides(fill = guide_legend(reverse = T))
+
+set.seed(123)
+iris2 <- iris[sample(1:nrow(iris), 30),]
+model <- lm(Petal.Length ~ Sepal.Length, data=iris2)
+iris2$fitted <- predict(model)
+
+set.seed(1)
+x <- 1:10
+y <- x + rnorm(10, sd = 1)
+notlikethis <- data.frame(x = x, y = y)
+n_pals      <- 200
+pals        <- data.frame(
+  x = runif(n_pals, -2, 12), y = runif(n_pals, -2, 12),
+  pal = sample(c("wutface", "kappa", "pogchamp"), size = n_pals, replace = TRUE)
+)
+
+library("ggplot2")
+library("ggimage")
+ggplot(notlikethis, aes(x = x, y = y)) +
+  geom_twitchemote(data = pals,
+                   aes(image = 'pogchamp'), size = 0.03, alpha = 0.3) +
+  geom_twitchemote(aes(image = 'notlikethis'), size = 0.15) +
+  geom_smooth()
+library(extrafont)
+font_add("wmpeople1", "resources/icons_and_symbols_in_r/wmpeople1.TTF")
+showtext_auto()
+
+dat = read.csv(textConnection('
+      edu,educode,gender,population
+      No School,1,m,17464
+      No School,1,f,41268
+      Primary School,2,m,139378
+      Primary School,2,f,154854
+      Middle School,3,m,236369
+      Middle School,3,f,205537
+      High School,4,m,94528
+      High School,4,f,70521
+      Bacherlor or above,5,m,57013
+      Bacherlor or above,5,f,50334
+'))
+
+dat$int = round(dat$population / 10000)
+gdat = ddply(dat, "educode", function(d) {
+    male = d$int[d$gender == "m"]
+    female = d$int[d$gender == "f"]
+    data.frame(gender = c(rep("m", male), rep("f", female)),
+               x = 1:(male + female))
+})
+
+gdat$char = ifelse(gdat$gender == "m", "p", "u")
+ggplot(gdat, aes(x = x, y = factor(educode))) +
+    geom_text(aes(label = char, colour = gender),
+              family = "wmpeople1", size = 8) +
+    scale_x_continuous("Population（10 million）") +
+    scale_y_discrete("Education Level",
+        labels = unique(dat$edu[order(dat$educode)])) +
+    scale_colour_hue(guide = FALSE) +
+    ggtitle("2012 Demographics Data")
+
+library(DAAG)
+
+df02 <- data.frame(
+  x = LETTERS[1:10],
+  y = sort(sample(10:80,10), decreasing = TRUE)
+)
+
+library(echarts4r)
+library(echarts4r.assets)
+library(ECharts2Shiny)
+devtools::install_github("JohnCoene/echarts4r.assets")
+df02 %>% 
+  e_charts(x) %>% 
+  e_pictorial(y, symbol = paste0("image://","https://1.bp.blogspot.com/-klwxpFekdEQ/XOubIhkalyI/AAAAAAAAHlE/25psl9x4oNkbJoLc2CKTXgV2pEj6tAvigCLcBGAs/s1600/pencil.png")) %>%
+  e_theme("westeros") %>% 
+  e_title("Pencil Chart",  padding=c(10,0,0,50))%>%
+  e_labels(show = TRUE)%>%
+  e_legend(show = FALSE) %>%
+  e_x_axis(splitLine=list(show = FALSE)) %>%
+  e_y_axis(show=FALSE, splitLine=list(show = FALSE))
+
+data("icons") 
+icon_names <- sample(icons$name, 4) 
+p <- participant_data %>% 
+  group_by(Joviality_Group) %>% 
+  e_charts(Joviality_Group) %>% 
+  e_scatter(joviality, wage) %>% 
+  e_legend(
+    icon = ea_icons(icon_names)
+  )
+p
+mtcars %>% 
+  e_charts(mpg) %>% 
+  e_scatter(
+    wt, 
+    qsec,
+    symbol = ea_icons("user"),
+    name = "Trash"
+  ) %>% 
+  e_legend(icons = ea_icons("trash"))
+monthlyFinancial <- par_finance %>% 
+  mutate(yearmonth = format(as.Date(timestamp), "%Y.%m")) %>% 
+  select(-timestamp)
+saveRDS(monthlyFinancial,'monthlyFinance.rds')
+p1 <- ggplot(monthlyFinancial, 
+             aes(x=joviality, 
+                 y=monthlyFinancial$yearmonth, 
+                 fill = factor(stat(quantile)))) +
+  stat_density_ridges(geom = "density_ridges_gradient", 
+                      calc_ecdf = TRUE,
+                      quantiles = 4, 
+                      quantile_lines = TRUE) +
+  scale_fill_viridis_d(name = "Quartiles") +
+  labs(x= "Joviality",
+       y= "Time",
+       title="Distribution of Residents' Joviality")
+p1
+
+wkday_levels <- c('Saturday', 'Friday', 
+                  'Thursday', 'Wednesday', 
+                  'Tuesday', 'Monday', 
+                  'Sunday')
+install.packages("zoo")
+library("zoo")
+expense_month_data <- financeJ %>%
+  mutate(date = as.Date(timestamp,"%m/%d/%Y")) %>%
+  mutate(expense = round(abs(ifelse(amount<=0,amount,0)))) %>%
+  filter(expense>0) %>%
+  group_by(date)%>%
+  summarise(AvgExpense = mean(expense))%>%
+  mutate(month = factor(as.yearmon(date))) %>%
+  mutate(day = day(date))
+expense_data <- financeJ %>%
+  mutate(date = as.Date(timestamp,"%m/%d/%Y")) %>%
+  mutate(expense = round(abs(ifelse(amount<=0,amount,0)))) %>%
+  filter(expense>0) %>%
+  group_by(date)%>%
+  summarise(AvgExpense = mean(expense))%>%
+  mutate(wkday = factor(weekdays(date),levels = wkday_levels)) %>%
+  mutate(wknumber = week(date))
+
+expense_part_month_data <- expense_data 
+
+expense_part_month_data$tooltip <- weekdays(expense_part_month_data$date)
+library(ggplot2)
+library(ggiraph)
+p3 <- expense_part_month_data%>%
+  ggplot(aes(day,month,fill=AvgExpense))+
+  geom_tile_interactive(aes(tooltip = tooltip),color = "white", size = 0.1)+
+  theme_tufte(base_family = "Helvetica")+
+  coord_equal() +
+  scale_fill_gradient(name = "Expense",
+                    low = "sky blue", 
+                    high = "dark blue",
+                    labels = date)+
+  labs(x = "Day of the month", 
+     y = NULL, 
+     title = "Average Daily Expense of Residents") +
+  theme(axis.text = element_text(size = 12,margin = margin(r = -60)),
+        axis.ticks.y= element_blank(),
+        legend.title = element_text(size =16),
+        legend.text = element_text(size = 16),
+        plot.title = element_text(size =18),
+        axis.title.x = element_text(size = 14))
+p3
+girafe(
+  ggobj = p3,
+  width_svg = 12,
+  height_svg = 12*0.618
+)
+
+
+
+```
+
+```{r, eval=FALSE}
+wkday_levels <- c('Saturday', 'Friday', 
+                  'Thursday', 'Wednesday', 
+                  'Tuesday', 'Monday', 
+                  'Sunday')
+
+expense_data <- financeJ %>%
+  mutate(date = as.Date(timestamp,"%m/%d/%Y")) %>%
+  mutate(expense = round(abs(ifelse(amount<=0,amount,0)))) %>%
+  filter(expense>0) %>%
+  group_by(date)%>%
+  summarise(AvgExpense = mean(expense))%>%
+  mutate(wkday = factor(weekdays(date),levels = wkday_levels)) %>%
+  mutate(wknumber = week(date))
+saveRDS(expense_data,'expense.rds')
+expense_data%>%
+  ggplot(aes(wknumber,wkday,fill=AvgExpense))+
+  geom_tile(color = "white", size = 0.1)+
+  theme_tufte(base_family = "Helvetica")+
+  coord_equal() +
+  scale_fill_gradient(name = "Expense",
+                    low = "sky blue", 
+                    high = "dark blue")+
+  labs(x = "Weeks of the Year",
+       y = NULL,
+       title = "Average Weekly Expense of Residents") +
+  theme(axis.text = element_text(size = 16,margin = margin(r = -60)),
+        axis.ticks.y= element_blank(),
+        legend.title = element_text(size =16),
+        legend.text = element_text(size = 16),
+        axis.title.x = element_text(size=14))
+```
+
+```{r, eval=FALSE}
+expense_month_data <- financeJ %>%
+  mutate(date = as.Date(timestamp,"%m/%d/%Y")) %>%
+  mutate(expense = round(abs(ifelse(amount<=0,amount,0)))) %>%
+  filter(expense>0) %>%
+  group_by(date)%>%
+  summarise(AvgExpense = mean(expense))%>%
+  mutate(month = factor(as.yearmon(date))) %>%
+  mutate(day = day(date))
+
+expense_month_data%>%
+  ggplot(aes(day,month,fill=AvgExpense))+
+  geom_tile(color = "white", size = 0.1)+
+  theme_tufte(base_family = "Helvetica")+
+  coord_equal() +
+  scale_fill_gradient(name = "Expense",
+                    low = "sky blue", 
+                    high = "dark blue")+
+  labs(x = NULL, 
+     y = NULL, 
+     title = "Average Daily Expense of Residents") +
+  theme(axis.text = element_text(size = 9,margin = margin(r = -60)),
+        axis.ticks.y= element_blank(),
+        legend.title = element_text(size =16),
+        legend.text = element_text(size = 16))
+```
+```{r, eval=FALSE}
+expense_part_month_data <- financeJ %>%
+  mutate(date = as.Date(timestamp,"%m/%d/%Y")) %>%
+  mutate(expense = round(abs(ifelse(amount<=0,amount,0)))) %>%
+  filter(expense>0) %>%
+  group_by(date)%>%
+  summarise(AvgExpense = mean(expense))%>%
+  mutate(month = factor(as.yearmon(date))) %>%
+  mutate(day = day(date))%>%
+  filter(day > 1)
+
+expense_part_month_data$tooltip <- weekdays(expense_part_month_data$date)
+
+saveRDS(expense_part_month_data,"expense_part_month_data.rds")
+p3 <- expense_part_month_data%>%
+  ggplot(aes(day,month,fill=AvgExpense))+
+  geom_tile_interactive(aes(tooltip = tooltip),color = "white", size = 0.1)+
+  theme_tufte(base_family = "Helvetica")+
+  coord_equal() +
+  scale_fill_gradient(name = "Expense",
+                    low = "sky blue", 
+                    high = "dark blue")+
+  labs(x = "Day of the month", 
+     y = NULL, 
+     title = "Average Daily Expense of Residents") +
+  theme(axis.text = element_text(size = 12,margin = margin(r = -60)),
+        axis.ticks.y= element_blank(),
+        legend.title = element_text(size =16),
+        legend.text = element_text(size = 16),
+        plot.title = element_text(size =18),
+        axis.title.x = element_text(size = 14))
+
+girafe(
+  ggobj = p3,
+  width_svg = 12,
+  height_svg = 12*0.618
+)
+
+```
+```{r, eval=FALSE}
+level_order <- c('Graduate','Bachelors','HighSchoolOrCollege','Low')
+
+participant_fin <- financeJ %>%
+mutate(date = zoo::as.yearmon(timestamp)) %>%
+group_by(participantId, date) %>%
+mutate(income = sum(ifelse(amount > 0,amount,0)), expense = sum(ifelse(amount <= 0,amount,0))) %>%
+mutate(savings = round(income + expense,digits = 0)) %>%
+inner_join(participant_data, by =c('participantId'))%>%
+mutate(educationLevel = factor(educationLevel, levels = level_order))
+
+participant_fin$tooltip <- c(paste0(
+  "Id = ", participant_fin$participantId,
+  "\n Savings = $",participant_fin$savings))
+Education_fin <- participant_fin %>%
+  group_by(educationLevel,date) %>%
+  summarise(income = mean(income), expense= mean(expense))
+
+saveRDS(participant_fin,'participant_fin.rds')
+saveRDS(Education_fin,'Education_fin.rds')
+```
+
+```{r, eval=FALSE}
+wage_edu_plot <- Education_fin %>%
+  ggplot(aes(x=date, y = income,col =educationLevel))+
+  geom_line(size = 0.75)+
+  ylab("Income")+
+  xlab("Month, Year")+
+  theme(axis.title.y=element_text(angle =0),
+        axis.title.x=element_text(margin = margin(t=-10)),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.minor.x = element_line(colour = "grey90"),
+        panel.grid.major.x = element_line(colour = "grey90"),
+        panel.grid.major.y = element_line(colour = "grey90"),
+        panel.background = element_rect(fill = "white"),
+        axis.text.x = element_text(size =16, angle = 45, margin = margin(t = 30)),
+        axis.text.y = element_text(size =16),
+        axis.line = element_line(color="grey25", size = 0.02),
+        axis.title = element_text(size=16),
+        legend.title = element_text(size =16),
+        legend.text = element_text(size = 16),
+        plot.title = element_text(size =20,hjust = 0.5))+
+  ggtitle("Average Income by Education Level")
+```
+```{r, eval=FALSE}
+participant_fin$tooltip <- c(paste0(
+  "Id = ", participant_fin$participantId,
+  "\n Savings = $",participant_fin$savings))
+
+p2 <- participant_fin %>%
+  filter(date == 'Apr 2022') %>%
+  ggplot(aes(x=income, y = abs(expense), size = savings, color = educationLevel))+
+  geom_point_interactive(aes(tooltip = tooltip), alpha=0.7) +
+  ggtitle("Income vs Expense by different Education Levels") +
+  ylab("Expense") +
+  xlab("Income")+
+  theme_minimal() +
+  theme(axis.line = element_line(size = 0.5),
+        axis.text = element_text(size = 16),
+        axis.title = element_text(size=16),
+        axis.title.y = element_text(angle = 0),
+        legend.title = element_text(size =16),
+        legend.text = element_text(size = 16),
+        plot.title = element_text(size =20,hjust = 0.5))
+
+girafe(
+  ggobj = p2,
+  width_svg = 16,
+  height_svg = 16*0.618
+)
+```
+```{r, eval=FALSE}
+summarizedFinancial <- MonthlyFinancial %>% 
+  group_by(participantId, category, SerialMonth, yearmonth) %>% 
+  summarise(monthly_financial = sum(amount))
+summarizedFinancial
+financeJ <- financeJ %>% 
+  mutate(monthly_cost = Education + Food + Recreation
+         + Shelter + RentAdjustment) %>% 
+  mutate(monthly_income = Wage) %>% 
+  mutate(monthly_balance = monthly_income + monthly_cost)
+financeJ
+ggplot(par_finance, aes(x = wage, 
+                    y = abs(monthly_cost),
+                    size = Wage,
+                    colour = combine$educationLevel)) +
+  geom_point(alpha = 0.5, 
+             show.legend = TRUE) +
+  labs(title = 'Month: {frame_time}', 
+       x = 'Monthly Cost', 
+       y = 'Monthly Income') +
+  transition_time(as.integer(SerialMonth)) +
+  ease_aes('linear')
+```
+```{r, eval=FALSE}
+library(magrittr)
+
+participants <- readRDS("participants.rds")
+participants$educationLevel <- factor(participants$educationLevel,
+                                      levels =  c("Low",
+                                                  "HighSchoolOrCollege", 
+                                                  "Bachelors", "Graduate"))
+participants$wage
+saveRDS(participants,"participants.rds")
+# change male population to negative
+participant_data_ag_kids <- participant_data%>%
+  group_by(haveKids) %>%
+  mutate(population = n()) %>%
+  ungroup() %>%
+  mutate(
+    population = n())
+
+saveRDS(participant_data_ag_kids,'participant_data_ag_kids.rds')
+
+ggplot(participant_data_ag_kids, aes(x = ageGroup, fill = haveKids,
+                 y = ifelse(test = haveKids == TRUE,
+                            yes = -population, no = population))) + 
+  geom_bar(stat = "identity") +
+  labs(title = "Population Pyramid", x = "Age", y = "Percent of population") +
+  
+  coord_flip() +
+  scale_y_continuous(breaks = seq(-30000, 100000, 20000), 
+                     labels = paste0(as.character(c(seq(30000, -10000, -20000), seq(-10000, 100000, 20000)))), 
+                     name = "Household Size")
+```
+
+# 2. Section for Network Activity Analysis
+
+```{r, eval=FALSE}
+# data preprocessing section 2
+
+library(tidyverse)
+network_nodes <- read_csv("data/Participants.csv")
+network_edges <- read_csv("data/SocialNetwork.csv")
+
+
+network_nodes <- network_nodes %>%
+  mutate(participantId = participantId +1)
+
+network_edges <- read_csv("data/SocialNetwork.csv")
+network_edges <- rename(network_edges,
+                        from = participantIdFrom,
+                        to = participantIdTo)
+
+network_edges <- network_edges %>%
+  mutate(from = from+1) %>%
+  mutate(to =  to +1)
+
+network_edges <- network_edges %>%
+  mutate(Weekday = wday(timestamp,
+                        label = TRUE,
+                        abbr = FALSE))%>%
+  mutate(YearMonth = format(timestamp,'%Y-%m'))
+
+network_edges_aggregated_2022 <- network_edges %>%
+  filter(YearMonth == "2022-03") %>%
+  group_by(from, to) %>%
+  summarise(Weight = n()) %>%
+  filter(from!=to) %>%
+  filter(Weight > 20) %>%
+  ungroup()
+
+network_edges_aggregated_2023 <- network_edges %>%
+  filter(YearMonth == "2023-03") %>%
+  group_by(from, to) %>%
+  summarise(Weight = n()) %>%
+  filter(from!=to) %>%
+  filter(Weight > 20) %>%
+  ungroup()
+
+
+write_rds(network_edges_aggregated_2022, "data/network_edges_aggregated_2022.rds")
+write_rds(network_edges_aggregated_2023, "data/network_edges_aggregated_2023.rds")
+
+
+network_edges_aggregated_2022 <- read_rds("data/network_edges_aggregated_2022.rds")
+network_edges_aggregated_2023 <- read_rds("data/network_edges_aggregated_2023.rds")
+
+```
+
+
+# 3. Section for Predominant Business Analysis
+
+```{r, eval=FALSE}
+#For processing large datasets by filtering out only necessary data and saving the filtered data into rds file
+
+checkin_journal <- read_csv("data/NOT UPLOADED/CheckinJournal.csv")
+checkin_journal$timestamp <- as.Date(checkin_journal$timestamp, "%Y-%m-%d")
+checkin_journal_selected <- checkin_journal%>%
+  filter(`venueType` == c("Pub", "Restaurant", "Workplace"))
+write_rds(checkin_journal_selected, "data/checkin_journal_selected.rds")
+
+travel_journal <- read_csv("data/NOT UPLOADED/TravelJournal.csv")
+pubs <- read_csv("data/Pubs.csv")
+restaurants <- read_csv("data/Restaurants.csv")
+pub_cust_rev <- travel_journal%>%
+  filter (travelEndLocationId %in% pull(pubs, pubId))%>%
+  filter (purpose %in% c("Recreation (Social Gathering)","Eating"))%>%
+  mutate(spent = startingBalance - endingBalance,
+         month = month(checkInTime),
+         year = year(checkInTime),
+         travelEndLocationId=as.character(travelEndLocationId))%>%
+  group_by(travelEndLocationId, month, year)%>%
+  summarize(customers = n(), revenue = sum(spent))%>%
+  mutate(monthYear = format(as.Date(paste(`year`, `month`, "1", sep = "-"), format = "%Y-%m-%d"), "%Y-%m"),
+         RevenuePerCustomer = revenue/customers)%>%
+  rename(venueId = travelEndLocationId)%>%
+  ungroup()
+glimpse(pub_cust_rev)
+write_rds(pub_cust_rev, "data/pub_cust_rev.rds")
+
+rest_cust_rev <- travel_journal%>%
+  filter (travelEndLocationId %in% pull(restaurants, restaurantId))%>%
+  filter (purpose %in% c("Recreation (Social Gathering)","Eating"))%>%
+  mutate(spent = startingBalance - endingBalance,
+         month = month(checkInTime),
+         year = year(checkInTime),
+         travelEndLocationId=as.character(travelEndLocationId))%>%
+  group_by(travelEndLocationId, month, year)%>%
+  summarize(customers = n(), revenue = sum(spent))%>%
+  mutate(monthYear = format(as.Date(paste(`year`, `month`, "1", sep = "-"), format = "%Y-%m-%d"), "%Y-%m"),
+         RevenuePerCustomer = revenue/customers)%>%
+  rename(venueId = travelEndLocationId)%>%
+  ungroup()
+glimpse(rest_cust_rev)
+write_rds(rest_cust_rev, "data/rest_cust_rev.rds")
+
+
+
+```

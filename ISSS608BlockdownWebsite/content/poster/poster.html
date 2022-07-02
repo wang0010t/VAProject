@@ -1,0 +1,240 @@
+---
+title:  Visualizing the Demographics, Neighbourhoods and Business Base in Engagement
+author:
+#ISSS608 Group 9        Advised By Prof. KAM Tin Seong  
+  - name: HUANG ANNI
+  - name: NI JUNQIU
+  - name: WANG TIANQI
+affiliation:
+  - address: School of Computing and Information Systems, Singapore Management University
+primary_colour: "#354ca1"
+#poster_height:	"33.11in"
+#poster_width: "23.39in"
+column_numbers: 3
+
+#logoright_name: https&#58;//raw.githubusercontent.com/brentthorne/posterdown/master/images/betterhexlogo.png
+#logoleft_name: https&#58;//raw.githubusercontent.com/brentthorne/posterdown/master/images/betterhexlogo.png
+output: 
+  posterdown::posterdown_html:
+    self_contained: false
+knit: pagedown::chrome_print
+#bibliography: packages.bib
+---
+
+
+
+<div id="issues-and-problems" class="section level1">
+<h1>Issues and problems</h1>
+<p><code>posterdown</code> <span class="citation">[@R-rmarkdown]</span> The topic of this Visual Analytics Project will be based on <a href="https://vast-challenge.github.io/2022/">VAST Challenge 2022</a>. To understand the city’s demographics and relationships and answer questions from Challenge 1, our team will firstly characterize the demographics of the town. Also, we will describe the patterns in the social networks in the town. Lastly, we will identify the predominant business base of the town, and describe patterns observed.</p>
+</div>
+<div id="motivation" class="section level1">
+<h1>Motivation</h1>
+<p>To make better use of the data collected from the representative residents of Engagement, Ohio USA using the city’s urban planning app and democratize the data and analytics, our team use related visual analytic techniques. With the visual analytics of the city’s demographics, its neighborhoods, and its business base, we may be able to help the city planning team to understand the current state of the city and identify opportunities for future growth.</p>
+</div>
+<div id="approach" class="section level1">
+<h1>Approach</h1>
+<p>To learn about the city’s demographics, its neighborhoods, and its business base, our team build web-enabled visual analytics application by using R Shiny. The application will focus and emphasize on interactivity and effective integration of techniques from data analytics and data visualization. Related visual analytics include</p>
+</div>
+<div id="results" class="section level1">
+<h1>Results</h1>
+<p>Screenshots and a working demo of the system you built.</p>
+<p>Usually you want to have a nice table displaying some important results that you have calculated. In <code>posterdown</code> this is as easy as using the <code>kable</code> table formatting you are probably use to as per typical R Markdown formatting.</p>
+<p>You can reference tables like so: Table <a href="#tab:mytable">1</a>. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam placerat augue at velit tincidunt semper. Donec elementum porta posuere. Nullam interdum, odio at tincidunt feugiat, turpis nisi blandit eros, eu posuere risus felis non quam. Nam eget lorem odio. Duis et aliquet orci. Phasellus nec viverra est.</p>
+<table>
+<caption>
+<span id="tab:mytable">Table 1: </span>Table caption.
+</caption>
+<thead>
+<tr>
+<th style="text-align:center;">
+Sepal.Length
+</th>
+<th style="text-align:center;">
+Sepal.Width
+</th>
+<th style="text-align:center;">
+Petal.Length
+</th>
+<th style="text-align:center;">
+Petal.Width
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+5.1
+</td>
+<td style="text-align:center;">
+3.5
+</td>
+<td style="text-align:center;">
+1.4
+</td>
+<td style="text-align:center;">
+0.2
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+4.9
+</td>
+<td style="text-align:center;">
+3.0
+</td>
+<td style="text-align:center;">
+1.4
+</td>
+<td style="text-align:center;">
+0.2
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+4.7
+</td>
+<td style="text-align:center;">
+3.2
+</td>
+<td style="text-align:center;">
+1.3
+</td>
+<td style="text-align:center;">
+0.2
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+4.6
+</td>
+<td style="text-align:center;">
+3.1
+</td>
+<td style="text-align:center;">
+1.5
+</td>
+<td style="text-align:center;">
+0.2
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+5.0
+</td>
+<td style="text-align:center;">
+3.6
+</td>
+<td style="text-align:center;">
+1.4
+</td>
+<td style="text-align:center;">
+0.2
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+5.4
+</td>
+<td style="text-align:center;">
+3.9
+</td>
+<td style="text-align:center;">
+1.7
+</td>
+<td style="text-align:center;">
+0.4
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+4.6
+</td>
+<td style="text-align:center;">
+3.4
+</td>
+<td style="text-align:center;">
+1.4
+</td>
+<td style="text-align:center;">
+0.3
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+5.0
+</td>
+<td style="text-align:center;">
+3.4
+</td>
+<td style="text-align:center;">
+1.5
+</td>
+<td style="text-align:center;">
+0.2
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+4.4
+</td>
+<td style="text-align:center;">
+2.9
+</td>
+<td style="text-align:center;">
+1.4
+</td>
+<td style="text-align:center;">
+0.2
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+4.9
+</td>
+<td style="text-align:center;">
+3.1
+</td>
+<td style="text-align:center;">
+1.5
+</td>
+<td style="text-align:center;">
+0.1
+</td>
+</tr>
+</tbody>
+</table>
+<p>Or with figures: Figure <a href="#fig:standard-plot">1</a>, or Figure <a href="#fig:morefigs">2</a>.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:standard-plot"></span>
+<img src="/poster/poster_files/figure-html/standard-plot-1.png" alt="Great figure!" width="80%" />
+<p class="caption">
+Figure 1: Great figure!
+</p>
+</div>
+<pre class="r"><code>data &lt;- iris
+
+plot(x = data$Sepal.Length, 
+     y = data$Sepal.Width, 
+     col = data$Species,
+     pch = 19, 
+     xlab = &quot;Sepal Length (cm)&quot;,
+     ylab = &quot;Sepal Width (cm)&quot;)</code></pre>
+<div class="figure"><span style="display:block;" id="fig:morefigs"></span>
+<img src="/poster/poster_files/figure-html/morefigs-1.png" alt="Amazing, right?!" width="80%" />
+<p class="caption">
+Figure 2: Amazing, right?!
+</p>
+</div>
+</div>
+<div id="future-work" class="section level1">
+<h1>Future Work</h1>
+<p>An explanation of how the work could be extended.</p>
+<p>Aliquam sed faucibus risus, quis efficitur erat. Vestibulum semper mauris quis tempus eleifend. Aliquam sagittis dictum ipsum, quis viverra ligula eleifend ut. Curabitur sagittis vitae arcu eget faucibus. In non elementum felis. Duis et aliquam nunc. Nunc pulvinar sapien nunc, vel pretium nisi efficitur in. Fusce fringilla maximus leo et maximus. Fusce at ligula laoreet, iaculis mi at, auctor odio. Praesent sed elementum justo. Aenean consectetur risus rhoncus tincidunt efficitur. Praesent dictum mauris at diam maximus maximus <span class="citation">[@R-posterdown]</span>.</p>
+<p>An explanation of how the work could be extended.</p>
+<p>Aliquam sed faucibus risus, quis efficitur erat. Vestibulum semper mauris quis tempus eleifend. Aliquam sagittis dictum ipsum, quis viverra ligula eleifend ut. Curabitur sagittis vitae arcu eget faucibus. In non elementum felis. Duis et aliquam nunc. Nunc pulvinar sapien nunc, vel pretium nisi efficitur in. Fusce fringilla maximus leo et maximus. Fusce at ligula laoreet, iaculis mi at, auctor odio. Praesent sed elementum justo. Aenean consectetur risus rhoncus tincidunt efficitur. Praesent dictum mauris at diam maximus maximus <span class="citation">[@R-posterdown]</span>.</p>
+<p>An explanation of how the work could be extended.</p>
+<p>Aliquam sed faucibus risus, quis efficitur erat. Vestibulum semper mauris quis tempus eleifend. Aliquam sagittis dictum ipsum, quis viverra ligula eleifend ut. Curabitur sagittis vitae arcu eget faucibus. In non elementum felis. Duis et aliquam nunc. Nunc pulvinar sapien nunc, vel pretium nisi efficitur in. Fusce fringilla maximus leo et maximus. Fusce at ligula laoreet, iaculis mi at, auctor odio. Praesent sed elementum justo. Aenean consectetur risus rhoncus tincidunt efficitur. Praesent dictum mauris at diam maximus maximus <span class="citation">[@R-posterdown]</span>.</p>
+<p>An explanation of how the work could be extended.</p>
+<p>Aliquam sed faucibus risus, quis efficitur erat. Vestibulum semper mauris quis tempus eleifend. Aliquam sagittis dictum ipsum, quis viverra ligula eleifend ut. Curabitur sagittis vitae arcu eget faucibus. In non elementum felis. Duis et aliquam nunc. Nunc pulvinar sapien nunc, vel pretium nisi efficitur in. Fusce fringilla maximus leo et maximus. Fusce at ligula laoreet, iaculis mi at, auctor odio. Praesent sed elementum justo. Aenean consectetur risus rhoncus tincidunt efficitur. Praesent dictum mauris at diam maximus maximus <span class="citation">[@R-posterdown]</span>.</p>
+<p>An explanation of how the work could be extended.</p>
+<p>Aliquam sed faucibus risus, quis efficitur erat. Vestibulum semper mauris quis tempus eleifend. Aliquam sagittis dictum ipsum, quis viverra ligula eleifend ut. Curabitur sagittis vitae arcu eget faucibus. In non elementum felis. Duis et aliquam nunc. Nunc pulvinar sapien nunc, vel pretium nisi efficitur in. Fusce fringilla maximus leo et maximus. Fusce at ligula laoreet, iaculis mi at, auctor odio. Praesent sed elementum justo. Aenean consectetur risus rhoncus tincidunt efficitur. Praesent dictum mauris at diam maximus maximus <span class="citation">[@R-posterdown]</span>.</p>
+</div>
