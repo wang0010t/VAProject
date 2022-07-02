@@ -142,14 +142,6 @@ interactively generate similar graphs.
 
 ## 6.1 Demograhics
 
-```{r}
-financeJ <- read_csv(file = "rawdata/FinancialJournal.csv")
-participantsD <- read_csv(file = "rawdata/Participants.csv")
-
-head (financeJ)
-head (participantsD)
-```
-
 For the discrete values such as age, we can use line plot and use color
 to denote the number.
 

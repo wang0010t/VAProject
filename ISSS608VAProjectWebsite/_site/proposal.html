@@ -114,7 +114,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["Project Proposal"]},{"type":"character","attributes":{},"value":["Project Proposal for ISSS608 Visual Analytics and Applications - Group 9\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Group9:<br> HUANG ANNI <br> NI JUNQIU <br> WANG TIANQI <br>"]}]}]},{"type":"character","attributes":{},"value":["2022-05-07"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]}]}]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","editor_options"]}},"value":[{"type":"character","attributes":{},"value":["Project Proposal"]},{"type":"character","attributes":{},"value":["Project Proposal for ISSS608 Visual Analytics and Applications - Group 9\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Group9:<br> HUANG ANNI <br> NI JUNQIU <br> WANG TIANQI <br>"]}]}]},{"type":"character","attributes":{},"value":["2022-05-07"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]}]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["markdown"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["wrap"]}},"value":[{"type":"integer","attributes":{},"value":[72]}]}]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   <!--radix_placeholder_navigation_in_header-->
@@ -2070,6 +2070,316 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
   </script>
 
+  <style type="text/css">
+  /* base variables */
+
+  /* Edit the CSS properties in this file to create a custom
+     Distill theme. Only edit values in the right column
+     for each row; values shown are the CSS defaults.
+     To return any property to the default,
+     you may set its value to: unset
+     All rows must end with a semi-colon.                      */
+
+  /* Optional: embed custom fonts here with `@import`          */
+  /* This must remain at the top of this file.                 */
+
+
+
+  html {
+    /*-- Main font sizes --*/
+    --title-size:      50px;
+    --body-size:       1.06rem;
+    --code-size:       14px;
+    --aside-size:      12px;
+    --fig-cap-size:    13px;
+    /*-- Main font colors --*/
+    --title-color:     #000000;
+    --header-color:    rgba(0, 0, 0, 0.8);
+    --body-color:      rgba(0, 0, 0, 0.8);
+    --aside-color:     rgba(0, 0, 0, 0.6);
+    --fig-cap-color:   rgba(0, 0, 0, 0.6);
+    /*-- Specify custom fonts ~~~ must be imported above   --*/
+    --heading-font:    sans-serif;
+    --mono-font:       monospace;
+    --body-font:       sans-serif;
+    --navbar-font:     sans-serif;  /* websites + blogs only */
+  }
+
+  /*-- ARTICLE METADATA --*/
+  d-byline {
+    --heading-size:    0.6rem;
+    --heading-color:   rgba(0, 0, 0, 0.5);
+    --body-size:       0.8rem;
+    --body-color:      rgba(0, 0, 0, 0.8);
+  }
+
+  /*-- ARTICLE TABLE OF CONTENTS --*/
+  .d-contents {
+    --heading-size:    18px;
+    --contents-size:   13px;
+  }
+
+  /*-- ARTICLE APPENDIX --*/
+  d-appendix {
+    --heading-size:    15px;
+    --heading-color:   rgba(0, 0, 0, 0.65);
+    --text-size:       0.8em;
+    --text-color:      rgba(0, 0, 0, 0.5);
+  }
+
+  /*-- WEBSITE HEADER + FOOTER --*/
+  /* These properties only apply to Distill sites and blogs  */
+
+  .distill-site-header {
+    --title-size:       18px;
+    --text-color:       rgba(255, 255, 255, 0.8);
+    --text-size:        15px;
+    --hover-color:      white;
+    --bkgd-color:       #0F2E3D;
+  }
+
+  .distill-site-footer {
+    --text-color:       rgba(255, 255, 255, 0.8);
+    --text-size:        15px;
+    --hover-color:      white;
+    --bkgd-color:       #0F2E3D;
+  }
+
+  /*-- Additional custom styles --*/
+  /* Add any additional CSS rules below                      */
+  </style>
+  <style type="text/css">
+  /* base variables */
+
+  /* Edit the CSS properties in this file to create a custom
+     Distill theme. Only edit values in the right column
+     for each row; values shown are the CSS defaults.
+     To return any property to the default,
+     you may set its value to: unset
+     All rows must end with a semi-colon.                      */
+
+  /* Optional: embed custom fonts here with `@import`          */
+  /* This must remain at the top of this file.                 */
+
+
+
+  html {
+    /*-- Main font sizes --*/
+    --title-size:      50px;
+    --body-size:       1.06rem;
+    --code-size:       14px;
+    --aside-size:      12px;
+    --fig-cap-size:    13px;
+    /*-- Main font colors --*/
+    --title-color:     #000000;
+    --header-color:    rgba(0, 0, 0, 0.8);
+    --body-color:      rgba(0, 0, 0, 0.8);
+    --aside-color:     rgba(0, 0, 0, 0.6);
+    --fig-cap-color:   rgba(0, 0, 0, 0.6);
+    /*-- Specify custom fonts ~~~ must be imported above   --*/
+    --heading-font:    sans-serif;
+    --mono-font:       monospace;
+    --body-font:       sans-serif;
+    --navbar-font:     sans-serif;  /* websites + blogs only */
+  }
+
+  /*-- ARTICLE METADATA --*/
+  d-byline {
+    --heading-size:    0.6rem;
+    --heading-color:   rgba(0, 0, 0, 0.5);
+    --body-size:       0.8rem;
+    --body-color:      rgba(0, 0, 0, 0.8);
+  }
+
+  /*-- ARTICLE TABLE OF CONTENTS --*/
+  .d-contents {
+    --heading-size:    18px;
+    --contents-size:   13px;
+  }
+
+  /*-- ARTICLE APPENDIX --*/
+  d-appendix {
+    --heading-size:    15px;
+    --heading-color:   rgba(0, 0, 0, 0.65);
+    --text-size:       0.8em;
+    --text-color:      rgba(0, 0, 0, 0.5);
+  }
+
+  /*-- WEBSITE HEADER + FOOTER --*/
+  /* These properties only apply to Distill sites and blogs  */
+
+  .distill-site-header {
+    --title-size:       18px;
+    --text-color:       rgba(255, 255, 255, 0.8);
+    --text-size:        15px;
+    --hover-color:      white;
+    --bkgd-color:       #0F2E3D;
+  }
+
+  .distill-site-footer {
+    --text-color:       rgba(255, 255, 255, 0.8);
+    --text-size:        15px;
+    --hover-color:      white;
+    --bkgd-color:       #0F2E3D;
+  }
+
+  /*-- Additional custom styles --*/
+  /* Add any additional CSS rules below                      */
+  </style>
+  <style type="text/css">
+  /* base style */
+
+  /* FONT FAMILIES */
+
+  :root {
+    --heading-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+    --mono-default: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    --body-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  }
+
+  body,
+  .posts-list .post-preview p,
+  .posts-list .description p {
+    font-family: var(--body-font), var(--body-default);
+  }
+
+  h1, h2, h3, h4, h5, h6,
+  .posts-list .post-preview h2,
+  .posts-list .description h2 {
+    font-family: var(--heading-font), var(--heading-default);
+  }
+
+  d-article div.sourceCode code,
+  d-article pre code {
+    font-family: var(--mono-font), var(--mono-default);
+  }
+
+
+  /*-- TITLE --*/
+  d-title h1,
+  .posts-list > h1 {
+    color: var(--title-color, black);
+  }
+
+  d-title h1 {
+    font-size: var(--title-size, 50px);
+  }
+
+  /*-- HEADERS --*/
+  d-article h1,
+  d-article h2,
+  d-article h3,
+  d-article h4,
+  d-article h5,
+  d-article h6 {
+    color: var(--header-color, rgba(0, 0, 0, 0.8));
+  }
+
+  /*-- BODY --*/
+  d-article > p,  /* only text inside of <p> tags */
+  d-article > ul, /* lists */
+  d-article > ol {
+    color: var(--body-color, rgba(0, 0, 0, 0.8));
+    font-size: var(--body-size, 1.06rem);
+  }
+
+
+  /*-- CODE --*/
+  d-article div.sourceCode code,
+  d-article pre code {
+    font-size: var(--code-size, 14px);
+  }
+
+  /*-- ASIDE --*/
+  d-article aside {
+    font-size: var(--aside-size, 12px);
+    color: var(--aside-color, rgba(0, 0, 0, 0.6));
+  }
+
+  /*-- FIGURE CAPTIONS --*/
+  figure .caption,
+  figure figcaption,
+  .figure .caption {
+    font-size: var(--fig-cap-size, 13px);
+    color: var(--fig-cap-color, rgba(0, 0, 0, 0.6));
+  }
+
+  /*-- METADATA --*/
+  d-byline h3 {
+    font-size: var(--heading-size, 0.6rem);
+    color: var(--heading-color, rgba(0, 0, 0, 0.5));
+  }
+
+  d-byline {
+    font-size: var(--body-size, 0.8rem);
+    color: var(--body-color, rgba(0, 0, 0, 0.8));
+  }
+
+  d-byline a,
+  d-article d-byline a {
+    color: var(--body-color, rgba(0, 0, 0, 0.8));
+  }
+
+  /*-- TABLE OF CONTENTS --*/
+  .d-contents nav h3 {
+    font-size: var(--heading-size, 18px);
+  }
+
+  .d-contents nav a {
+    font-size: var(--contents-size, 13px);
+  }
+
+  /*-- APPENDIX --*/
+  d-appendix h3 {
+    font-size: var(--heading-size, 15px);
+    color: var(--heading-color, rgba(0, 0, 0, 0.65));
+  }
+
+  d-appendix {
+    font-size: var(--text-size, 0.8em);
+    color: var(--text-color, rgba(0, 0, 0, 0.5));
+  }
+
+  d-appendix d-footnote-list a.footnote-backlink {
+    color: var(--text-color, rgba(0, 0, 0, 0.5));
+  }
+
+  /*-- WEBSITE HEADER + FOOTER --*/
+  .distill-site-header .title {
+    font-size: var(--title-size, 18px);
+    font-family: var(--navbar-font), var(--heading-default);
+  }
+
+  .distill-site-header a,
+  .nav-dropdown .nav-dropbtn {
+    font-family: var(--navbar-font), var(--heading-default);
+  }
+
+  .nav-dropdown .nav-dropbtn {
+    color: var(--text-color, rgba(255, 255, 255, 0.8));
+    font-size: var(--text-size, 15px);
+  }
+
+  .distill-site-header a:hover,
+  .nav-dropdown:hover .nav-dropbtn {
+    color: var(--hover-color, white);
+  }
+
+  .distill-site-header {
+    font-size: var(--text-size, 15px);
+    color: var(--text-color, rgba(255, 255, 255, 0.8));
+    background-color: var(--bkgd-color, #0F2E3D);
+  }
+
+  .distill-site-footer {
+    font-size: var(--text-size, 15px);
+    color: var(--text-color, rgba(255, 255, 255, 0.8));
+    background-color: var(--bkgd-color, #0F2E3D);
+  }
+
+  .distill-site-footer a:hover {
+    color: var(--hover-color, white);
+  }</style>
   <!--/radix_placeholder_distill-->
   <script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
   <script src="site_libs/popper-2.6.0/popper.min.js"></script>
@@ -2104,9 +2414,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <div class="nav-right">
 <a href="index.html">Home</a>
 <a href="proposal.html">Project Proposal</a>
-<a href="app.html">ShinyApp</a>
+<a href="https://vaproject.shinyapps.io/ISSS608VAProjectShinyApp/">ShinyApp</a>
 <a href="guide.html">User Guide</a>
-<a href="poster.html">Poster</a>
+<a href="poster/poster.html">Poster</a>
 <a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
 </div>
 </nav>
@@ -2134,26 +2444,34 @@ Group 9</p></p>
 <nav class="l-text toc figcaption" id="TOC">
 <h3>Contents</h3>
 <ul>
-<li><a href="#overview">1. Overview</a></li>
-<li><a href="#project-topic">2. Project Topic</a></li>
-<li><a href="#motivation">3. Motivation</a></li>
-<li><a href="#problems-and-issues">4. Problems and Issues</a></li>
-<li><a href="#related-work-and-approach">5. Related Work and
-Approach</a>
+<li><a href="#overview" id="toc-overview">1. Overview</a></li>
+<li><a href="#project-topic" id="toc-project-topic">2. Project
+Topic</a></li>
+<li><a href="#motivation" id="toc-motivation">3. Motivation</a></li>
+<li><a href="#problems-and-issues" id="toc-problems-and-issues">4.
+Problems and Issues</a></li>
+<li><a href="#related-work-and-approach"
+id="toc-related-work-and-approach">5. Related Work and Approach</a>
 <ul>
-<li><a href="#demographics">5.1 Demographics</a></li>
-<li><a href="#social-activities">5.2 Social activities</a></li>
-<li><a href="#predominant-business-base">5.3 Predominant business
+<li><a href="#demographics" id="toc-demographics">5.1
+Demographics</a></li>
+<li><a href="#social-activities" id="toc-social-activities">5.2 Social
+activities</a></li>
+<li><a href="#predominant-business-base"
+id="toc-predominant-business-base">5.3 Predominant business
 base</a></li>
-<li><a href="#data-journalists-and-other-dataviz-professionals">5.4 Data
+<li><a href="#data-journalists-and-other-dataviz-professionals"
+id="toc-data-journalists-and-other-dataviz-professionals">5.4 Data
 journalists and other dataviz professionals</a></li>
 </ul></li>
-<li><a href="#storyboards-and-prototypes">6. Storyboards and
-Prototypes</a>
+<li><a href="#storyboards-and-prototypes"
+id="toc-storyboards-and-prototypes">6. Storyboards and Prototypes</a>
 <ul>
-<li><a href="#demograhics">6.1 Demograhics</a></li>
-<li><a href="#social-activities-1">6.2 Social activities</a></li>
-<li><a href="#predominant-business-base-1">6.3 Predominant business
+<li><a href="#demograhics" id="toc-demograhics">6.1 Demograhics</a></li>
+<li><a href="#social-activities-1" id="toc-social-activities-1">6.2
+Social activities</a></li>
+<li><a href="#predominant-business-base-1"
+id="toc-predominant-business-base-1">6.3 Predominant business
 base</a></li>
 </ul></li>
 </ul>
@@ -2269,16 +2587,20 @@ Robbins - Forbes</a></li>
 <p>Below are some initial prototypes/graphs that our group generated
 using Tableau and R. Functions will be built on Shiny application for
 users to interactively generate similar graphs.
-<img src="image/proposal-shiny.png"></p>
+<img src="image/proposal-shiny.png"/></p>
 <h2 id="demograhics">6.1 Demograhics</h2>
 <p>For the discrete values such as age, we can use line plot and use
 color to denote the number.</p>
 <p>For age group and have kids, we can use pyramid plot.</p>
 <p><img
 src="https://user-images.githubusercontent.com/44923423/170869327-bb66e22d-3ec7-4d13-a8e7-0653d18ccbbc.png"
-alt="image" /> <img
+alt="image" /> For interest group, we use</p>
+<figure>
+<img
 src="https://user-images.githubusercontent.com/44923423/170870418-23fa151d-39e7-4413-9456-f83cfe843f7a.png"
-alt="image" /></p>
+alt="image" />
+<figcaption aria-hidden="true">image</figcaption>
+</figure>
 <p>For the relationship of education level and kids, we can use stacked
 histgram.</p>
 <figure>
@@ -2324,30 +2646,31 @@ residents with little social interaction could also be identified.</p>
 <p>In addition, we can try to visualize the social network dynamics with
 the timestamp variable in the social network dataset and see if any
 significant changes happen over the period.</p>
-<p><img src="image/proposalQ2-1.png"></p>
-<p><img src="image/proposalQ2-2.png"></p>
+<p><img src="image/proposalQ2-1.png"/></p>
+<p><img src="image/proposalQ2-2.png"/></p>
 <h2 id="predominant-business-base-1">6.3 Predominant business base</h2>
 <p>For the area distribution of various types of businesses in the town,
 we can explore below scatter plots or generate similar map plots.</p>
-<p><img src="image/proposalQ3-1.png"></p>
+<p><img src="image/proposalQ3-1.png"/></p>
 <p>For the no. of check-ins at various locations, we can use line charts
 and interactively filter based on venue type.
-<img src="image/proposalQ3-2.png"> For example, we can see pub-1344
+<img src="image/proposalQ3-2.png"/> For example, we can see pub-1344
 seems to have highest customer volumes among all pubs.
-<img src="image/proposalQ3-3.png"> Restarurant-1801 seems to have the
+<img src="image/proposalQ3-3.png"/> Restarurant-1801 seems to have the
 highest customer volumes throughout the year among all restaurants.
-<img src="image/proposalQ3-4.png"></p>
+<img src="image/proposalQ3-4.png"/></p>
 <p>Besides check-ins, it is also possible to look at Travels data and
 use heatmaps to show the most popular locations. We can look at the
 mapping from each venue (pub, restaurant, school, employer, and
 apartment) to Buildings and identify which building is predominant,
 i.e. consists of various types of businesses or consists of more
 employers/pubs/restaurants than the other buildings.</p>
-<p><img src="image/proposalQ3-5.png"> <img src="image/proposalQ3-6.png">
-<img src="image/proposalQ3-7.png"> <img src="image/proposalQ3-8.png">
-<img src="image/proposalQ3-9.png"> <img src="image/proposalQ3-10.png">
-<img src="image/proposalQ3-11.png">
-<img src="image/proposalQ3-12.png"></p>
+<p><img src="image/proposalQ3-5.png"/>
+<img src="image/proposalQ3-6.png"/> <img src="image/proposalQ3-7.png"/>
+<img src="image/proposalQ3-8.png"/> <img src="image/proposalQ3-9.png"/>
+<img src="image/proposalQ3-10.png"/>
+<img src="image/proposalQ3-11.png"/>
+<img src="image/proposalQ3-12.png"/></p>
 <div class="sourceCode" id="cb1"><pre
 class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
