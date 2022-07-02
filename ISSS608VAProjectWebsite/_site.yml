@@ -11,7 +11,7 @@ navbar:
     - text: "Project Proposal"
       href: proposal.html
     - text: "ShinyApp"
-      href: app.html
+      href: https://vaproject.shinyapps.io/ISSS608VAProjectShinyApp/
     - text: "User Guide"
       href: guide.html
     - text: "Poster"

@@ -35,3 +35,7 @@ HUGO_VERSION = "0.101.0"
 
 [context.next.environment]
 HUGO_ENABLEGITINFO = "true"
+[[redirects]]
+from = "/public/*"
+to = "/public/"
+status = 200
