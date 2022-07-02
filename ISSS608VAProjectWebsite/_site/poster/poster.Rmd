@@ -1,27 +1,18 @@
 ---
-<<<<<<< HEAD
 title:  Visualizing the Demographics, Neighbourhoods and Business Base
-=======
-title:  Visualizing the Demographics, Neighbourhoods and Business Base in Engagement
->>>>>>> 9de61ae2def55446924788acff323a5e9155e080
 author:
-#ISSS608 Group 9        Advised By Prof. KAM Tin Seong  
+#ISSS608 Group 9 Advised By Prof. KAM Tin Seong  
   - name: HUANG ANNI
   - name: NI JUNQIU
   - name: WANG TIANQI
 affiliation:
   - address: School of Computing and Information Systems, Singapore Management University
 primary_colour: "#354ca1"
-<<<<<<< HEAD
 poster_height:	"63.65in"
 poster_width: "45in"
 #title_textsize:	"120pt"
 #author_textsize:	"90pt"
 #affiliation_textsize: "100pt"
-=======
-#poster_height:	"33.11in"
-#poster_width: "23.39in"
->>>>>>> 9de61ae2def55446924788acff323a5e9155e080
 column_numbers: 3
 link_col: "00FFFF"
 #accent_colour: "00FFFF"
@@ -51,11 +42,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 # Issues and problems
 
-<<<<<<< HEAD
 The topic of this Visual Analytics Project will be based on [VAST Challenge 2022](https://vast-challenge.github.io/2022/). To understand the city's demographics and relationships and answer questions from Challenge 1, our team will firstly characterize the demographics of the town. Also, we will describe the patterns in the social networks in the town. Lastly, we will identify the predominant business base of the town, and describe patterns observed.
-=======
-`posterdown` [@R-rmarkdown] The topic of this Visual Analytics Project will be based on [VAST Challenge 2022](https://vast-challenge.github.io/2022/). To understand the city's demographics and relationships and answer questions from Challenge 1, our team will firstly characterize the demographics of the town. Also, we will describe the patterns in the social networks in the town. Lastly, we will identify the predominant business base of the town, and describe patterns observed.
->>>>>>> 9de61ae2def55446924788acff323a5e9155e080
 
 # Motivation
 
@@ -63,11 +50,7 @@ To make better use of the data collected from the representative residents of En
 
 # Approach
 
-<<<<<<< HEAD
 To learn about the city's demographics, its neighborhoods, and its business base, our team build web-enabled visual analytics application by using [R Shiny](https://shiny.rstudio.com/). The application will focus and emphasize on interactivity and effective integration of techniques from data analytics and data visualization. Related visual analytics packages in R include [tidyverse](https://www.tidyverse.org/), [sf](https://www.rdocumentation.org/packages/sf/versions/0.1-1), [plotly](https://plotly.com/), [ggstatsplot](https://indrajeetpatil.github.io/ggstatsplot/), [ggraph](https://www.data-imaginist.com/2017/ggraph-introduction-layouts/), [visNetwork](https://cran.r-project.org/web/packages/visNetwork/vignettes/Introduction-to-visNetwork.html), [tmap](https://cran.r-project.org/web/packages/tmap/vignettes/tmap-getstarted.html) and so on.
-=======
-To learn about the city's demographics, its neighborhoods, and its business base, our team build web-enabled visual analytics application by using R Shiny. The application will focus and emphasize on interactivity and effective integration of techniques from data analytics and data visualization. Related visual analytics include
->>>>>>> 9de61ae2def55446924788acff323a5e9155e080
 
 # Results
 
@@ -128,7 +111,6 @@ With respect to different groups of participants, the visualization of the netwo
 <img src="poster_images/poster3-1.png" width="75%">
 </p>
 
-<<<<<<< HEAD
 `Cost Analysis` From the visualization, it seems those apartments located in central areas could have higher rental cost while apartments in the rural areas generally have lower rental cost.
 
 <p align="center">
@@ -169,24 +151,6 @@ From the pairwise test, it can be concluded that there’s significant differenc
 
 # Future Work
 To provide better user interactivity experience, we can further combine the social network and business base analysis to the demographics. By adding more features from the network analysis and business base analysis to the demographics interactivity, we may gain more insights to help the city planning team to find opportunities for future growth. We can also consider identify the traffic of the city and the daily routines of the participants to better describe the patterns of life. What's more, we can consider the financial status of Engagement to evaluate the financial health of the city. In the future, we can apply similar techniques to other cities to help the city planning teams or other stakeholders to enhance the development of the city and solve other possible problems.
-=======
-An explanation of how the work could be extended.
-
-Aliquam sed faucibus risus, quis efficitur erat. Vestibulum semper mauris quis tempus eleifend. Aliquam sagittis dictum ipsum, quis viverra ligula eleifend ut. Curabitur sagittis vitae arcu eget faucibus. In non elementum felis. Duis et aliquam nunc. Nunc pulvinar sapien nunc, vel pretium nisi efficitur in. Fusce fringilla maximus leo et maximus. Fusce at ligula laoreet, iaculis mi at, auctor odio. Praesent sed elementum justo. Aenean consectetur risus rhoncus tincidunt efficitur. Praesent dictum mauris at diam maximus maximus [@R-posterdown].
-
-An explanation of how the work could be extended.
-
-Aliquam sed faucibus risus, quis efficitur erat. Vestibulum semper mauris quis tempus eleifend. Aliquam sagittis dictum ipsum, quis viverra ligula eleifend ut. Curabitur sagittis vitae arcu eget faucibus. In non elementum felis. Duis et aliquam nunc. Nunc pulvinar sapien nunc, vel pretium nisi efficitur in. Fusce fringilla maximus leo et maximus. Fusce at ligula laoreet, iaculis mi at, auctor odio. Praesent sed elementum justo. Aenean consectetur risus rhoncus tincidunt efficitur. Praesent dictum mauris at diam maximus maximus [@R-posterdown].
-
-An explanation of how the work could be extended.
-
-Aliquam sed faucibus risus, quis efficitur erat. Vestibulum semper mauris quis tempus eleifend. Aliquam sagittis dictum ipsum, quis viverra ligula eleifend ut. Curabitur sagittis vitae arcu eget faucibus. In non elementum felis. Duis et aliquam nunc. Nunc pulvinar sapien nunc, vel pretium nisi efficitur in. Fusce fringilla maximus leo et maximus. Fusce at ligula laoreet, iaculis mi at, auctor odio. Praesent sed elementum justo. Aenean consectetur risus rhoncus tincidunt efficitur. Praesent dictum mauris at diam maximus maximus [@R-posterdown].
-
-
-An explanation of how the work could be extended.
-
-Aliquam sed faucibus risus, quis efficitur erat. Vestibulum semper mauris quis tempus eleifend. Aliquam sagittis dictum ipsum, quis viverra ligula eleifend ut. Curabitur sagittis vitae arcu eget faucibus. In non elementum felis. Duis et aliquam nunc. Nunc pulvinar sapien nunc, vel pretium nisi efficitur in. Fusce fringilla maximus leo et maximus. Fusce at ligula laoreet, iaculis mi at, auctor odio. Praesent sed elementum justo. Aenean consectetur risus rhoncus tincidunt efficitur. Praesent dictum mauris at diam maximus maximus [@R-posterdown].
->>>>>>> 9de61ae2def55446924788acff323a5e9155e080
 
 
 ```{r, include=FALSE}

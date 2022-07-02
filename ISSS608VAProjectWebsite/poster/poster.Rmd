@@ -1,7 +1,7 @@
 ---
 title:  Visualizing the Demographics, Neighbourhoods and Business Base
 author:
-#ISSS608 Group 9        Advised By Prof. KAM Tin Seong  
+#ISSS608 Group 9 Advised By Prof. KAM Tin Seong  
   - name: HUANG ANNI
   - name: NI JUNQIU
   - name: WANG TIANQI
