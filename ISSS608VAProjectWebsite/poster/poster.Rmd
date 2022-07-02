@@ -1,18 +1,21 @@
 ---
-title:  Visualizing the Demographics, Neighbourhoods and Business Base in Engagement
+title:  Visualizing the Demographics, Neighbourhoods and Business Base
 author:
-#ISSS608 Group 9        Advised By Prof. KAM Tin Seong  
+#ISSS608 Group 9 Advised By Prof. KAM Tin Seong  
   - name: HUANG ANNI
   - name: NI JUNQIU
   - name: WANG TIANQI
 affiliation:
   - address: School of Computing and Information Systems, Singapore Management University
 primary_colour: "#354ca1"
-#poster_height:	"33.11in"
-#poster_width: "23.39in"
+poster_height:	"63.65in"
+poster_width: "45in"
+#title_textsize:	"120pt"
+#author_textsize:	"90pt"
+#affiliation_textsize: "100pt"
 column_numbers: 3
-
-#logoright_name: https&#58;//raw.githubusercontent.com/brentthorne/posterdown/master/images/betterhexlogo.png
+link_col: "00FFFF"
+#accent_colour: "00FFFF"
 #logoleft_name: https&#58;//raw.githubusercontent.com/brentthorne/posterdown/master/images/betterhexlogo.png
 output: 
   posterdown::posterdown_html:
@@ -20,6 +23,18 @@ output:
 knit: pagedown::chrome_print
 #bibliography: packages.bib
 ---
+<style>
+.title_container {
+    height: calc(63.65in * 0.06);
+}
+.poster_body_wrap{
+    height: calc(63.65in * 0.92);
+}
+img {
+    margin-top: 0.001cm;
+}
+</style>
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
@@ -27,7 +42,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 # Issues and problems
 
-`posterdown` [@R-rmarkdown] The topic of this Visual Analytics Project will be based on [VAST Challenge 2022](https://vast-challenge.github.io/2022/). To understand the city's demographics and relationships and answer questions from Challenge 1, our team will firstly characterize the demographics of the town. Also, we will describe the patterns in the social networks in the town. Lastly, we will identify the predominant business base of the town, and describe patterns observed.
+The topic of this Visual Analytics Project will be based on [VAST Challenge 2022](https://vast-challenge.github.io/2022/). To understand the city's demographics and relationships and answer questions from Challenge 1, our team will firstly characterize the demographics of the town. Also, we will describe the patterns in the social networks in the town. Lastly, we will identify the predominant business base of the town, and describe patterns observed.
 
 # Motivation
 
@@ -35,60 +50,107 @@ To make better use of the data collected from the representative residents of En
 
 # Approach
 
-To learn about the city's demographics, its neighborhoods, and its business base, our team build web-enabled visual analytics application by using R Shiny. The application will focus and emphasize on interactivity and effective integration of techniques from data analytics and data visualization. Related visual analytics include
+To learn about the city's demographics, its neighborhoods, and its business base, our team build web-enabled visual analytics application by using [R Shiny](https://shiny.rstudio.com/). The application will focus and emphasize on interactivity and effective integration of techniques from data analytics and data visualization. Related visual analytics packages in R include [tidyverse](https://www.tidyverse.org/), [sf](https://www.rdocumentation.org/packages/sf/versions/0.1-1), [plotly](https://plotly.com/), [ggstatsplot](https://indrajeetpatil.github.io/ggstatsplot/), [ggraph](https://www.data-imaginist.com/2017/ggraph-introduction-layouts/), [visNetwork](https://cran.r-project.org/web/packages/visNetwork/vignettes/Introduction-to-visNetwork.html), [tmap](https://cran.r-project.org/web/packages/tmap/vignettes/tmap-getstarted.html) and so on.
 
 # Results
 
-Screenshots and a working demo of the system you built.
+`Demographics` The below dashboard containing the info boxes of distribution of wage, age and some plots such as the ratio of having kids in each age group, the average wage by education level.
 
-Usually you want to have a nice table displaying some important results that you have calculated. In `posterdown` this is as easy as using the `kable` table formatting you are probably use to as per typical R Markdown formatting.
+<p align="center">
+<img src="poster_images/poster1-1.png" width="80%">
+</p>
 
-You can reference tables like so: Table \@ref(tab:mytable). Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam placerat augue at velit tincidunt semper. Donec elementum porta posuere. Nullam interdum, odio at tincidunt feugiat, turpis nisi blandit eros, eu posuere risus felis non quam. Nam eget lorem odio. Duis et aliquet orci. Phasellus nec viverra est.
+`Demographics and Wage` There's a shift of wage decreasing from March to November. People with higher education level has a significantly higher wage at any time.
 
-```{r mytable, out.width='80%'}
-knitr::kable(iris[1:10, 1:4], caption = 'Table caption.',align = 'c',"html")
-```
+<p align="center">
+<img src="poster_images/poster1-2.png" width="80%">
+</p>
 
-Or with figures: Figure \@ref(fig:standard-plot), or Figure \@ref(fig:morefigs).
+<p align="center">
+<img src="poster_images/poster1-3.png" width="85%">
+</p>
 
-```{r standard-plot, out.width='80%', fig.align='center', fig.cap='Great figure!', fig.height=5}
-plot(mtcars[1:2])
-```
+`Demographics and Expenditure` The below heatmap shows average daily expense of residents, where we can tell that people spend more money on Saturday and Sunday.
 
-```{r morefigs, out.width='80%', echo=TRUE, fig.cap='Amazing, right?!', fig.height=5}
-data <- iris
+<p align="center">
+<img src="poster_images/poster1-7.png" width="85%">
+</p>
 
-plot(x = data$Sepal.Length, 
-     y = data$Sepal.Width, 
-     col = data$Species,
-     pch = 19, 
-     xlab = "Sepal Length (cm)",
-     ylab = "Sepal Width (cm)")
+What's more, happy people spend more money compared to less happy people with the same income, while "really sad" people earn a lot but do not spend more.The average spending on each category is quite stable and people spend most of their money on food.
 
-```
+<p align="center">
+<img src="poster_images/poster1-8.png" width="80%">
+
+<p align="center">
+<img src="poster_images/poster1-9.png" width="80%">
+</p>
+
+`Social Network` There is a significant change of the network of the city from 2022 March to 2023 March. The participant id displays for those who have higher betweenness centrality in the network. The betweenness centrality of participants decreases from 2022 March to 2023 March. That means in 2023 March, participants are more likely to interacting directly to each other compared to 2022 March when there are more participants can be seen as “bridges”.
+
+With respect to different groups of participants, the visualization of the network also suggests that participants with higher centrality and more interactions with other person tend to have higher level of joviality. 
+
+<p align="center">
+<img src="poster_images/poster2-1.png" width="101%">
+</p>
+
+`Social Network with Groups` The group is closer for “High School or College” participants, while the group is loose among “Low” education level participants who seldom interact with each other. Moreover, for groups except “Low” education level, they all demonstrated increasing connections within each group after one year.
+
+<p align="center">
+<img src="poster_images/poster2-3.png" width="101%">
+</p>
+
+`Individual Participants in the Social Network` As shown in previous graphs, we can identify participants who are more influential in the network. To further analyze those social influencers, we use visNetwork to interactively visualize the network by selecting the id of a specific participant. For example, we can choose id 566 who have higher centrality in 2022 March and visualize its network.
+
+<p align="center">
+<img src="poster_images/poster2-7.png" width="80%">
+</p>
+
+`City Map` The City of Engagement has total no. of 1,042 buildings that consist of 1,517 apartments, 253 employers, 12 pubs, 20 restaurants and 4 schools. Commercial buildings are mainly in the central areas in the city and are surrounded by residential buildings. Employers, pubs, and restaurants are also mainly located in these commercial buildings. Schools are mainly located next to residential areas. North-west region has more apartments as compared to east and south areas where fewer apartments are built. 
+
+<p align="center">
+<img src="poster_images/poster3-1.png" width="75%">
+</p>
+
+`Cost Analysis` From the visualization, it seems those apartments located in central areas could have higher rental cost while apartments in the rural areas generally have lower rental cost.
+
+<p align="center">
+<img src="poster_images/poster3-2.png" width="85%">
+</p>
+
+`Check-in Analysis` Pub-1344 in central region has relatively high no. of check-ins, i.e., appear to be prosperous over the study period, as compared to other pubs in the town. Pub-444 in south region appear to be struggling in business due to lowest no. of check-ins. For restaurants, restaurant-1346 and restaurant-1801 have the lowest and highest no. of check-ins respectively but both are located in the north-west region. 
+
+<p align="center">
+<img src="poster_images/poster3-4.png" width="85%">
+</p>
+
+<p align="center">
+<img src="poster_images/poster3-5.png" width="83%">
+</p>
+
+`Revenue Analysis` Pub-893 in central region has the highest revenue per customer whereas pub-443 in the east region has the lowest revenue per customer. Take note that pub-443 also has relatively lower no. of check-ins.
+
+<p align="center">
+<img src="poster_images/poster3-8.png" width="85%">
+</p>
+
+For restaurant, interestingly that most of the restaurants have constant revenue per customer. Only restaurant-1349 in central region has a sudden peak of revenue per customer in Apr 2023. 
+
+<p align="center">
+<img src="poster_images/poster3-9.png" width="85%">
+</p>
+
+From the pairwise test, it can be concluded that there’s significant difference in revenue for pubs and restaurants located in different regions due to the small p value. There’s correlation between revenue and food or pub cost too as shown in the correlation test. 
+
+<p align="center">
+<img src="poster_images/poster3-10.png" width="80%">
+</p>
+
+<p align="center">
+<img src="poster_images/poster3-11.png" width="80%">
+</p>
 
 # Future Work
-
-An explanation of how the work could be extended.
-
-Aliquam sed faucibus risus, quis efficitur erat. Vestibulum semper mauris quis tempus eleifend. Aliquam sagittis dictum ipsum, quis viverra ligula eleifend ut. Curabitur sagittis vitae arcu eget faucibus. In non elementum felis. Duis et aliquam nunc. Nunc pulvinar sapien nunc, vel pretium nisi efficitur in. Fusce fringilla maximus leo et maximus. Fusce at ligula laoreet, iaculis mi at, auctor odio. Praesent sed elementum justo. Aenean consectetur risus rhoncus tincidunt efficitur. Praesent dictum mauris at diam maximus maximus [@R-posterdown].
-
-An explanation of how the work could be extended.
-
-Aliquam sed faucibus risus, quis efficitur erat. Vestibulum semper mauris quis tempus eleifend. Aliquam sagittis dictum ipsum, quis viverra ligula eleifend ut. Curabitur sagittis vitae arcu eget faucibus. In non elementum felis. Duis et aliquam nunc. Nunc pulvinar sapien nunc, vel pretium nisi efficitur in. Fusce fringilla maximus leo et maximus. Fusce at ligula laoreet, iaculis mi at, auctor odio. Praesent sed elementum justo. Aenean consectetur risus rhoncus tincidunt efficitur. Praesent dictum mauris at diam maximus maximus [@R-posterdown].
-
-An explanation of how the work could be extended.
-
-Aliquam sed faucibus risus, quis efficitur erat. Vestibulum semper mauris quis tempus eleifend. Aliquam sagittis dictum ipsum, quis viverra ligula eleifend ut. Curabitur sagittis vitae arcu eget faucibus. In non elementum felis. Duis et aliquam nunc. Nunc pulvinar sapien nunc, vel pretium nisi efficitur in. Fusce fringilla maximus leo et maximus. Fusce at ligula laoreet, iaculis mi at, auctor odio. Praesent sed elementum justo. Aenean consectetur risus rhoncus tincidunt efficitur. Praesent dictum mauris at diam maximus maximus [@R-posterdown].
-
-An explanation of how the work could be extended.
-
-Aliquam sed faucibus risus, quis efficitur erat. Vestibulum semper mauris quis tempus eleifend. Aliquam sagittis dictum ipsum, quis viverra ligula eleifend ut. Curabitur sagittis vitae arcu eget faucibus. In non elementum felis. Duis et aliquam nunc. Nunc pulvinar sapien nunc, vel pretium nisi efficitur in. Fusce fringilla maximus leo et maximus. Fusce at ligula laoreet, iaculis mi at, auctor odio. Praesent sed elementum justo. Aenean consectetur risus rhoncus tincidunt efficitur. Praesent dictum mauris at diam maximus maximus [@R-posterdown].
-
-
-An explanation of how the work could be extended.
-
-Aliquam sed faucibus risus, quis efficitur erat. Vestibulum semper mauris quis tempus eleifend. Aliquam sagittis dictum ipsum, quis viverra ligula eleifend ut. Curabitur sagittis vitae arcu eget faucibus. In non elementum felis. Duis et aliquam nunc. Nunc pulvinar sapien nunc, vel pretium nisi efficitur in. Fusce fringilla maximus leo et maximus. Fusce at ligula laoreet, iaculis mi at, auctor odio. Praesent sed elementum justo. Aenean consectetur risus rhoncus tincidunt efficitur. Praesent dictum mauris at diam maximus maximus [@R-posterdown].
+To provide better user interactivity experience, we can further combine the social network and business base analysis to the demographics. By adding more features from the network analysis and business base analysis to the demographics interactivity, we may gain more insights to help the city planning team to find opportunities for future growth. We can also consider identify the traffic of the city and the daily routines of the participants to better describe the patterns of life. What's more, we can consider the financial status of Engagement to evaluate the financial health of the city. In the future, we can apply similar techniques to other cities to help the city planning teams or other stakeholders to enhance the development of the city and solve other possible problems.
 
 
 ```{r, include=FALSE}

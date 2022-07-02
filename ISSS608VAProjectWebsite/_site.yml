@@ -3,6 +3,7 @@ title: "ISSS608VA Project Website"
 description: |
   ISSS608VA Project Website
 output_dir: "_site"
+theme: apreshill.css
 navbar:
   right:
     - text: "Home"
@@ -15,5 +16,6 @@ navbar:
       href: guide.html
     - text: "Poster"
       href: poster/poster.html
+      
 
 output: distill::distill_article
