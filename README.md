@@ -3,6 +3,8 @@ Click here to view our [website](https://vaprojectgroup9.netlify.app/)💖
 ## 👋 Welcome to the home page of Group 9
 This is the project website for ISSS608 Visual Analytics and Applications 2021-2022 April Term, Group 9. Our project is about [VAST Challenge 2022](https://vast-challenge.github.io/2022/) - Challenge 1: **Demographics and Relationships**
 
+<img width="1406" alt="Rshiny" src="https://user-images.githubusercontent.com/44923423/179392679-a511af99-a17e-4bbb-b311-36a8cd27a753.png">
+
 **Project Description:**
 
 *Motivation:* The purpose of the project is to help the city planning team of Engagement, Ohio USA to understand the current state of the city and identify opportunities for future growth through visual analytics of the data collected from the representative residents.
